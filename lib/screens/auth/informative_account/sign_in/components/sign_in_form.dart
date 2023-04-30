@@ -3,6 +3,8 @@ import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/components/form_error.dart';
 import 'package:medical_projet/constants.dart';
+import 'package:medical_projet/screens/auth/informative_account/sign_in/sign_in_screen.dart';
+import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
 import 'package:medical_projet/size_config.dart';
 
 class SignInForm extends StatefulWidget {
@@ -55,7 +57,12 @@ class _SignInFormState extends State<SignInForm> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 // if all are valid then go to success screen
-                // Navigator.pushNamed(context, CompleteProfileScreen.routeName);
+                // Navigator.pushNamed(context, DashboardScreen.routeName);
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const UsersDashboardScreen(),
+                  ),
+                );
               }
             },
           ),
