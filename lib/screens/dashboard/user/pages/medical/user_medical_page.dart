@@ -4,16 +4,19 @@ class UserMedicalPage extends StatefulWidget {
   const UserMedicalPage({super.key});
 
   @override
-  State<UserMedicalPage> createState() => _UserMedicalPageState();
+  State<UserMedicalPage> createState() => _UseMedicalPageState();
 }
 
-class _UserMedicalPageState extends State<UserMedicalPage> {
+class _UseMedicalPageState extends State<UserMedicalPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: const Text("User Medical Page"),
+        title: const Text(
+          "User Médical Page",
+          style: TextStyle(color: Colors.black),
+        ),
       ),
     ));
   }
