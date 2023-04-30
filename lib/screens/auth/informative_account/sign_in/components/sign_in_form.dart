@@ -58,10 +58,17 @@ class _SignInFormState extends State<SignInForm> {
                 _formKey.currentState!.save();
                 // if all are valid then go to success screen
                 // Navigator.pushNamed(context, DashboardScreen.routeName);
-                Navigator.of(context).pushReplacement(
+                // Navigator.of(context).pushReplacement(
+                //   MaterialPageRoute(
+                //     builder: (context) => const UsersDashboardScreen(),
+                //   ),
+                // );
+                Navigator.pushAndRemoveUntil(
+                  context,
                   MaterialPageRoute(
                     builder: (context) => const UsersDashboardScreen(),
                   ),
+                  (Route<dynamic> route) => false,
                 );
               }
             },
@@ -102,39 +109,6 @@ class _SignInFormState extends State<SignInForm> {
       ),
     );
   }
-
-  // TextFormField buildConformPassFormField() {
-  //   return TextFormField(
-  //     obscureText: true,
-  //     onSaved: (newValue) => conformPassword = newValue,
-  //     onChanged: (value) {
-  //       if (value.isNotEmpty) {
-  //         removeError(error: kPassNullError);
-  //       } else if (value.isNotEmpty && password == conformPassword) {
-  //         removeError(error: kMatchPassError);
-  //       }
-  //       conformPassword = value;
-  //     },
-  //     validator: (value) {
-  //       if (value!.isEmpty) {
-  //         addError(error: kPassNullError);
-  //         return "";
-  //       } else if ((password != value)) {
-  //         addError(error: kMatchPassError);
-  //         return "";
-  //       }
-  //       return null;
-  //     },
-  //     decoration: const InputDecoration(
-  //       labelText: "Confirm Password",
-  //       hintText: "Re-enter your password",
-  //       // If  you are using latest version of flutter then lable text and hint text shown like this
-  //       // if you r using flutter less then 1.20.* then maybe this is not working properly
-  //       floatingLabelBehavior: FloatingLabelBehavior.always,
-  //       suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/Lock.svg"),
-  //     ),
-  //   );
-  // }
 
   TextFormField buildPasswordFormField() {
     return TextFormField(

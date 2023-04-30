@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:medical_projet/size_config.dart';
 
+// const kPrimaryColor = Colors.teal;
 const kPrimaryColor = Color(0xFFFF7643);
 const kPrimaryLightColor = Color(0xFFFFECDF);
+final selectTabBg = Colors.amber[600]!.withOpacity(.2);
 
 const kSecondaryColor = Color(0xFF979797);
 const kTextColor = Color(0xFF757575);

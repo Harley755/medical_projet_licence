@@ -25,7 +25,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Medical Assistance App',
       theme: theme(),
-      home: const UserNavigationBar(),
+      // home: const UserNavigationBar(),
+      initialRoute: AuthScreen.routeName,
+      routes: routes,
     );
   }
 }

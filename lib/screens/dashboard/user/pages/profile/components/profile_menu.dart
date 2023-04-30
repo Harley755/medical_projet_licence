@@ -3,15 +3,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medical_projet/constants.dart';
 
 class ProfileMenu extends StatelessWidget {
+  final String text, icon;
+  final VoidCallback? press;
+  final double? width;
+
   const ProfileMenu({
-    Key? key,
+    super.key,
     required this.text,
     required this.icon,
     this.press,
-  }) : super(key: key);
-
-  final String text, icon;
-  final VoidCallback? press;
+    this.width,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class ProfileMenu extends StatelessWidget {
             SvgPicture.asset(
               icon,
               color: kPrimaryColor,
-              width: 22,
+              width: width ?? 22,
             ),
             const SizedBox(width: 20),
             Expanded(
