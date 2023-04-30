@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:medical_projet/routes.dart';
+import 'package:medical_projet/screens/auth/auth_screen.dart';
+import 'package:medical_projet/screens/auth/informative_account/sign_up/sign_up_screen.dart';
+import 'package:medical_projet/theme.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -19,9 +23,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Medical Assistance App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: theme(),
+      initialRoute: AuthScreen.routeName,
+      routes: routes,
     );
   }
 }
