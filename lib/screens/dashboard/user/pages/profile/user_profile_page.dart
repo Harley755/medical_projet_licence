@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:medical_projet/constants.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/components/body.dart';
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({super.key});
@@ -10,14 +12,15 @@ class UserProfilePage extends StatefulWidget {
 class _UserProfilePageState extends State<UserProfilePage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "User Profile Page",
-          style: TextStyle(color: Colors.black),
+          "Profile",
+          style: TextStyle(color: kSecondaryColor),
         ),
+        centerTitle: true,
       ),
-    ));
+      body: const Body(),
+    );
   }
 }
