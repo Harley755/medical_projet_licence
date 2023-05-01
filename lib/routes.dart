@@ -4,6 +4,7 @@ import 'package:medical_projet/screens/auth/informative_account/sign_in/sign_in_
 import 'package:medical_projet/screens/auth/informative_account/sign_up/sign_up_screen.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_in/sign_in_screen.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_up/sign_up_screen.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/medical/user_medical_page.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_profile_identity.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
 
@@ -28,4 +29,6 @@ final Map<String, WidgetBuilder> routes = {
   UserProfileIdentity.routeName: (context) => const UserProfileIdentity(),
   // profile screen
   UserProfilePage.routeName: (context) => const UserProfilePage(),
+  // medical page
+  UserMedicalPage.routeName: (context) => const UserMedicalPage(),
 };

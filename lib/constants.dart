@@ -27,16 +27,37 @@ const String kPassNullError = "Veuillez entrer votre mot de passe";
 const String kShortPassError = "Mot de passe trop court";
 // const String kMatchPassError = "Passwords don't match";
 
+// USER IDENTITY FIELD ERROR
 const String kLastNameNullError = "Veuillez entrer votre nom";
 const String kFirstNameNullError = "Veuillez entrer votre prénom";
-
 const String kPoidsNullError = "Veuillez entrer votre poids";
 const String kSexeNullError = "Veuillez choisir votre sexe";
-
 const String kEmergenceNameNullError = "Veuillez entrer le nom";
 const String kEmergenceContactNullError = "Veuillez entrer le contact";
 const String kEmergenceRelationshipNullError =
     "Veuillez entrer le type de relation";
+
+// USER MEDICAL FIELD ERROR
+// ANTECEDENTS MEDICAUX
+const String kBloodTypeNullError = "Veuillez choisir votre groupe sanguin";
+const String kFamilyMedicalHistoryNullError = "Antécédents médicaux familiaux";
+const String kChronicIllnessesNullError = "Maladies chroniques";
+const String kHistorySevereAllergicReactionsNullError =
+    "Antécédents de réactions allergiques graves";
+const String kHistoryOfTraumaNullError = "Antécédents de traumatismes";
+const String kHistoryOfRecentSurgeryNullError =
+    "Antécédents de chirurgie récente";
+const String kHistoryOfInfectiousDiseasesNullError =
+    "Antécédents de maladies infectieuses";
+
+// MEDICAMENTS
+const String kListOfCurrentMedicationsNullError =
+    "Liste des médicaments en cours";
+const String kDosageScheduleCurrentMedicationsNullError =
+    "Dosage et horaires de prise des médicaments en cours";
+const String kKnownFoodAllergiesNullError = "Allergies alimentaires connues";
+const String kKnownSevereAllergicNullError =
+    "Réactions allergiques graves connues à des médicaments ou à des substances";
 
 const String kPhoneNumberNullError =
     "Veuillez entrer votre numéro de téléphone";
