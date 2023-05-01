@@ -3,6 +3,7 @@ import 'package:medical_projet/constants.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/components/body.dart';
 
 class UserProfilePage extends StatefulWidget {
+  static String routeName = "/user/profile";
   const UserProfilePage({super.key});
 
   @override

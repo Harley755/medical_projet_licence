@@ -30,7 +30,15 @@ const String kShortPassError = "Mot de passe trop court";
 const String kLastNameNullError = "Veuillez entrer votre nom";
 const String kFirstNameNullError = "Veuillez entrer votre prénom";
 
-const String kSpecialityNullError = "Veuillez entrer votre specialité";
+const String kPoidsNullError = "Veuillez entrer votre poids";
+const String kSexeNullError = "Veuillez choisir votre sexe";
+
+const String kEmergenceNameNullError = "Veuillez entrer le nom";
+const String kEmergenceContactNullError = "Veuillez entrer le contact";
+const String kEmergenceRelationshipNullError =
+    "Veuillez entrer le type de relation";
 
 const String kPhoneNumberNullError =
     "Veuillez entrer votre numéro de téléphone";
+
+const String kSpecialityNullError = "Veuillez entrer votre specialité";

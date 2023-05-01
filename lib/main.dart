@@ -4,6 +4,7 @@ import 'package:medical_projet/routes.dart';
 import 'package:medical_projet/screens/auth/auth_screen.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/sign_up_screen.dart';
 import 'package:medical_projet/screens/dashboard/user/components/user_navigation_bar.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/user_profile_page.dart';
 import 'package:medical_projet/theme.dart';
 import 'firebase_options.dart';
 
@@ -25,8 +26,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Medical Assistance App',
       theme: theme(),
-      // home: const UserNavigationBar(),
-      initialRoute: AuthScreen.routeName,
+      home: const UserProfilePage(),
+      // initialRoute: AuthScreen.routeName,
       routes: routes,
     );
   }

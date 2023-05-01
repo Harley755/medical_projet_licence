@@ -4,7 +4,10 @@ import 'package:medical_projet/screens/auth/informative_account/sign_in/sign_in_
 import 'package:medical_projet/screens/auth/informative_account/sign_up/sign_up_screen.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_in/sign_in_screen.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_up/sign_up_screen.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_profile_identity.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
+
+import 'screens/dashboard/user/pages/profile/user_profile_page.dart';
 
 final Map<String, WidgetBuilder> routes = {
   AuthScreen.routeName: (context) => const AuthScreen(),
@@ -19,4 +22,10 @@ final Map<String, WidgetBuilder> routes = {
 
   // USER DASHBOARD CHOICE
   UsersDashboardScreen.routeName: (context) => const UsersDashboardScreen(),
+
+  // USER PROFILE
+  // identity form
+  UserProfileIdentity.routeName: (context) => const UserProfileIdentity(),
+  // profile screen
+  UserProfilePage.routeName: (context) => const UserProfilePage(),
 };

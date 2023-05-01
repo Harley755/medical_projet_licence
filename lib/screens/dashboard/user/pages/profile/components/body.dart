@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/components/profile_pic.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_profile_identity.dart';
 
 import 'profile_menu.dart';
 
@@ -18,7 +19,9 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "Mes informations d'identité",
             icon: "assets/icons/User Icon.svg",
-            press: () => {},
+            press: () => {
+              Navigator.pushNamed(context, UserProfileIdentity.routeName),
+            },
           ),
           ProfileMenu(
             text: "Comptes Associés",
