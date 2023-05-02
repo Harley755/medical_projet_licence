@@ -2,35 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medical_projet/constants.dart';
 
-class ProfileMenu extends StatelessWidget {
+class SubProfileMenu extends StatelessWidget {
   final String text, icon;
   final Function()? press;
   final double? width;
-  final bool clickToogle;
-  final double bottomPadding;
+  final double downPadding;
 
-  const ProfileMenu({
+  const SubProfileMenu({
     super.key,
     required this.text,
     required this.icon,
     this.press,
     this.width,
-    this.clickToogle = false,
-    this.bottomPadding = 14,
+    this.downPadding = 6,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      // padding: EdgeInsets.symmetric(
+      // padding: const EdgeInsets.symmetric(
       //   horizontal: 20,
-      //   vertical: verticalPadding,
+      //   vertical: 2,
       // ),
       padding: EdgeInsets.only(
-        top: 14,
-        bottom: clickToogle ? bottomPadding : 14,
-        left: 26,
-        right: 26,
+        top: 6,
+        bottom: downPadding,
+        left: 33,
+        right: 33,
       ),
       child: TextButton(
         style: TextButton.styleFrom(
@@ -56,15 +54,10 @@ class ProfileMenu extends StatelessWidget {
                 style: const TextStyle(color: kSecondaryColor),
               ),
             ),
-            clickToogle
-                ? const Icon(
-                    Icons.arrow_drop_down,
-                    color: kSecondaryColor,
-                  )
-                : const Icon(
-                    Icons.arrow_forward_ios,
-                    color: kSecondaryColor,
-                  ),
+            const Icon(
+              Icons.arrow_forward_ios,
+              color: kSecondaryColor,
+            ),
           ],
         ),
       ),
