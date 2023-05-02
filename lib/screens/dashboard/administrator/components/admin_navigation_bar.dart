@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:medical_projet/constants.dart';
@@ -79,7 +80,7 @@ class _AdminNavigationBarState extends State<AdminNavigationBar> {
                   backgroundColor: selectTabBg,
                   iconSize: 24,
                   padding: padding,
-                  icon: LineIcons.home,
+                  icon: Icons.auto_graph_outlined,
                   text: 'Statistics',
                 ),
                 GButton(
@@ -91,7 +92,6 @@ class _AdminNavigationBarState extends State<AdminNavigationBar> {
                   iconSize: 24,
                   padding: padding,
                   icon: LineIcons.bell,
-                  text: "Notifications",
                   leading: _selectedIndex == 1 || badge == 0
                       ? null
                       : badges.Badge(
@@ -108,6 +108,36 @@ class _AdminNavigationBarState extends State<AdminNavigationBar> {
                           child: Icon(
                             LineIcons.bell,
                             color: _selectedIndex == 1
+                                ? Colors.pink
+                                : Colors.black,
+                          ),
+                        ),
+                ),
+                GButton(
+                  gap: gap,
+                  iconActiveColor: kPrimaryColor,
+                  iconColor: Colors.black,
+                  textColor: kPrimaryColor,
+                  backgroundColor: selectTabBg,
+                  iconSize: 24,
+                  padding: padding,
+                  icon: Icons.messenger_outline,
+                  leading: _selectedIndex == 2 || badge == 0
+                      ? null
+                      : badges.Badge(
+                          position:
+                              badges.BadgePosition.topEnd(top: -12, end: -12),
+                          badgeContent: Text(
+                            badge.toString(),
+                            style: TextStyle(color: Colors.red.shade900),
+                          ),
+                          badgeStyle: badges.BadgeStyle(
+                            badgeColor: Colors.red.shade100,
+                            elevation: 0,
+                          ),
+                          child: Icon(
+                            Icons.messenger_outline,
+                            color: _selectedIndex == 2
                                 ? Colors.pink
                                 : Colors.black,
                           ),
