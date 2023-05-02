@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/constants.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/get_information/facial_recognition/facial_recognition_way.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/get_information/finger_print/fingerprint_way.dart';
@@ -51,7 +52,6 @@ class _ProfessionalGetWayState extends State<ProfessionalGetWay> {
       onTap: () {
         setState(() {
           selectedIndex = index;
-          print(selectedIndex);
         });
       },
       child: Padding(
@@ -61,12 +61,12 @@ class _ProfessionalGetWayState extends State<ProfessionalGetWay> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              tabGetWayMenus[index],
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: selectedIndex == index ? kPrimaryColor : kSecondaryColor,
-              ),
+            RobotoFont(
+              title: tabGetWayMenus[index],
+              size: getProportionateScreenWidth(17),
+              fontWeight:
+                  selectedIndex == index ? FontWeight.w900 : FontWeight.normal,
+              color: selectedIndex == index ? kPrimaryColor : kSecondaryColor,
             ),
             Container(
               margin: EdgeInsets.only(top: getProportionateScreenWidth(20) / 4),
