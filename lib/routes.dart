@@ -4,6 +4,9 @@ import 'package:medical_projet/screens/auth/informative_account/sign_in/sign_in_
 import 'package:medical_projet/screens/auth/informative_account/sign_up/sign_up_screen.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_in/sign_in_screen.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_up/sign_up_screen.dart';
+import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/professional_medical_page.dart';
+import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/identity/professional_profile_identity.dart';
+import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/professional_profile_page.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/medical/user_medical_page.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_profile_identity.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
@@ -31,4 +34,15 @@ final Map<String, WidgetBuilder> routes = {
   UserProfilePage.routeName: (context) => const UserProfilePage(),
   // medical page
   UserMedicalPage.routeName: (context) => const UserMedicalPage(),
+
+  // MEDICAL PROFESSIONAL
+  // identity form
+  ProfessionalProfileIdentity.routeName: (context) =>
+      const ProfessionalProfileIdentity(),
+  // profile screen
+  ProfessionalProfilePage.routeName: (context) =>
+      const ProfessionalProfilePage(),
+  // medical page
+  ProfessionalMedicalPage.routeName: (context) =>
+      const ProfessionalMedicalPage(),
 };

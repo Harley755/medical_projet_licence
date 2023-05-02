@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:medical_projet/constants.dart';
-import 'package:medical_projet/screens/dashboard/user/utils/global_variables.dart';
+import 'package:medical_projet/screens/dashboard/health_professional/utils/global_variables.dart';
 import 'package:medical_projet/size_config.dart';
 
-class UserNavigationBar extends StatefulWidget {
-  const UserNavigationBar({super.key});
+class ProfessionalNavigationBar extends StatefulWidget {
+  const ProfessionalNavigationBar({super.key});
 
   @override
-  State<UserNavigationBar> createState() => _UserNavigationBarState();
+  State<ProfessionalNavigationBar> createState() =>
+      _ProfessionalNavigationBarState();
 }
 
-class _UserNavigationBarState extends State<UserNavigationBar> {
+class _ProfessionalNavigationBarState extends State<ProfessionalNavigationBar> {
   int _selectedIndex = 0;
   int badge = 0;
   final padding = const EdgeInsets.symmetric(horizontal: 18, vertical: 12);
@@ -46,7 +47,7 @@ class _UserNavigationBarState extends State<UserNavigationBar> {
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         onPageChanged: (value) => onPageChanged(value),
-        children: userScreenItems,
+        children: professionalScreenItems,
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
@@ -76,7 +77,7 @@ class _UserNavigationBarState extends State<UserNavigationBar> {
                   iconSize: 24,
                   padding: padding,
                   icon: LineIcons.home,
-                  text: 'Acceuil',
+                  text: 'Obtenir',
                 ),
                 GButton(
                   gap: gap,
@@ -86,7 +87,7 @@ class _UserNavigationBarState extends State<UserNavigationBar> {
                   backgroundColor: selectTabBg,
                   iconSize: 24,
                   padding: padding,
-                  icon: LineIcons.medicalNotes,
+                  icon: LineIcons.medicalClinic,
                   text: 'Info médicales',
                 ),
                 GButton(
@@ -101,7 +102,7 @@ class _UserNavigationBarState extends State<UserNavigationBar> {
                   leading: const CircleAvatar(
                     radius: 12,
                     backgroundImage: NetworkImage(
-                      'https://64.media.tumblr.com/eb8013a5fded5dcb55eee5ba2e48c86c/012efcaf904bfd8e-89/s640x960/cbb4836ddab081451c45286f7f9ab278f99f59f7.pnj',
+                      'https://wallpapers-clan.com/wp-content/uploads/2022/07/anime-default-pfp-2.jpg',
                     ),
                   ),
                   text: 'Profile',

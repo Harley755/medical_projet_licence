@@ -9,17 +9,18 @@ import 'package:medical_projet/size_config.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class UserProfileFormReadOnly extends StatefulWidget {
+class ProfessionalProfileFormReadOnly extends StatefulWidget {
   final GlobalKey<FormState> formKey;
 
-  const UserProfileFormReadOnly({super.key, required this.formKey});
+  const ProfessionalProfileFormReadOnly({super.key, required this.formKey});
 
   @override
-  State<UserProfileFormReadOnly> createState() =>
-      _UserProfileFormReadOnlyState();
+  State<ProfessionalProfileFormReadOnly> createState() =>
+      _ProfessionalProfileFormReadOnlyState();
 }
 
-class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
+class _ProfessionalProfileFormReadOnlyState
+    extends State<ProfessionalProfileFormReadOnly> {
   late final TextEditingController _emergenceNameController;
   late final TextEditingController _emergenceContactController;
 
