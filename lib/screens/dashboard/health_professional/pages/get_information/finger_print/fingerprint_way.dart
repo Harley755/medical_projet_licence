@@ -12,6 +12,7 @@ class FingerPrintWay extends StatefulWidget {
 }
 
 class _FingerPrintWayState extends State<FingerPrintWay> {
+  final _isFingerprintEnable = true;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -27,14 +28,23 @@ class _FingerPrintWayState extends State<FingerPrintWay> {
             color: kSecondaryColor,
           ),
           SizedBox(height: getProportionateScreenHeight(30)),
-          RobotoFont(
-            title:
-                "Utilisez votre identifiant tactile pour un accès plus rapide et plus facile aux informations relatives à vos patients.",
-            size: getProportionateScreenWidth(14),
-            textAlign: TextAlign.center,
-            color: kSecondaryColor,
-            fontWeight: FontWeight.w700,
-          ),
+          _isFingerprintEnable
+              ? RobotoFont(
+                  title:
+                      "Veuillez toucher votre identifiant tactile pour un accès plus rapide et plus facile aux informations relatives à vos patients.",
+                  size: getProportionateScreenWidth(14),
+                  textAlign: TextAlign.center,
+                  color: kSecondaryColor,
+                  fontWeight: FontWeight.w700,
+                )
+              : RobotoFont(
+                  title:
+                      "Votre téléphophe ne dispose pas d'un lecteur d'emprunte digital.",
+                  size: getProportionateScreenWidth(16),
+                  textAlign: TextAlign.center,
+                  color: Colors.red.withOpacity(0.9),
+                  fontWeight: FontWeight.w700,
+                ),
         ],
       ),
     );
