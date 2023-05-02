@@ -20,7 +20,7 @@ class _UseMedicalPageState extends State<ProfessionalMedicalPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Professionel Informations Médicales",
+          "Mes Informations Privées",
           style: TextStyle(color: kSecondaryColor),
         ),
         centerTitle: true,
