@@ -11,6 +11,5 @@ const TextStyle optionStyle = TextStyle(
 List<Widget> userScreenItems = [
   const UserHomePage(),
   const UserMedicalPage(),
-  const UserMedicalPage(),
   const UserProfilePage(),
 ];

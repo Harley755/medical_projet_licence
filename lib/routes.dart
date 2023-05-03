@@ -45,4 +45,6 @@ final Map<String, WidgetBuilder> routes = {
   // medical page
   ProfessionalMedicalPage.routeName: (context) =>
       const ProfessionalMedicalPage(),
+
+  // ADMIN
 };

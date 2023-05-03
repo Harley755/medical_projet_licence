@@ -18,7 +18,7 @@ class _ProfessionalGetPageState extends State<ProfessionalGetPage> {
         appBar: AppBar(
           title: const Text(
             "Professional Get Page",
-            style: TextStyle(color: kSecondaryColor),
+            style: TextStyle(color: Colors.black),
           ),
           centerTitle: true,
         ),

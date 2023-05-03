@@ -18,7 +18,7 @@ class _ProfessionalProfilePageState extends State<ProfessionalProfilePage> {
       appBar: AppBar(
         title: const Text(
           "Mon Profile",
-          style: TextStyle(color: kSecondaryColor),
+          style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
       ),

@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:medical_projet/constants.dart';
-import 'package:medical_projet/screens/dashboard/user/utils/global_variables.dart';
+import 'package:medical_projet/screens/dashboard/administrator/utils/global_variables.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:badges/badges.dart' as badges;
 
@@ -17,6 +17,8 @@ class AdminNavigationBar extends StatefulWidget {
 class _AdminNavigationBarState extends State<AdminNavigationBar> {
   int _selectedIndex = 0;
   int badge = 2;
+  int badgeNotifs = 2;
+  int badgeMessenger = 2;
   final padding = const EdgeInsets.symmetric(
     horizontal: 18,
     vertical: 12,
@@ -51,13 +53,13 @@ class _AdminNavigationBarState extends State<AdminNavigationBar> {
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         onPageChanged: (value) => onPageChanged(value),
-        children: userScreenItems,
+        children: adminScreenItems,
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 17.0, vertical: 5.0),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Colors.white.withOpacity(0.4),
             borderRadius: const BorderRadius.all(Radius.circular(100)),
             boxShadow: [
               BoxShadow(
@@ -91,14 +93,14 @@ class _AdminNavigationBarState extends State<AdminNavigationBar> {
                   backgroundColor: selectTabBg,
                   iconSize: 24,
                   padding: padding,
-                  icon: LineIcons.bell,
-                  leading: _selectedIndex == 1 || badge == 0
+                  icon: Icons.messenger_outline,
+                  leading: _selectedIndex == 1 || badgeMessenger == 0
                       ? null
                       : badges.Badge(
                           position:
                               badges.BadgePosition.topEnd(top: -12, end: -12),
                           badgeContent: Text(
-                            badge.toString(),
+                            badgeMessenger.toString(),
                             style: TextStyle(color: Colors.red.shade900),
                           ),
                           badgeStyle: badges.BadgeStyle(
@@ -106,7 +108,7 @@ class _AdminNavigationBarState extends State<AdminNavigationBar> {
                             elevation: 0,
                           ),
                           child: Icon(
-                            LineIcons.bell,
+                            Icons.messenger_outline,
                             color: _selectedIndex == 1
                                 ? Colors.pink
                                 : Colors.black,
@@ -121,27 +123,8 @@ class _AdminNavigationBarState extends State<AdminNavigationBar> {
                   backgroundColor: selectTabBg,
                   iconSize: 24,
                   padding: padding,
-                  icon: Icons.messenger_outline,
-                  leading: _selectedIndex == 2 || badge == 0
-                      ? null
-                      : badges.Badge(
-                          position:
-                              badges.BadgePosition.topEnd(top: -12, end: -12),
-                          badgeContent: Text(
-                            badge.toString(),
-                            style: TextStyle(color: Colors.red.shade900),
-                          ),
-                          badgeStyle: badges.BadgeStyle(
-                            badgeColor: Colors.red.shade100,
-                            elevation: 0,
-                          ),
-                          child: Icon(
-                            Icons.messenger_outline,
-                            color: _selectedIndex == 2
-                                ? Colors.pink
-                                : Colors.black,
-                          ),
-                        ),
+                  icon: Icons.search,
+                  text: 'Search',
                 ),
                 GButton(
                   gap: gap,
@@ -151,15 +134,28 @@ class _AdminNavigationBarState extends State<AdminNavigationBar> {
                   backgroundColor: selectTabBg,
                   iconSize: 24,
                   padding: padding,
-                  icon: LineIcons.user,
-                  leading: const CircleAvatar(
-                    radius: 12,
-                    backgroundImage: NetworkImage(
-                      'https://i.pinimg.com/736x/08/2a/1b/082a1bb32a158d7270582c044fca7bfd.jpg',
-                    ),
-                  ),
-                  text: 'Profile',
-                )
+                  icon: LineIcons.bell,
+                  leading: _selectedIndex == 3 || badgeNotifs == 0
+                      ? null
+                      : badges.Badge(
+                          position:
+                              badges.BadgePosition.topEnd(top: -12, end: -12),
+                          badgeContent: Text(
+                            badgeNotifs.toString(),
+                            style: TextStyle(color: Colors.red.shade900),
+                          ),
+                          badgeStyle: badges.BadgeStyle(
+                            badgeColor: Colors.red.shade100,
+                            elevation: 0,
+                          ),
+                          child: Icon(
+                            LineIcons.bell,
+                            color: _selectedIndex == 4
+                                ? Colors.pink
+                                : Colors.black,
+                          ),
+                        ),
+                ),
               ],
               selectedIndex: _selectedIndex,
               onTabChange: navigatorTapped,
