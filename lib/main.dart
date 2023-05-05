@@ -3,12 +3,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:medical_projet/routes.dart';
 import 'package:medical_projet/screens/auth/auth_screen.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/sign_up_screen.dart';
+import 'package:medical_projet/screens/dashboard/administrator/components/admin_navigation_bar.dart';
 import 'package:medical_projet/screens/dashboard/user/components/user_navigation_bar.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/medical/user_medical_page.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/user_profile_page.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
 import 'package:medical_projet/theme.dart';
 import 'firebase_options.dart';
+import 'screens/dashboard/administrator/pages/chat/components/admin_chat_page_body.dart';
+import 'screens/dashboard/administrator/pages/chat/components/details_conversation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +31,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Medical Assistance App',
       theme: theme(),
-      home: const UsersDashboardScreen(),
+      home: const AdminNavigationBar(),
       // initialRoute: AuthScreen.routeName,
       routes: routes,
     );

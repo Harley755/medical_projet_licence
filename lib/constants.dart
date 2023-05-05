@@ -16,6 +16,19 @@ final headingStyle = TextStyle(
   height: 1.5,
 );
 
+ThemeData focusedTheme = ThemeData(
+  textSelectionTheme: const TextSelectionThemeData(
+    cursorColor: Colors.blue,
+  ),
+  inputDecorationTheme: const InputDecorationTheme(
+    hintStyle: TextStyle(color: kPrimaryColor),
+    prefixStyle: TextStyle(color: kPrimaryColor),
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: kPrimaryColor),
+    ),
+  ),
+);
+
 // Form Error
 final RegExp emailValidatorRegExp =
     RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
