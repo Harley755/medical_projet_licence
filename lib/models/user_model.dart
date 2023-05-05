@@ -10,6 +10,8 @@ class User {
   final String groupeSanguinId;
   final String nomContactUrgence;
   final String telephoneContactUrgence;
+  final bool hasTwoAccount;
+  final String role;
 
   const User({
     required this.userId,
@@ -21,6 +23,8 @@ class User {
     required this.groupeSanguinId,
     required this.nomContactUrgence,
     required this.telephoneContactUrgence,
+    this.hasTwoAccount = false,
+    required this.role,
   });
 
   Map<String, dynamic> toJson() => {
@@ -33,6 +37,8 @@ class User {
         'groupeSanguinId': groupeSanguinId,
         'nomContactUrgence': nomContactUrgence,
         'telephoneContactUrgence': telephoneContactUrgence,
+        'hasTwoAccount': hasTwoAccount,
+        'role': role,
       };
 
   static User fromSnap(DocumentSnapshot snap) {
@@ -48,6 +54,8 @@ class User {
       groupeSanguinId: snapshot['groupeSanguinId'],
       nomContactUrgence: snapshot['nomContactUrgence'],
       telephoneContactUrgence: snapshot['telephoneContactUrgence'],
+      hasTwoAccount: snapshot['hasTwoAccount'],
+      role: snapshot['role'],
     );
   }
 }

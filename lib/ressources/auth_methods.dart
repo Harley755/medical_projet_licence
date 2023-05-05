@@ -46,6 +46,7 @@ class AuthMethods {
           groupeSanguinId: '',
           nomContactUrgence: '',
           telephoneContactUrgence: '',
+          role: 'user',
         );
         // ON AJOUTE L'UTILISATEUR A FIREBASE
         await _firestore
