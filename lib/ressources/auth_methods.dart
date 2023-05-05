@@ -65,4 +65,31 @@ class AuthMethods {
     }
     return response;
   }
+
+  // CONNEXION USER COMPTE INFORMATIF
+  Future<String> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    String res = "Une erreur s'est produite";
+    try {
+      if (email.isNotEmpty || password.isNotEmpty) {
+        await _auth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        res = 'success';
+      } else {
+        res = 'Please enter all the fields';
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        res = 'There is no user record corresponding to this identifier';
+      }
+    } catch (err) {
+      res = err.toString();
+      print('res' + res);
+    }
+    return res;
+  }
 }
