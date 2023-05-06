@@ -18,7 +18,7 @@ final headingStyle = TextStyle(
 
 ThemeData focusedTheme = ThemeData(
   textSelectionTheme: const TextSelectionThemeData(
-    cursorColor: Colors.blue,
+    cursorColor: kPrimaryColor,
   ),
   inputDecorationTheme: const InputDecorationTheme(
     hintStyle: TextStyle(color: kPrimaryColor),
@@ -31,7 +31,7 @@ ThemeData focusedTheme = ThemeData(
 
 // Form Error
 final RegExp emailValidatorRegExp =
-    RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    RegExp(r"^[a-zA-Z0-9.+]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 const String kEmailNullError = "Veuillez entrer votre email";
 const String kInvalidEmailError = "Veuillez entrer une email valide";
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/components/form_error.dart';
+import 'package:medical_projet/screens/auth/informative_account/sign_up/user_send_verification_email.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/ressources/auth/user_methods.dart';
 import 'package:medical_projet/size_config.dart';
@@ -20,6 +21,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  bool _isLoading = false;
   @override
   void dispose() {
     _nomController.dispose();
@@ -30,15 +32,21 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
     String response = await UserMethods().signUpUser(
-      nom: _nomController,
-      prenom: _prenomController,
-      email: _emailController,
-      password: _passwordController,
+      nom: _nomController.text.trim(),
+      prenom: _prenomController.text.trim(),
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
     );
     if (response != 'success') {
       showSnackBar(response, context);
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -82,14 +90,24 @@ class _SignUpFormState extends State<SignUpForm> {
           // buildConformPassFormField(),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(60)),
-          DefaultButton(
-            text: "S'inscrire",
-            press: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-              }
-            },
-          ),
+          _isLoading
+              ? const CircularProgressIndicator(color: Colors.white)
+              : DefaultButton(
+                  text: "S'inscrire",
+                  press: () {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const UserSendEmailVerification(),
+                        ),
+                        (Route<dynamic> route) => false,
+                      );
+                    }
+                  },
+                ),
         ],
       ),
     );

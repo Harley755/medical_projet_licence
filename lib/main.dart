@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:medical_projet/routes.dart';
 import 'package:medical_projet/screens/auth/auth_screen.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/sign_up_screen.dart';
+import 'package:medical_projet/screens/auth/informative_account/sign_up/user_send_verification_email.dart';
 import 'package:medical_projet/screens/dashboard/administrator/components/admin_navigation_bar.dart';
 import 'package:medical_projet/screens/dashboard/user/components/user_navigation_bar.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/medical/user_medical_page.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             if (snapshot.hasData) {
-              return const UsersDashboardScreen();
+              return const UserSendEmailVerification();
             } else if (snapshot.hasError) {
               return Center(child: Text('${snapshot.hasError}'));
             }

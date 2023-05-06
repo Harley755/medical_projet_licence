@@ -63,6 +63,9 @@ class UserMethods {
         );
 
         response = "success";
+
+        // ENVOIE UN MAIL DE VERIFICATION D'EMAIL
+        sendEmailVerification();
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
@@ -78,6 +81,15 @@ class UserMethods {
       response = e.toString();
     }
     return response;
+  }
+
+  Future<void> sendEmailVerification() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await user.sendEmailVerification();
+    } else {
+      print("user est null pour lui envoyer un mail de verification");
+    }
   }
 
   // CONNEXION USER COMPTE INFORMATIF
