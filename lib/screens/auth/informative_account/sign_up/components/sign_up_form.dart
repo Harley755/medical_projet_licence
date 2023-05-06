@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/components/form_error.dart';
-import 'package:medical_projet/constants.dart';
+import 'package:medical_projet/utils/constants.dart';
+import 'package:medical_projet/ressources/auth/user_methods.dart';
 import 'package:medical_projet/size_config.dart';
+import 'package:medical_projet/utils/functions.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
@@ -13,6 +15,32 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
+  final TextEditingController _nomController = TextEditingController();
+  final TextEditingController _prenomController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nomController.dispose();
+    _prenomController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void signUpUser() async {
+    String response = await UserMethods().signUpUser(
+      nom: _nomController,
+      prenom: _prenomController,
+      email: _emailController,
+      password: _passwordController,
+    );
+    if (response != 'success') {
+      showSnackBar(response, context);
+    }
+  }
+
   final _formKey = GlobalKey<FormState>();
   String? firstName;
   String? lastName;
@@ -69,6 +97,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildLastNameFormField() {
     return TextFormField(
+      controller: _nomController,
       keyboardType: TextInputType.text,
       onSaved: (newValue) => lastName = newValue,
       onChanged: (value) {
@@ -96,6 +125,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildFirstNameFormField() {
     return TextFormField(
+      controller: _prenomController,
       keyboardType: TextInputType.text,
       onSaved: (newValue) => firstName = newValue,
       onChanged: (value) {
@@ -123,6 +153,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
+      controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
@@ -188,6 +219,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
+      controller: _passwordController,
       obscureText: true,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {

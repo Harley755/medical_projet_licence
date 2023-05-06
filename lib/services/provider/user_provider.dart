@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:medical_projet/models/user_model.dart';
-import 'package:medical_projet/ressources/auth_methods.dart';
+import 'package:medical_projet/ressources/auth/user_methods.dart';
 
 class UserProvider with ChangeNotifier {
   User? _user;
-  final AuthMethods _authMethods = AuthMethods();
+  final UserMethods _authMethods = UserMethods();
 
   User get getUser => _user!;
 

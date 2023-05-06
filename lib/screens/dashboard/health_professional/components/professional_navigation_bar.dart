@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:medical_projet/constants.dart';
+import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/utils/global_variables.dart';
 import 'package:medical_projet/size_config.dart';
 

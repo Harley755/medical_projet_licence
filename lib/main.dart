@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:medical_projet/constants.dart';
 import 'package:medical_projet/routes.dart';
 import 'package:medical_projet/screens/auth/auth_screen.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/sign_up_screen.dart';
@@ -11,6 +10,7 @@ import 'package:medical_projet/screens/dashboard/user/pages/medical/user_medical
 import 'package:medical_projet/screens/dashboard/user/pages/profile/user_profile_page.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
 import 'package:medical_projet/theme.dart';
+import 'package:medical_projet/utils/constants.dart';
 import 'firebase_options.dart';
 import 'screens/dashboard/administrator/pages/chat/components/admin_chat_page_body.dart';
 import 'screens/dashboard/administrator/pages/chat/components/details_conversation.dart';

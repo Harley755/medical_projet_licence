@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/default_button.dart';
-import 'package:medical_projet/constants.dart';
+import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/components/body.dart';
 import 'package:medical_projet/size_config.dart';
 

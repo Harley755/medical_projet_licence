@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/fonts.dart';
-import 'package:medical_projet/constants.dart';
+import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/auth/auth_screen.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_in/components/sign_in_form.dart';
 import 'package:medical_projet/size_config.dart';

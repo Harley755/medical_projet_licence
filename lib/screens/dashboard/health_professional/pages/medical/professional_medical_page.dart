@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medical_projet/constants.dart';
+import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/body.dart';
 import 'package:medical_projet/size_config.dart';
 

@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medical_projet/models/user_model.dart' as model;
+import 'package:medical_projet/ressources/auth/compte_methods.dart';
 
-class AuthMethods {
+class UserMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -23,7 +24,7 @@ class AuthMethods {
     required email,
     required password,
   }) async {
-    String response = "";
+    String response = "Une erreur s'est produite";
 
     try {
       // VERIFICATION DES CHAMPS
@@ -53,11 +54,23 @@ class AuthMethods {
             .collection('users')
             .doc(credential.user!.uid)
             .set(user.toJson());
+
+        // ON AJOUTE LE COMPTE
+        await CompteMethods().addCompte(
+          userId: credential.user!.uid,
+          email: email,
+          password: password,
+        );
+
         response = "success";
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
         response = "L'e-mail est mal formaté.";
+      } else if (e.code == 'invalid-email') {
+        response = "Votre adresse email n'est pas valide";
+      } else if (e.code == 'operation-not-allowed') {
+        response = "Votre compte n'a pas été activé";
       } else if (e.code == 'weak-password') {
         response = 'Votre mot de passe doit comporter au moins 8 caractères';
       }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medical_projet/constants.dart';
+import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/dashboard/administrator/pages/chat/components/admin_chat_page_body.dart';
 import 'package:medical_projet/size_config.dart';
 
