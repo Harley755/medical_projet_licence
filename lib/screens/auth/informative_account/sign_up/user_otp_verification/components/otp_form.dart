@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/components/form_error.dart';
+import 'package:medical_projet/ressources/auth/user_methods.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/user_otp_verification/components/otp_verification.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/size_config.dart';
+import 'package:medical_projet/utils/functions.dart';
 
 class OtpForm extends StatefulWidget {
   const OtpForm({super.key});
@@ -16,6 +18,35 @@ class OtpForm extends StatefulWidget {
 class _OtpFormState extends State<OtpForm> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _phoneNumberController;
+
+  bool _isLoading = false;
+
+  void addPhone() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String response = await UserMethods().addPhoneNumber(
+      phoneNumber: _phoneNumberController.text,
+    );
+    if (response != 'success') {
+      // ignore: use_build_context_synchronously
+      showSnackBar(response, context);
+    } else {
+      // ignore: use_build_context_synchronously
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => OtpVerification(
+            phoneNumber: _phoneNumberController,
+          ),
+        ),
+        (Route<dynamic> route) => false,
+      );
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   void initState() {
@@ -52,22 +83,17 @@ class _OtpFormState extends State<OtpForm> {
           // buildConformPassFormField(),
           FormError(errors: errors),
           SizedBox(height: SizeConfig.screenHeight * 0.05),
-          DefaultButton(
-            text: "Continuer",
-            press: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const OtpVerification(),
-                  ),
-                  (Route<dynamic> route) => false,
-                );
-              }
-            },
-          ),
+          _isLoading
+              ? const CircularProgressIndicator(color: kPrimaryColor)
+              : DefaultButton(
+                  text: "Continuer",
+                  press: () {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      addPhone();
+                    }
+                  },
+                ),
         ],
       ),
     );

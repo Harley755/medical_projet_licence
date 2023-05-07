@@ -4,15 +4,23 @@ import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/constants.dart';
 
 class OtpVerificationBody extends StatelessWidget {
-  const OtpVerificationBody({super.key});
+  final TextEditingController phone;
+  const OtpVerificationBody({super.key, required this.phone});
 
   @override
   Widget build(BuildContext context) {
+    String phoneNumber = phone.text;
+    String hiddenPhoneNumber = phoneNumber
+            .substring(0, phoneNumber.length - 4)
+            .replaceAll(RegExp(r'\d'), '*') +
+        phoneNumber.substring(phoneNumber.length - 4);
+
     return SizedBox(
       width: double.infinity,
       child: Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+        padding: EdgeInsets.symmetric(
+          horizontal: getProportionateScreenWidth(20),
+        ),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -21,7 +29,7 @@ class OtpVerificationBody extends StatelessWidget {
                 "OTP Verification",
                 style: headingStyle,
               ),
-              const Text("We sent your code to +1 898 860 ***"),
+              Text("We sent your code to $hiddenPhoneNumber"),
               buildTimer(),
               const OtpCodeForm(),
               SizedBox(height: SizeConfig.screenHeight * 0.1),

@@ -91,6 +91,29 @@ class UserMethods {
     return response;
   }
 
+  Future<String> addPhoneNumber({
+    required String phoneNumber,
+  }) async {
+    String response = "Une erreur s'est produite";
+
+    try {
+      // VERIFICATION DES CHAMPS
+      if (phoneNumber.isNotEmpty) {
+        User? currentUser = _auth.currentUser;
+        // ON ENREGISTRE LE NUMERO DE TELEPHONE
+        await _firestore
+            .collection('users')
+            .doc(currentUser!.uid)
+            .update({'telephone': phoneNumber});
+        response = "success";
+        print("phone Number Update successfully");
+      }
+    } catch (e) {
+      response = e.toString();
+    }
+    return response;
+  }
+
   Future<void> sendEmailVerification() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
