@@ -42,7 +42,17 @@ class _SignUpFormState extends State<SignUpForm> {
       password: _passwordController.text.trim(),
     );
     if (response != 'success') {
+      // ignore: use_build_context_synchronously
       showSnackBar(response, context);
+    } else {
+      // ignore: use_build_context_synchronously
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const UserSendEmailVerification(),
+        ),
+        (Route<dynamic> route) => false,
+      );
     }
     setState(() {
       _isLoading = false;
@@ -91,20 +101,13 @@ class _SignUpFormState extends State<SignUpForm> {
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(60)),
           _isLoading
-              ? const CircularProgressIndicator(color: Colors.white)
+              ? const CircularProgressIndicator(color: kPrimaryColor)
               : DefaultButton(
                   text: "S'inscrire",
                   press: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const UserSendEmailVerification(),
-                        ),
-                        (Route<dynamic> route) => false,
-                      );
+                      signUpUser();
                     }
                   },
                 ),

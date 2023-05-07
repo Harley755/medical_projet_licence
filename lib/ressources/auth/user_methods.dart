@@ -9,12 +9,18 @@ class UserMethods {
 
   // RECUPERER TOUTES LES INFORMATIONS DE L'UTILISATEUR CONNECTE
   Future<model.User> getUserDetails() async {
-    User currentUser = _auth.currentUser!;
+    User? currentUser = _auth.currentUser;
 
-    DocumentSnapshot snap =
-        await _firestore.collection('users').doc(currentUser.uid).get();
-
-    return model.User.fromSnap(snap);
+    if (currentUser != null) {
+      DocumentSnapshot snap =
+          await _firestore.collection('users').doc(currentUser.uid).get();
+      return model.User.fromSnap(snap);
+    } else {
+      throw FirebaseAuthException(
+        code: 'user-not-found',
+        message: 'No user found with this credentials.',
+      );
+    }
   }
 
   // INSCRIPTION COMPTE INFORMATIF
@@ -50,12 +56,14 @@ class UserMethods {
           role: 'user',
         );
         // ON AJOUTE L'UTILISATEUR A FIREBASE
+        print("user Ajouté");
         await _firestore
             .collection('users')
             .doc(credential.user!.uid)
             .set(user.toJson());
 
         // ON AJOUTE LE COMPTE
+        print("Compte Ajouté");
         await CompteMethods().addCompte(
           userId: credential.user!.uid,
           email: email,
@@ -65,17 +73,17 @@ class UserMethods {
         response = "success";
 
         // ENVOIE UN MAIL DE VERIFICATION D'EMAIL
-        sendEmailVerification();
+        // await sendEmailVerification();
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
-        response = "L'e-mail est mal formaté.";
-      } else if (e.code == 'invalid-email') {
-        response = "Votre adresse email n'est pas valide";
+        response = "L'e-mail est mal valide.";
+      } else if (e.code == 'email-already-in-use') {
+        response = "Votre adresse email a déja été utilisé.";
       } else if (e.code == 'operation-not-allowed') {
-        response = "Votre compte n'a pas été activé";
+        response = "Votre compte n'a pas été activé.";
       } else if (e.code == 'weak-password') {
-        response = 'Votre mot de passe doit comporter au moins 8 caractères';
+        response = 'Votre mot de passe doit comporter au moins 8 caractères.';
       }
     } catch (e) {
       response = e.toString();
@@ -87,6 +95,15 @@ class UserMethods {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       await user.sendEmailVerification();
+    } else {
+      print("user est null pour lui envoyer un mail de verification");
+    }
+  }
+
+  Future<void> logOut() async {
+    final user = FirebaseAuth.instance;
+    if (user != null) {
+      await user.signOut();
     } else {
       print("user est null pour lui envoyer un mail de verification");
     }

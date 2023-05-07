@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:medical_projet/ressources/auth/user_methods.dart';
 import 'package:medical_projet/routes.dart';
 import 'package:medical_projet/screens/auth/auth_screen.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/sign_up_screen.dart';
@@ -15,18 +16,34 @@ import 'package:medical_projet/utils/constants.dart';
 import 'firebase_options.dart';
 import 'screens/dashboard/administrator/pages/chat/components/admin_chat_page_body.dart';
 import 'screens/dashboard/administrator/pages/chat/components/details_conversation.dart';
+import 'package:provider/provider.dart';
+import 'package:medical_projet/services/provider/user_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => UserProvider(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -39,7 +56,7 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             if (snapshot.hasData) {
-              return const UserSendEmailVerification();
+              return AuthScreen();
             } else if (snapshot.hasError) {
               return Center(child: Text('${snapshot.hasError}'));
             }

@@ -8,7 +8,6 @@ import 'package:crypto/crypto.dart';
 import 'package:medical_projet/models/compte_model.dart' as model;
 
 class CompteMethods {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   String hashPassword({required passwordToHash}) {
