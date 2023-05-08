@@ -4,7 +4,7 @@ import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/components/form_error.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/user_send_verification_email.dart';
 import 'package:medical_projet/utils/constants.dart';
-import 'package:medical_projet/ressources/auth/user_methods.dart';
+import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/functions.dart';
 

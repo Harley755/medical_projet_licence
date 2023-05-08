@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:medical_projet/models/user_model.dart' as model;
-import 'package:medical_projet/ressources/auth/user_methods.dart';
+import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 
 class UserProvider with ChangeNotifier {
   model.User? _user;

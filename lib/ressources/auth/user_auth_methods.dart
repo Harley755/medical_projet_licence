@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/models/user_model.dart' as model;
-import 'package:medical_projet/ressources/auth/compte_methods.dart';
+import 'package:medical_projet/ressources/cloud/compte_methods.dart';
 
 class UserMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;

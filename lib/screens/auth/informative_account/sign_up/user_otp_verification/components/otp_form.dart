@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/components/form_error.dart';
-import 'package:medical_projet/ressources/auth/user_methods.dart';
+import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/user_otp_verification/components/otp_verification.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/size_config.dart';

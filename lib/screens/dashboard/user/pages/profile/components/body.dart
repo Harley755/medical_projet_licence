@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:medical_projet/ressources/auth/user_methods.dart';
+import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/components/profile_pic.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/components/sub_profile_menu.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_profile_identity.dart';
