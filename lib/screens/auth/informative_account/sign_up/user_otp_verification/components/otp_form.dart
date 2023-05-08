@@ -17,9 +17,32 @@ class OtpForm extends StatefulWidget {
 
 class _OtpFormState extends State<OtpForm> {
   final _formKey = GlobalKey<FormState>();
-  late final TextEditingController _phoneNumberController;
 
+  late final TextEditingController _phoneNumberController;
   bool _isLoading = false;
+
+  final TextEditingController _countryCode = TextEditingController();
+
+  @override
+  void initState() {
+    _phoneNumberController = TextEditingController();
+    _countryCode.text = "+229";
+
+    super.initState();
+  }
+
+  void code() async {
+    String response = await UserMethods().sendOtpCode(
+      phoneNumber: _countryCode.text + _phoneNumberController.text,
+      context: context,
+    );
+    if (response != 'success') {
+      // ignore: use_build_context_synchronously
+      showSnackBar(response, context);
+    } else {
+      print("Reussi code envoyé");
+    }
+  }
 
   void addPhone() async {
     setState(() {
@@ -46,12 +69,6 @@ class _OtpFormState extends State<OtpForm> {
     setState(() {
       _isLoading = false;
     });
-  }
-
-  @override
-  void initState() {
-    _phoneNumberController = TextEditingController();
-    super.initState();
   }
 
   String? phoneNumber;
@@ -91,6 +108,7 @@ class _OtpFormState extends State<OtpForm> {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       addPhone();
+                      code();
                     }
                   },
                 ),

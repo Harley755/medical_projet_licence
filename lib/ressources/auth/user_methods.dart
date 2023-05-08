@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:medical_projet/models/user_model.dart' as model;
 import 'package:medical_projet/ressources/auth/compte_methods.dart';
+import 'package:medical_projet/screens/auth/informative_account/sign_up/user_otp_verification/components/otp_verification.dart';
 
 class UserMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -107,6 +109,36 @@ class UserMethods {
             .update({'telephone': phoneNumber});
         response = "success";
         print("phone Number Update successfully");
+      }
+    } catch (e) {
+      response = e.toString();
+    }
+    return response;
+  }
+
+  Future<String> sendOtpCode({
+    required BuildContext context,
+    required String phoneNumber,
+  }) async {
+    String response = "Une erreur s'est produite";
+
+    try {
+      // VERIFICATION DES CHAMPS
+      if (phoneNumber.isNotEmpty) {
+        await FirebaseAuth.instance.verifyPhoneNumber(
+          phoneNumber: phoneNumber,
+          verificationCompleted: (PhoneAuthCredential credential) {},
+          verificationFailed: (FirebaseAuthException e) {
+            if (e.code == 'invalid-phone-number') {
+              response = "Le numéro de téléphone fournit n'est pas valide";
+            }
+          },
+          codeSent: (String verificationId, int? resendToken) {
+            Navigator.pushNamed(context, OtpVerification.routeName);
+          },
+          codeAutoRetrievalTimeout: (String verificationId) {},
+        );
+        response = "Un code vous a été envoyé par SMS";
       }
     } catch (e) {
       response = e.toString();

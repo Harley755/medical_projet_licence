@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:medical_projet/ressources/auth/user_methods.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/user_otp_verification/components/otp_code_form.dart';
+import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/constants.dart';
+import 'package:medical_projet/utils/functions.dart';
 
-class OtpVerificationBody extends StatelessWidget {
+class OtpVerificationBody extends StatefulWidget {
   final TextEditingController phone;
   const OtpVerificationBody({super.key, required this.phone});
 
   @override
+  State<OtpVerificationBody> createState() => _OtpVerificationBodyState();
+}
+
+class _OtpVerificationBodyState extends State<OtpVerificationBody> {
+  @override
   Widget build(BuildContext context) {
-    String phoneNumber = phone.text;
+    String phoneNumber = widget.phone.text.trim();
     String hiddenPhoneNumber = phoneNumber
             .substring(0, phoneNumber.length - 4)
             .replaceAll(RegExp(r'\d'), '*') +
