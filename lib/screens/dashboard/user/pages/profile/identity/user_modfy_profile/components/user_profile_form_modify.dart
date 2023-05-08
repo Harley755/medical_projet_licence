@@ -12,28 +12,36 @@ import 'package:medical_projet/size_config.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class UserProfileFormReadOnly extends StatefulWidget {
-  const UserProfileFormReadOnly({super.key});
+class UserProfileFormModify extends StatefulWidget {
+  final GlobalKey<FormState> formKey;
+
+  const UserProfileFormModify({super.key, required this.formKey});
 
   @override
-  State<UserProfileFormReadOnly> createState() =>
-      _UserProfileFormReadOnlyState();
+  State<UserProfileFormModify> createState() => _UserProfileFormModifyState();
 }
 
-class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
+class _UserProfileFormModifyState extends State<UserProfileFormModify> {
+  late final TextEditingController _nomController;
+  late final TextEditingController _prenomController;
+  late final TextEditingController _poidsController;
+  String sexeValue = "";
+  late final TextEditingController _emergenceNameController;
+  late final TextEditingController _emergenceContactController;
+
   User? currentUser = FirebaseAuth.instance.currentUser;
   late Future<model.User> _userDetailsFuture;
   model.User? _user;
 
-  String _nom = "";
-  String _prenom = "";
-  String _sexe = "";
-  String _poids = "";
-  String _nomContactUrgence = "";
-  String _telephoneContactUrgence = "";
+  Contact? _selectedContact;
 
   @override
   void initState() {
+    _nomController = TextEditingController();
+    _prenomController = TextEditingController();
+    _poidsController = TextEditingController();
+    _emergenceNameController = TextEditingController();
+    _emergenceContactController = TextEditingController();
     if (currentUser != null) {
       _userDetailsFuture = UserMethods().getUserIdentityDetails(
         currentUser!.uid,
@@ -42,17 +50,53 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
         setState(() {
           _user = user;
           print(_user!.nom);
-          _nom = _user!.nom;
-          print(TextEditingController(text: _nom).toString());
-          _prenom = _user!.prenom;
-          _sexe = _user!.sexe;
-          _poids = _user!.poids;
-          _nomContactUrgence = _user!.nomContactUrgence;
-          _telephoneContactUrgence = _user!.telephoneContactUrgence;
+          // _nomController.text = _user!.nom;
+          // _prenomController.text = _user!.prenom;
+          // _poidsController.text = _user!.poids;
         });
       });
     }
     super.initState();
+  }
+
+// SELECTIONNER UN CONTACT DANS LE REPERTOIRE
+  void _selectContact() async {
+    // Vérifier si la permission d'accéder aux contacts a été accordée
+    final PermissionStatus permissionStatus =
+        await Permission.contacts.request();
+
+    if (permissionStatus.isGranted) {
+      // Permission accordée
+      try {
+        _selectedContact = await ContactsService.openDeviceContactPicker();
+        setState(() {
+          _emergenceNameController.text = _selectedContact!.displayName!;
+          _emergenceContactController.text =
+              (_selectedContact!.phones!.isNotEmpty
+                  ? _selectedContact!.phones!.first.value
+                  : '')!;
+        });
+      } on FormOperationException catch (e) {
+        if (e.errorCode == FormOperationErrorCode.FORM_OPERATION_CANCELED) {
+          // L'utilisateur a annulé l'opération de sélection de contact.
+          // Renvoyer l'utilisateur à la page précédente de l'application.
+
+          // ignore: use_build_context_synchronously
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const UserProfileIdentity(),
+            ),
+            (Route<dynamic> route) => false,
+          );
+          return;
+        }
+        // Gérer d'autres erreurs de formulaire ici si nécessaire.
+      }
+    } else {
+      // Permission refusée
+      print('Permission refusée');
+    }
   }
 
 // FOR MEDICAL'S USER
@@ -73,6 +117,48 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   // }
 
   @override
+  void dispose() {
+    // Nettoyer les contrôleurs de texte lorsqu'ils ne sont plus nécessaires
+    _nomController.dispose();
+    _prenomController.dispose();
+    _poidsController.dispose();
+    _emergenceNameController.dispose();
+    _emergenceContactController.dispose();
+    _emergenceNameController.dispose();
+    _emergenceContactController.dispose();
+    super.dispose();
+  }
+
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? password;
+  String? sexe;
+  String? poids;
+  String? emergenceName;
+  String? emergenceContact;
+  String? emergenceRelationship;
+  String? conformPassword;
+  bool remember = false;
+  final List<String?> errors = [];
+
+  void addError({String? error}) {
+    if (!errors.contains(error)) {
+      setState(() {
+        errors.add(error);
+      });
+    }
+  }
+
+  void removeError({String? error}) {
+    if (errors.contains(error)) {
+      setState(() {
+        errors.remove(error);
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final List<String> genderItems = [
       'Masculin',
@@ -81,6 +167,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
 
     String? selectedValue;
     return Form(
+      key: widget.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -113,7 +200,27 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
             fontWeight: FontWeight.w600,
             color: Colors.black,
           ),
-
+          SizedBox(height: getProportionateScreenHeight(5)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: const Icon(
+                  Icons.contacts_outlined,
+                  color: kPrimaryColor,
+                ),
+                onPressed: () => _selectContact(),
+              ),
+              // FOR MEDICAL'S USERS
+              // IconButton(
+              //   icon: SvgPicture.asset(
+              //     "assets/icons/Call.svg",
+              //     color: kPrimaryColor,
+              //   ),
+              //   onPressed: () => _callSelectedContact(),
+              // ),
+            ],
+          ),
           SizedBox(height: getProportionateScreenHeight(15)),
           buildEmergenceNameField(),
           SizedBox(height: getProportionateScreenHeight(30)),
@@ -121,6 +228,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
           SizedBox(height: getProportionateScreenHeight(30)),
           buildEmergenceRelationshipField(),
           SizedBox(height: getProportionateScreenHeight(30)),
+          FormError(errors: errors),
         ],
       ),
     );
@@ -156,8 +264,20 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
                 ),
               ))
           .toList(),
+      validator: (value) {
+        if (value == null) {
+          addError(error: kSexeNullError);
+          return "";
+        }
+        setState(() {
+          sexeValue = value;
+        });
+        return null;
+      },
       onChanged: (value) {
-        if (value == null) {}
+        if (value == null) {
+          removeError(error: kSexeNullError);
+        }
       },
       onSaved: (value) {
         selectedValue = value.toString();
@@ -183,10 +303,21 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
 
   TextFormField buildLastNameFormField() {
     return TextFormField(
-      readOnly: true,
-      initialValue: _nom,
+      controller: _nomController,
       keyboardType: TextInputType.text,
-      onChanged: (value) {},
+      onSaved: (newValue) => lastName = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kLastNameNullError);
+        }
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kLastNameNullError);
+          return "";
+        }
+        return null;
+      },
       decoration: const InputDecoration(
         labelText: "Nom",
         hintText: "Entrer votre nom",
@@ -200,9 +331,21 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
 
   TextFormField buildPoidsFormField() {
     return TextFormField(
-      readOnly: true,
+      controller: _poidsController,
       keyboardType: TextInputType.number,
-      onChanged: (value) {},
+      onSaved: (newValue) => poids = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kPoidsNullError);
+        }
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kPoidsNullError);
+          return "";
+        }
+        return null;
+      },
       decoration: const InputDecoration(
         labelText: "Poids",
         hintText: "Entrer votre poids",
@@ -216,8 +359,21 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
 
   TextFormField buildEmergenceNameField() {
     return TextFormField(
-      readOnly: true,
-      onChanged: (value) {},
+      controller: _emergenceNameController,
+      keyboardType: TextInputType.text,
+      onSaved: (newValue) => emergenceName = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kEmergenceNameNullError);
+        }
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kEmergenceNameNullError);
+          return "";
+        }
+        return null;
+      },
       decoration: const InputDecoration(
         labelText: "Nom",
         hintText: "Entrer le nom",
@@ -231,9 +387,21 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
 
   TextFormField buildEmergenceContactField() {
     return TextFormField(
-      readOnly: true,
+      controller: _emergenceContactController,
       keyboardType: TextInputType.phone,
-      onChanged: (value) {},
+      onSaved: (newValue) => emergenceContact = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kEmergenceContactNullError);
+        }
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kEmergenceContactNullError);
+          return "";
+        }
+        return null;
+      },
       decoration: const InputDecoration(
         labelText: "Contact",
         hintText: "Entrer le contact",
@@ -247,9 +415,20 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
 
   TextFormField buildEmergenceRelationshipField() {
     return TextFormField(
-      readOnly: true,
       keyboardType: TextInputType.text,
-      onChanged: (value) {},
+      onSaved: (newValue) => emergenceRelationship = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kEmergenceRelationshipNullError);
+        }
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kEmergenceRelationshipNullError);
+          return "";
+        }
+        return null;
+      },
       decoration: const InputDecoration(
         labelText: "Relation",
         hintText: "Entrer le type de relation",
@@ -263,9 +442,21 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
 
   TextFormField buildFirstNameFormField() {
     return TextFormField(
-      readOnly: true,
+      controller: _prenomController,
       keyboardType: TextInputType.text,
-      onChanged: (value) {},
+      onSaved: (newValue) => firstName = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kFirstNameNullError);
+        }
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kFirstNameNullError);
+          return "";
+        }
+        return null;
+      },
       decoration: const InputDecoration(
         labelText: "Prénoms",
         hintText: "Entrer vos prénoms",
@@ -282,9 +473,21 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   //     keyboardType: TextInputType.emailAddress,
   //     onSaved: (newValue) => email = newValue,
   //     onChanged: (value) {
-  //       atorRegExp.hasMatch(value)) {
+  //       if (value.isNotEmpty) {
+  //         removeError(error: kEmailNullError);
+  //       } else if (emailValidatorRegExp.hasMatch(value)) {
   //         removeError(error: kInvalidEmailError);
   //       }
+  //     },
+  //     validator: (value) {
+  //       if (value!.isEmpty) {
+  //         addError(error: kEmailNullError);
+  //         return "";
+  //       } else if (!emailValidatorRegExp.hasMatch(value)) {
+  //         addError(error: kInvalidEmailError);
+  //         return "";
+  //       }
+  //       return null;
   //     },
   //     decoration: const InputDecoration(
   //       labelText: "Email",

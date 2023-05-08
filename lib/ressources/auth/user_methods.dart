@@ -3,19 +3,30 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/models/user_model.dart' as model;
 import 'package:medical_projet/ressources/auth/compte_methods.dart';
-import 'package:medical_projet/screens/auth/informative_account/sign_up/user_otp_verification/components/otp_verification.dart';
 
 class UserMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // RECUPERER TOUTES LES INFORMATIONS DE L'UTILISATEUR CONNECTE
-  Future<model.User> getUserDetails() async {
-    User? currentUser = _auth.currentUser;
+  // Future<model.User> getUserIdentityDetails(String userId) async {
+  //   User? currentUser = _auth.currentUser;
 
-    if (currentUser != null) {
+  //   if (currentUser != null) {
+  //     DocumentSnapshot snap =
+  //         await _firestore.collection('users').doc(currentUser.uid).get();
+  //     return model.User.fromSnap(snap);
+  //   } else {
+  //     throw FirebaseAuthException(
+  //       code: 'user-not-found',
+  //       message: 'No user found with this credentials.',
+  //     );
+  //   }
+  // }
+  Future<model.User> getUserIdentityDetails(String userId) async {
+    if (userId != "") {
       DocumentSnapshot snap =
-          await _firestore.collection('users').doc(currentUser.uid).get();
+          await _firestore.collection('users').doc(userId).get();
       return model.User.fromSnap(snap);
     } else {
       throw FirebaseAuthException(
@@ -50,11 +61,16 @@ class UserMethods {
           nom: nom,
           prenom: prenom,
           email: email,
+          poids: '',
+          sexe: '',
+          age: '',
           photoUrl: '',
           telephone: '',
           groupeSanguinId: '',
           nomContactUrgence: '',
           telephoneContactUrgence: '',
+          relation: '',
+          hasTwoAccount: false,
           role: 'user',
         );
         // ON AJOUTE L'UTILISATEUR A FIREBASE
@@ -125,7 +141,7 @@ class UserMethods {
     try {
       // VERIFICATION DES CHAMPS
       if (phoneNumber.isNotEmpty) {
-        await FirebaseAuth.instance.verifyPhoneNumber(
+        await _auth.verifyPhoneNumber(
           phoneNumber: phoneNumber,
           verificationCompleted: (PhoneAuthCredential credential) {},
           verificationFailed: (FirebaseAuthException e) {
@@ -134,11 +150,11 @@ class UserMethods {
             }
           },
           codeSent: (String verificationId, int? resendToken) {
-            Navigator.pushNamed(context, OtpVerification.routeName);
+            // Navigator.pushNamed(context, OtpVerification.routeName);
           },
           codeAutoRetrievalTimeout: (String verificationId) {},
         );
-        response = "Un code vous a été envoyé par SMS";
+        response = phoneNumber;
       }
     } catch (e) {
       response = e.toString();
@@ -189,5 +205,9 @@ class UserMethods {
       print('res' + res);
     }
     return res;
+  }
+
+  Future<void> signOut() async {
+    await _auth.signOut();
   }
 }

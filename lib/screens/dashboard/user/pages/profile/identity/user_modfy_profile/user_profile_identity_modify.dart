@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/default_button.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_modfy_profile/components/body.dart';
 import 'package:medical_projet/utils/constants.dart';
-import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/identity/components/body.dart';
 import 'package:medical_projet/size_config.dart';
 
-class ProfessionalProfileIdentity extends StatefulWidget {
-  static String routeName = "/professional/profile/identity";
+class UserProfileIdentityModify extends StatefulWidget {
+  static String routeName = "/user/profile-modify/identity";
 
-  const ProfessionalProfileIdentity({super.key});
+  const UserProfileIdentityModify({super.key});
 
   @override
-  State<ProfessionalProfileIdentity> createState() =>
-      _ProfessionalProfileIdentityState();
+  State<UserProfileIdentityModify> createState() =>
+      _UserProfileIdentityModifyState();
 }
 
-class _ProfessionalProfileIdentityState
-    extends State<ProfessionalProfileIdentity> {
+class _UserProfileIdentityModifyState extends State<UserProfileIdentityModify> {
   static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -23,12 +22,12 @@ class _ProfessionalProfileIdentityState
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Modifications",
+          "Modifier informations Identité",
           style: TextStyle(color: kSecondaryColor),
         ),
         centerTitle: true,
       ),
-      body: BodyProfessionalIdentityReadOnly(formKey: formKey),
+      body: BodyUserIdentity(formKey: formKey),
       bottomNavigationBar: SafeArea(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 17.0, vertical: 5.0),

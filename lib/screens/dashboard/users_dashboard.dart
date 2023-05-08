@@ -13,7 +13,7 @@ class UsersDashboardScreen extends StatefulWidget {
 }
 
 class _UsersDashboardScreenState extends State<UsersDashboardScreen> {
-  int isUser = 0;
+  int isUser = 1;
   int isHealthProfesssional = 0;
   int isAdmin = 3;
   @override

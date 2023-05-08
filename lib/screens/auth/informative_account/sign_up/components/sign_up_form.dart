@@ -16,12 +16,22 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
-  final TextEditingController _nomController = TextEditingController();
-  final TextEditingController _prenomController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  late final TextEditingController _nomController;
+  late final TextEditingController _prenomController;
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
 
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    _nomController = TextEditingController();
+    _prenomController = TextEditingController();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    super.initState();
+  }
+
   @override
   void dispose() {
     _nomController.dispose();

@@ -24,6 +24,7 @@ class _UserSendEmailVerificationState extends State<UserSendEmailVerification> {
   late bool canResendEmail = false;
   final User? user = FirebaseAuth.instance.currentUser;
   Timer? timer;
+  bool isDisposed = false;
 
   @override
   void initState() {
@@ -42,6 +43,7 @@ class _UserSendEmailVerificationState extends State<UserSendEmailVerification> {
   }
 
   Future emailVerification() async {
+    if (isDisposed) return;
     UserMethods().sendEmailVerification();
     setState(() => canResendEmail = false);
     await Future.delayed(const Duration(seconds: 5));
@@ -49,6 +51,7 @@ class _UserSendEmailVerificationState extends State<UserSendEmailVerification> {
   }
 
   Future checkEmailVerified() async {
+    if (isDisposed) return;
     await FirebaseAuth.instance.currentUser!.reload();
     setState(() {
       isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
@@ -58,6 +61,7 @@ class _UserSendEmailVerificationState extends State<UserSendEmailVerification> {
 
   @override
   void dispose() {
+    isDisposed = true;
     timer?.cancel;
     super.dispose();
   }
@@ -66,9 +70,8 @@ class _UserSendEmailVerificationState extends State<UserSendEmailVerification> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Verify email')),
       body: isEmailVerified
-          ? const UserOtp()
+          ? const UsersDashboardScreen()
           : SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(

@@ -14,16 +14,16 @@ class UserProvider with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<void> refreshUser() async {
-    try {
-      model.User user = await _authMethods.getUserDetails();
-      _user = user;
-      notifyListeners();
-    } catch (e) {
-      // Gérer l'erreur ici
-      print(
-          "Erreur lors de la récupération des détails de l'utilisateur : ${e.toString()}");
-      // Vous pouvez également afficher un message d'erreur à l'utilisateur ou effectuer d'autres actions en conséquence.
-    }
-  }
+  // Future<void> refreshUser() async {
+  //   try {
+  //     model.User user = await _authMethods.getUserIdentityDetails();
+  //     _user = user;
+  //     notifyListeners();
+  //   } catch (e) {
+  //     // Gérer l'erreur ici
+  //     print(
+  //         "Erreur lors de la récupération des détails de l'utilisateur : ${e.toString()}");
+  //     // Vous pouvez également afficher un message d'erreur à l'utilisateur ou effectuer d'autres actions en conséquence.
+  //   }
+  // }
 }

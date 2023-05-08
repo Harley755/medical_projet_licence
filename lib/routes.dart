@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:medical_projet/screens/auth/auth_screen.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_in/sign_in_screen.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/sign_up_screen.dart';
+import 'package:medical_projet/screens/auth/informative_account/sign_up/user_otp_verification/components/otp_verification.dart';
+import 'package:medical_projet/screens/auth/informative_account/sign_up/user_otp_verification/user_otp.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_in/sign_in_screen.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_up/sign_up_screen.dart';
 import 'package:medical_projet/screens/dashboard/administrator/pages/chat/admin_chat_page.dart';
@@ -10,6 +12,7 @@ import 'package:medical_projet/screens/dashboard/health_professional/pages/medic
 import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/identity/professional_profile_identity.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/professional_profile_page.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/medical/user_medical_page.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_modfy_profile/user_profile_identity_modify.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_profile_identity.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
 
@@ -23,6 +26,8 @@ final Map<String, WidgetBuilder> routes = {
   InfoSignUpScreen.routeName: (context) => const InfoSignUpScreen(),
   InfoSignInScreen.routeName: (context) => const InfoSignInScreen(),
 
+  OtpVerification.routeName: (context) => const OtpVerification(),
+
   // AUTH ACCOUNT SIGN_IN
   MedicalSignUpScreen.routeName: (context) => const MedicalSignUpScreen(),
   MedicalSignInScreen.routeName: (context) => const MedicalSignInScreen(),
@@ -33,6 +38,9 @@ final Map<String, WidgetBuilder> routes = {
   // USER PROFILE
   // identity form
   UserProfileIdentity.routeName: (context) => const UserProfileIdentity(),
+  // modify
+  UserProfileIdentityModify.routeName: (context) =>
+      const UserProfileIdentityModify(),
   // profile screen
   UserProfilePage.routeName: (context) => const UserProfilePage(),
   // medical page

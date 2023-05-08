@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/components/user_profile_form.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_modfy_profile/components/user_profile_form_modify.dart';
 import 'package:medical_projet/size_config.dart';
 
-class BodyUserIdentityReadOnly extends StatelessWidget {
-  const BodyUserIdentityReadOnly({super.key});
+class BodyUserIdentity extends StatelessWidget {
+  final GlobalKey<FormState> formKey;
+  const BodyUserIdentity({super.key, required this.formKey});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class BodyUserIdentityReadOnly extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: SizeConfig.screenHeight * 0.02), // 4%
-              const UserProfileFormReadOnly(),
+              UserProfileFormModify(formKey: formKey),
               SizedBox(height: SizeConfig.screenHeight * 0.02),
             ],
           ),

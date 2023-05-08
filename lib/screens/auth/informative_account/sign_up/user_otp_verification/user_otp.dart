@@ -4,7 +4,6 @@ import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/constants.dart';
 
 class UserOtp extends StatefulWidget {
-  static String routeName = "/otp";
 
   const UserOtp({super.key});
 

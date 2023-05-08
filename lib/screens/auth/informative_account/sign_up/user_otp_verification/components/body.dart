@@ -7,8 +7,9 @@ import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/utils/functions.dart';
 
 class OtpVerificationBody extends StatefulWidget {
-  final TextEditingController phone;
-  const OtpVerificationBody({super.key, required this.phone});
+  // final TextEditingController phone;
+  // const OtpVerificationBody({super.key, required this.phone});
+  const OtpVerificationBody({super.key});
 
   @override
   State<OtpVerificationBody> createState() => _OtpVerificationBodyState();
@@ -17,11 +18,11 @@ class OtpVerificationBody extends StatefulWidget {
 class _OtpVerificationBodyState extends State<OtpVerificationBody> {
   @override
   Widget build(BuildContext context) {
-    String phoneNumber = widget.phone.text.trim();
-    String hiddenPhoneNumber = phoneNumber
-            .substring(0, phoneNumber.length - 4)
-            .replaceAll(RegExp(r'\d'), '*') +
-        phoneNumber.substring(phoneNumber.length - 4);
+    // String phoneNumber = widget.phone.text.trim();
+    // String hiddenPhoneNumber = phoneNumber
+    //         .substring(0, phoneNumber.length - 4)
+    //         .replaceAll(RegExp(r'\d'), '*') +
+    //     phoneNumber.substring(phoneNumber.length - 4);
 
     return SizedBox(
       width: double.infinity,
@@ -37,7 +38,8 @@ class _OtpVerificationBodyState extends State<OtpVerificationBody> {
                 "OTP Verification",
                 style: headingStyle,
               ),
-              Text("We sent your code to $hiddenPhoneNumber"),
+              // Text("We sent your code to $hiddenPhoneNumber"),
+              const Text("We sent your code to"),
               buildTimer(),
               const OtpCodeForm(),
               SizedBox(height: SizeConfig.screenHeight * 0.1),

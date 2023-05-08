@@ -3,10 +3,11 @@ import 'package:medical_projet/screens/auth/informative_account/sign_up/user_otp
 import 'package:medical_projet/size_config.dart';
 
 class OtpVerification extends StatefulWidget {
-  final TextEditingController phoneNumber;
-  static String routeName = "/otp";
+  static String routeName = "/otp_verification";
 
-  const OtpVerification({super.key, required this.phoneNumber});
+  const OtpVerification({
+    super.key,
+  });
 
   @override
   State<OtpVerification> createState() => _OtpVerificationState();
@@ -20,7 +21,7 @@ class _OtpVerificationState extends State<OtpVerification> {
       appBar: AppBar(
         title: const Text("OTP Verification"),
       ),
-      body: OtpVerificationBody(phone: widget.phoneNumber),
+      body: OtpVerificationBody(),
     );
   }
 }

@@ -40,6 +40,10 @@ class _OtpFormState extends State<OtpForm> {
       // ignore: use_build_context_synchronously
       showSnackBar(response, context);
     } else {
+      showSnackBar(
+        "${_countryCode.text + _phoneNumberController.text}",
+        context,
+      );
       print("Reussi code envoyé");
     }
   }
@@ -54,18 +58,7 @@ class _OtpFormState extends State<OtpForm> {
     if (response != 'success') {
       // ignore: use_build_context_synchronously
       showSnackBar(response, context);
-    } else {
-      // ignore: use_build_context_synchronously
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => OtpVerification(
-            phoneNumber: _phoneNumberController,
-          ),
-        ),
-        (Route<dynamic> route) => false,
-      );
-    }
+    } else {}
     setState(() {
       _isLoading = false;
     });

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/default_button.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_modfy_profile/user_profile_identity_modify.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/components/body.dart';
 import 'package:medical_projet/size_config.dart';
@@ -14,19 +15,18 @@ class UserProfileIdentity extends StatefulWidget {
 }
 
 class _UserProfileIdentityState extends State<UserProfileIdentity> {
-  static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Modifications",
+          "Informations Identité",
           style: TextStyle(color: kSecondaryColor),
         ),
         centerTitle: true,
       ),
-      body: BodyUserIdentityReadOnly(formKey: formKey),
+      body: const BodyUserIdentityReadOnly(),
       bottomNavigationBar: SafeArea(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 17.0, vertical: 5.0),
@@ -43,13 +43,9 @@ class _UserProfileIdentityState extends State<UserProfileIdentity> {
             ],
           ),
           child: DefaultButton(
-            text: "Mettre à jour",
+            text: "Modifier",
             press: () {
-              if (formKey.currentState!.validate()) {
-                formKey.currentState!.save();
-                // if all are valid then go to success screen
-                // Navigator.pushNamed(context, CompleteProfileScreen.routeName);
-              }
+              Navigator.pushNamed(context, UserProfileIdentityModify.routeName);
             },
           ),
         ),
