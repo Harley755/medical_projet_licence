@@ -43,7 +43,7 @@ class _UserProfileIdentityState extends State<UserProfileIdentity> {
             ],
           ),
           child: DefaultButton(
-            text: "Modifier",
+            text: "Editer",
             press: () {
               Navigator.pushNamed(context, UserProfileIdentityModify.routeName);
             },

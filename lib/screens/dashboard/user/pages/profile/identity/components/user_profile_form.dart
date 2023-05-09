@@ -7,10 +7,8 @@ import 'package:medical_projet/components/form_error.dart';
 import 'package:medical_projet/models/user_model.dart' as model;
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/utils/constants.dart';
-import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_profile_identity.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class UserProfileFormReadOnly extends StatefulWidget {
   const UserProfileFormReadOnly({super.key});
@@ -28,9 +26,11 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   String _nom = "";
   String _prenom = "";
   String _sexe = "";
+  String _groupeSanguinId = "";
   String _poids = "";
   String _nomContactUrgence = "";
   String _telephoneContactUrgence = "";
+  String _relation = "";
 
   @override
   void initState() {
@@ -43,12 +43,13 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
           _user = user;
           print(_user!.nom);
           _nom = _user!.nom;
-          print(TextEditingController(text: _nom).toString());
           _prenom = _user!.prenom;
           _sexe = _user!.sexe;
           _poids = _user!.poids;
+          _groupeSanguinId = _user!.groupeSanguinId;
           _nomContactUrgence = _user!.nomContactUrgence;
           _telephoneContactUrgence = _user!.telephoneContactUrgence;
+          _relation = _user!.relation;
         });
       });
     }
@@ -79,6 +80,11 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       'Féminin',
     ];
 
+    final List<String> bloodItems = [
+      '0+',
+      'A-',
+    ];
+
     String? selectedValue;
     return Form(
       child: Column(
@@ -102,6 +108,8 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
           buildSexeFormField(genderItems, selectedValue),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPoidsFormField(),
+          SizedBox(height: getProportionateScreenHeight(30)),
+          buildGroupeSanguinFormField(bloodItems, selectedValue),
 
           SizedBox(height: SizeConfig.screenHeight * 0.03),
 
@@ -113,8 +121,8 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
             fontWeight: FontWeight.w600,
             color: Colors.black,
           ),
+          SizedBox(height: SizeConfig.screenHeight * 0.03),
 
-          SizedBox(height: getProportionateScreenHeight(15)),
           buildEmergenceNameField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildEmergenceContactField(),
@@ -122,6 +130,61 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
           buildEmergenceRelationshipField(),
           SizedBox(height: getProportionateScreenHeight(30)),
         ],
+      ),
+    );
+  }
+
+  DropdownButtonFormField2<String> buildGroupeSanguinFormField(
+      List<String> bloodItems, String? selectedValue) {
+    return DropdownButtonFormField2(
+      decoration: InputDecoration(
+        //Add isDense true and zero Padding.
+        //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
+        isDense: true,
+        contentPadding: EdgeInsets.zero,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        //Add more decoration as you want here
+        //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
+      ),
+      isExpanded: true,
+      hint: const Text(
+        'Selectioner votre sexe',
+        style: TextStyle(fontSize: 14),
+      ),
+      items: bloodItems
+          .map((item) => DropdownMenuItem<String>(
+                value: item,
+                child: Text(
+                  item,
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+              ))
+          .toList(),
+      onChanged: (value) {
+        if (value == null) {}
+      },
+      onSaved: (value) {
+        selectedValue = value.toString();
+      },
+      buttonStyleData: const ButtonStyleData(
+        height: 60,
+        padding: EdgeInsets.only(left: 20, right: 10),
+      ),
+      iconStyleData: const IconStyleData(
+        icon: Icon(
+          Icons.arrow_drop_down,
+          color: Colors.black45,
+        ),
+        iconSize: 30,
+      ),
+      dropdownStyleData: DropdownStyleData(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+        ),
       ),
     );
   }
@@ -184,7 +247,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   TextFormField buildLastNameFormField() {
     return TextFormField(
       readOnly: true,
-      initialValue: _nom,
+      controller: TextEditingController()..text = _nom,
       keyboardType: TextInputType.text,
       onChanged: (value) {},
       decoration: const InputDecoration(
@@ -201,6 +264,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   TextFormField buildPoidsFormField() {
     return TextFormField(
       readOnly: true,
+      controller: TextEditingController()..text = _poids,
       keyboardType: TextInputType.number,
       onChanged: (value) {},
       decoration: const InputDecoration(
@@ -217,6 +281,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   TextFormField buildEmergenceNameField() {
     return TextFormField(
       readOnly: true,
+      controller: TextEditingController()..text = _nomContactUrgence,
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Nom",
@@ -232,6 +297,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   TextFormField buildEmergenceContactField() {
     return TextFormField(
       readOnly: true,
+      controller: TextEditingController()..text = _telephoneContactUrgence,
       keyboardType: TextInputType.phone,
       onChanged: (value) {},
       decoration: const InputDecoration(
@@ -248,6 +314,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   TextFormField buildEmergenceRelationshipField() {
     return TextFormField(
       readOnly: true,
+      controller: TextEditingController()..text = _relation,
       keyboardType: TextInputType.text,
       onChanged: (value) {},
       decoration: const InputDecoration(

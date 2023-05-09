@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,9 @@ import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/components/form_error.dart';
 import 'package:medical_projet/models/user_model.dart' as model;
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
+import 'package:medical_projet/ressources/cloud/user_cloud_methods.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_modfy_profile/user_profile_identity_modify.dart';
 import 'package:medical_projet/utils/constants.dart';
-import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_profile_identity.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -24,38 +26,40 @@ class UserProfileFormModify extends StatefulWidget {
 class _UserProfileFormModifyState extends State<UserProfileFormModify> {
   late final TextEditingController _nomController;
   late final TextEditingController _prenomController;
-  late final TextEditingController _poidsController;
   String sexeValue = "";
+  late final TextEditingController _poidsController;
+  String bloodTypeValue = "";
+  late final TextEditingController _ageController;
   late final TextEditingController _emergenceNameController;
   late final TextEditingController _emergenceContactController;
+  late final TextEditingController _relation;
 
-  User? currentUser = FirebaseAuth.instance.currentUser;
-  late Future<model.User> _userDetailsFuture;
-  model.User? _user;
+  late Future<List<Map<String, dynamic>>> _bloodTypeListFuture;
 
   Contact? _selectedContact;
 
   @override
   void initState() {
+    _bloodTypeListFuture = UserCloudMethods()
+        .getAllDocumentsInCollection('blood_type')
+        .then((documents) {
+      List<Map<String, dynamic>> list = [];
+      for (DocumentSnapshot document in documents) {
+        Map<String, dynamic> documentData =
+            document.data() as Map<String, dynamic>;
+        list.add(documentData);
+      }
+      print(list);
+      return list;
+    });
+    _ageController = TextEditingController();
+    _relation = TextEditingController();
     _nomController = TextEditingController();
     _prenomController = TextEditingController();
     _poidsController = TextEditingController();
     _emergenceNameController = TextEditingController();
     _emergenceContactController = TextEditingController();
-    if (currentUser != null) {
-      _userDetailsFuture = UserMethods().getUserIdentityDetails(
-        currentUser!.uid,
-      );
-      _userDetailsFuture.then((user) {
-        setState(() {
-          _user = user;
-          print(_user!.nom);
-          // _nomController.text = _user!.nom;
-          // _prenomController.text = _user!.prenom;
-          // _poidsController.text = _user!.poids;
-        });
-      });
-    }
+
     super.initState();
   }
 
@@ -85,7 +89,7 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => const UserProfileIdentity(),
+              builder: (context) => const UserProfileIdentityModify(),
             ),
             (Route<dynamic> route) => false,
           );
@@ -122,8 +126,7 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
     _nomController.dispose();
     _prenomController.dispose();
     _poidsController.dispose();
-    _emergenceNameController.dispose();
-    _emergenceContactController.dispose();
+    _ageController.dispose();
     _emergenceNameController.dispose();
     _emergenceContactController.dispose();
     super.dispose();
@@ -135,6 +138,8 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
   String? password;
   String? sexe;
   String? poids;
+  String? age;
+  String? bloodType;
   String? emergenceName;
   String? emergenceContact;
   String? emergenceRelationship;
@@ -166,6 +171,7 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
     ];
 
     String? selectedValue;
+    String? selectedBloodValue;
     return Form(
       key: widget.formKey,
       child: Column(
@@ -189,6 +195,30 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
           buildSexeFormField(genderItems, selectedValue),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPoidsFormField(),
+          SizedBox(height: getProportionateScreenHeight(30)),
+          buildAgeFormField(),
+          SizedBox(height: getProportionateScreenHeight(30)),
+
+          FutureBuilder<List<Map<String, dynamic>>>(
+            future: _bloodTypeListFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator(); // Afficher une indication de chargement si la liste est en cours de récupération
+              } else if (snapshot.hasError) {
+                return Text('Une erreur est survenue : ${snapshot.error}');
+              } else if (!snapshot.hasData) {
+                return Text('Aucune donnée trouvée.');
+              } else {
+                print(snapshot.data);
+                // Afficher la liste de dropdowns une fois qu'elle est disponible
+                List<Map<String, dynamic>> bloodTypeList = snapshot.data!;
+                return buildBloodTypeFormField(
+                  bloodTypeList,
+                  bloodTypeValue,
+                );
+              }
+            },
+          ),
 
           SizedBox(height: SizeConfig.screenHeight * 0.03),
 
@@ -278,9 +308,89 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
         if (value == null) {
           removeError(error: kSexeNullError);
         }
+        sexeValue = value.toString();
       },
       onSaved: (value) {
-        selectedValue = value.toString();
+        sexeValue = value.toString();
+      },
+      buttonStyleData: const ButtonStyleData(
+        height: 60,
+        padding: EdgeInsets.only(left: 20, right: 10),
+      ),
+      iconStyleData: const IconStyleData(
+        icon: Icon(
+          Icons.arrow_drop_down,
+          color: Colors.black45,
+        ),
+        iconSize: 30,
+      ),
+      dropdownStyleData: DropdownStyleData(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
+    );
+  }
+
+  DropdownButtonFormField2<Map<String, dynamic>> buildBloodTypeFormField(
+      List<Map<String, dynamic>> bloodTypeItems, String? selectedBloodValue) {
+    return DropdownButtonFormField2(
+      decoration: InputDecoration(
+        //Add isDense true and zero Padding.
+        //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
+        isDense: true,
+        contentPadding: EdgeInsets.zero,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        //Add more decoration as you want here
+        //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
+      ),
+      isExpanded: true,
+      hint: const Text(
+        'Selectioner votre groupe sanguin',
+        style: TextStyle(fontSize: 14),
+      ),
+      items: bloodTypeItems
+          .map(
+            (item) => DropdownMenuItem<Map<String, dynamic>>(
+              key: Key(item["bloodTypeId"]
+                  .toString()), // Ajoutez une clé unique à chaque élément
+              value: item,
+              child: Text(
+                item["libelle"],
+                style: const TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          )
+          .toList(),
+      validator: (value) {
+        if (value == null) {
+          addError(error: kBloodTypeNullError);
+          return "";
+        }
+        setState(() {
+          bloodTypeValue = value["bloodTypeId"].toString();
+          print(bloodTypeValue);
+        });
+        return null;
+      },
+      onChanged: (value) {
+        if (value == null) {
+          removeError(error: kBloodTypeNullError);
+        }
+        if (value != null) {
+          bloodTypeValue = value["bloodTypeId"].toString();
+          print(bloodTypeValue);
+        }
+      },
+      onSaved: (value) {
+        if (value != null) {
+          bloodTypeValue = value["bloodTypeId"].toString();
+          print(bloodTypeValue);
+        }
       },
       buttonStyleData: const ButtonStyleData(
         height: 60,
@@ -357,6 +467,34 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
     );
   }
 
+  TextFormField buildAgeFormField() {
+    return TextFormField(
+      controller: _ageController,
+      keyboardType: TextInputType.number,
+      onSaved: (newValue) => age = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kAgeNullError);
+        }
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kAgeNullError);
+          return "";
+        }
+        return null;
+      },
+      decoration: const InputDecoration(
+        labelText: "Age",
+        hintText: "Entrer votre age",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/User.svg"),
+      ),
+    );
+  }
+
   TextFormField buildEmergenceNameField() {
     return TextFormField(
       controller: _emergenceNameController,
@@ -415,6 +553,7 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
 
   TextFormField buildEmergenceRelationshipField() {
     return TextFormField(
+      controller: _relation,
       keyboardType: TextInputType.text,
       onSaved: (newValue) => emergenceRelationship = newValue,
       onChanged: (value) {
