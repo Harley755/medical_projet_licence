@@ -13,7 +13,6 @@ class UserMedicalPage extends StatefulWidget {
 }
 
 class _UseMedicalPageState extends State<UserMedicalPage> {
-  static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -25,7 +24,7 @@ class _UseMedicalPageState extends State<UserMedicalPage> {
         ),
         centerTitle: true,
       ),
-      body: BodyUserMedical(formKey: formKey),
+      body: BodyUserMedical(),
     );
   }
 }

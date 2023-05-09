@@ -3,6 +3,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
+import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/components/form_error.dart';
 import 'package:medical_projet/models/user_model.dart' as model;
@@ -12,18 +13,18 @@ import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/use
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:medical_projet/utils/functions.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class UserProfileFormModify extends StatefulWidget {
-  final GlobalKey<FormState> formKey;
-
-  const UserProfileFormModify({super.key, required this.formKey});
+  const UserProfileFormModify({super.key});
 
   @override
   State<UserProfileFormModify> createState() => _UserProfileFormModifyState();
 }
 
 class _UserProfileFormModifyState extends State<UserProfileFormModify> {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late final TextEditingController _nomController;
   late final TextEditingController _prenomController;
   String sexeValue = "";
@@ -61,46 +62,6 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
     _emergenceContactController = TextEditingController();
 
     super.initState();
-  }
-
-// SELECTIONNER UN CONTACT DANS LE REPERTOIRE
-  void _selectContact() async {
-    // Vérifier si la permission d'accéder aux contacts a été accordée
-    final PermissionStatus permissionStatus =
-        await Permission.contacts.request();
-
-    if (permissionStatus.isGranted) {
-      // Permission accordée
-      try {
-        _selectedContact = await ContactsService.openDeviceContactPicker();
-        setState(() {
-          _emergenceNameController.text = _selectedContact!.displayName!;
-          _emergenceContactController.text =
-              (_selectedContact!.phones!.isNotEmpty
-                  ? _selectedContact!.phones!.first.value
-                  : '')!;
-        });
-      } on FormOperationException catch (e) {
-        if (e.errorCode == FormOperationErrorCode.FORM_OPERATION_CANCELED) {
-          // L'utilisateur a annulé l'opération de sélection de contact.
-          // Renvoyer l'utilisateur à la page précédente de l'application.
-
-          // ignore: use_build_context_synchronously
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const UserProfileIdentityModify(),
-            ),
-            (Route<dynamic> route) => false,
-          );
-          return;
-        }
-        // Gérer d'autres erreurs de formulaire ici si nécessaire.
-      }
-    } else {
-      // Permission refusée
-      print('Permission refusée');
-    }
   }
 
 // FOR MEDICAL'S USER
@@ -163,6 +124,71 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
     }
   }
 
+  // SELECTIONNER UN CONTACT DANS LE REPERTOIRE
+  void _selectContact(BuildContext context) async {
+    // Vérifier si la permission d'accéder aux contacts a été accordée
+    final PermissionStatus permissionStatus =
+        await Permission.contacts.request();
+
+    if (permissionStatus.isGranted) {
+      // Permission accordée
+      try {
+        _selectedContact = await ContactsService.openDeviceContactPicker();
+        setState(() {
+          _emergenceNameController.text = _selectedContact!.displayName!;
+          _emergenceContactController.text =
+              (_selectedContact!.phones!.isNotEmpty
+                  ? _selectedContact!.phones!.first.value
+                  : '')!;
+        });
+      } on FormOperationException catch (e) {
+        if (e.errorCode == FormOperationErrorCode.FORM_OPERATION_CANCELED) {
+          // L'utilisateur a annulé l'opération de sélection de contact.
+          // Renvoyer l'utilisateur à la page précédente de l'application.
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const UserProfileIdentityModify(),
+            ),
+          );
+          return;
+        }
+        // Gérer d'autres erreurs de formulaire ici si nécessaire.
+      }
+    } else {
+      // Permission refusée
+      print('Permission refusée');
+    }
+  }
+
+  bool _isLoading = false;
+  void updateInformations() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String response = await UserCloudMethods().updateUserIdentity(
+      nom: _nomController.text,
+      prenom: _prenomController.text,
+      sexe: sexeValue,
+      poids: _poidsController.text,
+      age: _ageController.text,
+      groupeSanguinId: bloodTypeValue,
+      nomContactUrgence: _emergenceNameController.text,
+      telephoneContactUrgence: _emergenceContactController.text,
+      relation: _relation.text,
+    );
+    if (response != 'success') {
+      // ignore: use_build_context_synchronously
+      showSnackBar(response, context);
+    } else {
+      // ignore: use_build_context_synchronously
+      showSnackBar("Information mise à jour avec succès", context);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<String> genderItems = [
@@ -171,9 +197,8 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
     ];
 
     String? selectedValue;
-    String? selectedBloodValue;
     return Form(
-      key: widget.formKey,
+      key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -203,7 +228,7 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
             future: _bloodTypeListFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator(); // Afficher une indication de chargement si la liste est en cours de récupération
+                return const CircularProgressIndicator(); // Afficher une indication de chargement si la liste est en cours de récupération
               } else if (snapshot.hasError) {
                 return Text('Une erreur est survenue : ${snapshot.error}');
               } else if (!snapshot.hasData) {
@@ -239,7 +264,7 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
                   Icons.contacts_outlined,
                   color: kPrimaryColor,
                 ),
-                onPressed: () => _selectContact(),
+                onPressed: () => _selectContact(context),
               ),
               // FOR MEDICAL'S USERS
               // IconButton(
@@ -259,6 +284,19 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
           buildEmergenceRelationshipField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           FormError(errors: errors),
+          SizedBox(height: SizeConfig.screenHeight * 0.06),
+          !_isLoading
+              ? DefaultButton(
+                  text: "Mettre à jour",
+                  press: () {
+                    if (formKey.currentState!.validate()) {
+                      formKey.currentState!.save();
+                      // if all are valid then go to success screen
+                      updateInformations();
+                    }
+                  },
+                )
+              : const CircularProgressIndicator(),
         ],
       ),
     );

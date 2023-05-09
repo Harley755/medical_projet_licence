@@ -8,15 +8,14 @@ import 'package:medical_projet/size_config.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
 class UserMedicalForm extends StatefulWidget {
-  final GlobalKey<FormState> formKey;
-
-  const UserMedicalForm({super.key, required this.formKey});
+  const UserMedicalForm({super.key});
 
   @override
   State<UserMedicalForm> createState() => _UserMedicalFormState();
 }
 
 class _UserMedicalFormState extends State<UserMedicalForm> {
+  static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   // Antécédents médicaux
   var _familyMedicalHistoryCondition = false;
   var _chronicIllnessesContition = false;
@@ -79,7 +78,7 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
 
     String? selectedValue;
     return Form(
-      key: widget.formKey,
+      key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -243,8 +242,8 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
           DefaultButton(
             text: "Mettre à jour",
             press: () {
-              if (widget.formKey.currentState!.validate()) {
-                widget.formKey.currentState!.save();
+              if (formKey.currentState!.validate()) {
+                formKey.currentState!.save();
                 // if all are valid then go to success screen
                 // Navigator.pushNamed(context, CompleteProfileScreen.routeName);
               }

@@ -15,7 +15,6 @@ class UserProfileIdentityModify extends StatefulWidget {
 }
 
 class _UserProfileIdentityModifyState extends State<UserProfileIdentityModify> {
-  static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -27,34 +26,7 @@ class _UserProfileIdentityModifyState extends State<UserProfileIdentityModify> {
         ),
         centerTitle: true,
       ),
-      body: BodyUserIdentity(formKey: formKey),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 17.0, vertical: 5.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.all(Radius.circular(100)),
-            boxShadow: [
-              BoxShadow(
-                spreadRadius: -10,
-                blurRadius: 60,
-                color: Colors.black.withOpacity(.4),
-                offset: const Offset(0, 25),
-              )
-            ],
-          ),
-          child: DefaultButton(
-            text: "Mettre à jour",
-            press: () {
-              if (formKey.currentState!.validate()) {
-                formKey.currentState!.save();
-                // if all are valid then go to success screen
-                // Navigator.pushNamed(context, CompleteProfileScreen.routeName);
-              }
-            },
-          ),
-        ),
-      ),
+      body: const BodyUserIdentity(),
     );
   }
 }

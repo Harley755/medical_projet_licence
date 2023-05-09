@@ -3,8 +3,7 @@ import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/use
 import 'package:medical_projet/size_config.dart';
 
 class BodyUserIdentity extends StatelessWidget {
-  final GlobalKey<FormState> formKey;
-  const BodyUserIdentity({super.key, required this.formKey});
+  const BodyUserIdentity({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,7 @@ class BodyUserIdentity extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: SizeConfig.screenHeight * 0.02), // 4%
-              UserProfileFormModify(formKey: formKey),
+              const UserProfileFormModify(),
               SizedBox(height: SizeConfig.screenHeight * 0.02),
             ],
           ),

@@ -3,8 +3,7 @@ import 'package:medical_projet/screens/dashboard/user/pages/medical/components/u
 import 'package:medical_projet/size_config.dart';
 
 class BodyUserMedical extends StatelessWidget {
-  final GlobalKey<FormState> formKey;
-  const BodyUserMedical({super.key, required this.formKey});
+  const BodyUserMedical({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class BodyUserMedical extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: SizeConfig.screenHeight * 0.02), // 4%
-              UserMedicalForm(formKey: formKey),
+              const UserMedicalForm(),
               SizedBox(height: SizeConfig.screenHeight * 0.02),
             ],
           ),
