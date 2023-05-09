@@ -11,6 +11,7 @@ import 'package:medical_projet/screens/dashboard/administrator/pages/chat/compon
 import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/professional_medical_page.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/identity/professional_profile_identity.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/professional_profile_page.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/medical/components/user_medical_modify/user_medical_modify.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/medical/user_medical_page.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_modfy_profile/user_profile_identity_modify.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_profile_identity.dart';
@@ -45,6 +46,7 @@ final Map<String, WidgetBuilder> routes = {
   UserProfilePage.routeName: (context) => const UserProfilePage(),
   // medical page
   UserMedicalPage.routeName: (context) => const UserMedicalPage(),
+  UserMedicalModify.routeName: (context) => const UserMedicalModify(),
 
   // MEDICAL PROFESSIONAL
   // identity form

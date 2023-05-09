@@ -24,7 +24,7 @@ class _UseMedicalPageState extends State<UserMedicalPage> {
         ),
         centerTitle: true,
       ),
-      body: BodyUserMedical(),
+      body: const BodyUserMedical(),
     );
   }
 }

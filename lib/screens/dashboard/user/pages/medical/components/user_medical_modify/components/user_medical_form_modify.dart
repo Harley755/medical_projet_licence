@@ -3,19 +3,18 @@ import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/components/form_error.dart';
-import 'package:medical_projet/screens/dashboard/user/pages/medical/components/user_medical_modify/user_medical_modify.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
-class UserMedicalForm extends StatefulWidget {
-  const UserMedicalForm({super.key});
+class UserMedicalModifyForm extends StatefulWidget {
+  const UserMedicalModifyForm({super.key});
 
   @override
-  State<UserMedicalForm> createState() => _UserMedicalFormState();
+  State<UserMedicalModifyForm> createState() => _UserMedicalModifyFormState();
 }
 
-class _UserMedicalFormState extends State<UserMedicalForm> {
+class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
   static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   // Antécédents médicaux
   var _familyMedicalHistoryCondition = false;
@@ -225,15 +224,12 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
 
           SizedBox(height: SizeConfig.screenHeight * 0.1),
           DefaultButton(
-            text: "Editer",
+            text: "Mettre à jour",
             press: () {
               if (formKey.currentState!.validate()) {
                 formKey.currentState!.save();
                 // if all are valid then go to success screen
-                Navigator.pushNamed(
-                  context,
-                  UserMedicalModify.routeName,
-                );
+                // Navigator.pushNamed(context, CompleteProfileScreen.routeName);
               }
             },
           ),
@@ -242,69 +238,69 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
     );
   }
 
-  // DropdownButtonFormField2<String> buildBloodTypeFormField(
-  //     List<String> bloodTypeItems, String? selectedValue) {
-  //   return DropdownButtonFormField2(
-  //     decoration: InputDecoration(
-  //       //Add isDense true and zero Padding.
-  //       //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
-  //       isDense: true,
-  //       contentPadding: EdgeInsets.zero,
-  //       border: OutlineInputBorder(
-  //         borderRadius: BorderRadius.circular(15),
-  //       ),
-  //       //Add more decoration as you want here
-  //       //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
-  //     ),
-  //     isExpanded: true,
-  //     hint: const Text(
-  //       'Selectioner votre groupe sanguin',
-  //       style: TextStyle(fontSize: 14),
-  //     ),
-  //     items: bloodTypeItems
-  //         .map((item) => DropdownMenuItem<String>(
-  //               value: item,
-  //               child: Text(
-  //                 item,
-  //                 style: const TextStyle(
-  //                   fontSize: 14,
-  //                 ),
-  //               ),
-  //             ))
-  //         .toList(),
-  //     validator: (value) {
-  //       if (value == null) {
-  //         addError(error: kBloodTypeNullError);
-  //         return "";
-  //       }
-  //       return null;
-  //     },
-  //     onChanged: (value) {
-  //       if (value == null) {
-  //         removeError(error: kBloodTypeNullError);
-  //       }
-  //     },
-  //     onSaved: (value) {
-  //       selectedValue = value.toString();
-  //     },
-  //     buttonStyleData: const ButtonStyleData(
-  //       height: 60,
-  //       padding: EdgeInsets.only(left: 20, right: 10),
-  //     ),
-  //     iconStyleData: const IconStyleData(
-  //       icon: Icon(
-  //         Icons.arrow_drop_down,
-  //         color: Colors.black45,
-  //       ),
-  //       iconSize: 30,
-  //     ),
-  //     dropdownStyleData: DropdownStyleData(
-  //       decoration: BoxDecoration(
-  //         borderRadius: BorderRadius.circular(15),
-  //       ),
-  //     ),
-  //   );
-  // }
+  DropdownButtonFormField2<String> buildBloodTypeFormField(
+      List<String> bloodTypeItems, String? selectedValue) {
+    return DropdownButtonFormField2(
+      decoration: InputDecoration(
+        //Add isDense true and zero Padding.
+        //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
+        isDense: true,
+        contentPadding: EdgeInsets.zero,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        //Add more decoration as you want here
+        //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
+      ),
+      isExpanded: true,
+      hint: const Text(
+        'Selectioner votre groupe sanguin',
+        style: TextStyle(fontSize: 14),
+      ),
+      items: bloodTypeItems
+          .map((item) => DropdownMenuItem<String>(
+                value: item,
+                child: Text(
+                  item,
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+              ))
+          .toList(),
+      validator: (value) {
+        if (value == null) {
+          addError(error: kBloodTypeNullError);
+          return "";
+        }
+        return null;
+      },
+      onChanged: (value) {
+        if (value == null) {
+          removeError(error: kBloodTypeNullError);
+        }
+      },
+      onSaved: (value) {
+        selectedValue = value.toString();
+      },
+      buttonStyleData: const ButtonStyleData(
+        height: 60,
+        padding: EdgeInsets.only(left: 20, right: 10),
+      ),
+      iconStyleData: const IconStyleData(
+        icon: Icon(
+          Icons.arrow_drop_down,
+          color: Colors.black45,
+        ),
+        iconSize: 30,
+      ),
+      dropdownStyleData: DropdownStyleData(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
+    );
+  }
 
   Widget buildFamilyMedicalHistoryContition() {
     return SwitchListTile(
