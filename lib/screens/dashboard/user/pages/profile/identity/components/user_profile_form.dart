@@ -28,6 +28,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   String _sexe = "";
   String _groupeSanguinId = "";
   String _poids = "";
+  String _age = "";
   String _nomContactUrgence = "";
   String _telephoneContactUrgence = "";
   String _relation = "";
@@ -41,11 +42,12 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       _userDetailsFuture.then((user) {
         setState(() {
           _user = user;
-          print(_user!.nom);
+          print(_user!.age);
           _nom = _user!.nom;
           _prenom = _user!.prenom;
           _sexe = _user!.sexe;
           _poids = _user!.poids;
+          _age = _user!.age;
           _groupeSanguinId = _user!.groupeSanguinId;
           _nomContactUrgence = _user!.nomContactUrgence;
           _telephoneContactUrgence = _user!.telephoneContactUrgence;
@@ -105,9 +107,11 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
           // SizedBox(height: getProportionateScreenHeight(30)),
           // buildEmailFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildSexeFormField(genderItems, selectedValue),
+          buildSexeFormField(genderItems, _sexe),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPoidsFormField(),
+          SizedBox(height: getProportionateScreenHeight(30)),
+          buildAgeFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildGroupeSanguinFormField(bloodItems, selectedValue),
 
@@ -150,7 +154,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       ),
       isExpanded: true,
       hint: const Text(
-        'Selectioner votre sexe',
+        'Selectioner votre groupe sanguin',
         style: TextStyle(fontSize: 14),
       ),
       items: bloodItems
@@ -204,6 +208,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
         //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
       ),
       isExpanded: true,
+      // value: selectedValue,
       hint: const Text(
         'Selectioner votre sexe',
         style: TextStyle(fontSize: 14),
@@ -278,6 +283,23 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
     );
   }
 
+  TextFormField buildAgeFormField() {
+    return TextFormField(
+      readOnly: true,
+      controller: TextEditingController()..text = "$_age ans",
+      keyboardType: TextInputType.number,
+      onChanged: (value) {},
+      decoration: const InputDecoration(
+        labelText: "Age",
+        hintText: "Entrer votre age",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/User.svg"),
+      ),
+    );
+  }
+
   TextFormField buildEmergenceNameField() {
     return TextFormField(
       readOnly: true,
@@ -331,6 +353,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   TextFormField buildFirstNameFormField() {
     return TextFormField(
       readOnly: true,
+      controller: TextEditingController()..text = _prenom,
       keyboardType: TextInputType.text,
       onChanged: (value) {},
       decoration: const InputDecoration(
