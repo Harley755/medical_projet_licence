@@ -49,5 +49,8 @@
 	<true/>
 	<key>NSContactsUsageDescription</key>  
 	<string>Cette application nécessite un accès aux contacts pour fonctionner correctement.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>L'application a besoin d'accéder à votre galerie de photos pour pouvoir charger votre photo de profil.</string>
+
 </dict>
 </plist>
