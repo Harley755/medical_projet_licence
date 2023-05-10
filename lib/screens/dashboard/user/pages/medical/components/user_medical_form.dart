@@ -41,7 +41,7 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
     _historyOfInfectiousDiseasesCondition = false;
     if (currentUser != null) {
       _userMedicalFuture =
-          UserMethods().getUserMedicalDetails(userId: currentUser!.uid);
+          UserAuthMethods().getUserMedicalDetails(userId: currentUser!.uid);
       _userMedicalFuture.then((antecedent) {
         setState(() {
           _antecedent = antecedent;

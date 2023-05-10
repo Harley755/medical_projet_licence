@@ -22,7 +22,7 @@ class AntecedentMethods {
           antecedentAllergique.isNotEmpty ||
           antecedentChirurgie.isNotEmpty ||
           antecedentMaladieInfecteuse.isNotEmpty) {
-        response = "Quelque chose s'est mal passé";
+        response = "Une erreur s'est produite";
 
         final options = SetOptions(merge: true);
         await _firestore.collection('antecedents').doc(currentUser!.uid).set({

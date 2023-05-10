@@ -44,7 +44,7 @@ class _UserSendEmailVerificationState extends State<UserSendEmailVerification> {
 
   Future emailVerification() async {
     if (isDisposed) return;
-    UserMethods().sendEmailVerification();
+    UserAuthMethods().sendEmailVerification();
     setState(() => canResendEmail = false);
     await Future.delayed(const Duration(seconds: 5));
     setState(() => canResendEmail = true);
@@ -97,14 +97,14 @@ class _UserSendEmailVerificationState extends State<UserSendEmailVerification> {
                     DefaultButton(
                       text: "Renvoyer l'email de vérification",
                       press: canResendEmail
-                          ? () => UserMethods().sendEmailVerification()
+                          ? () => UserAuthMethods().sendEmailVerification()
                           : () {},
                     ),
                     SizedBox(
                       height: getProportionateScreenHeight(17.0),
                     ),
                     TextButton(
-                      onPressed: () => UserMethods().logOut(),
+                      onPressed: () => UserAuthMethods().logOut(),
                       child: RobotoFont(
                         title: "Retour",
                         color: kPrimaryColor,

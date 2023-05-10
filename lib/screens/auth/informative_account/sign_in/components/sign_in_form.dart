@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/components/form_error.dart';
+import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_in/sign_in_screen.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
 import 'package:medical_projet/size_config.dart';
+import 'package:medical_projet/utils/functions.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({super.key});
@@ -16,6 +18,50 @@ class SignInForm extends StatefulWidget {
 
 class _SignInFormState extends State<SignInForm> {
   final _formKey = GlobalKey<FormState>();
+
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  bool _isLoading = false;
+  void userSignIn() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String response = await UserAuthMethods().loginUser(
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
+    if (response != 'success') {
+      // ignore: use_build_context_synchronously
+      showSnackBar(response, context);
+    } else {
+      // ignore: use_build_context_synchronously
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const UsersDashboardScreen(),
+        ),
+        (Route<dynamic> route) => false,
+      );
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   String? email;
   String? password;
@@ -51,28 +97,18 @@ class _SignInFormState extends State<SignInForm> {
           // buildConformPassFormField(),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(22)),
-          DefaultButton(
-            text: "Se connecter",
-            press: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                // if all are valid then go to success screen
-                // Navigator.pushNamed(context, DashboardScreen.routeName);
-                // Navigator.of(context).pushReplacement(
-                //   MaterialPageRoute(
-                //     builder: (context) => const UsersDashboardScreen(),
-                //   ),
-                // );
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const UsersDashboardScreen(),
-                  ),
-                  (Route<dynamic> route) => false,
-                );
-              }
-            },
-          ),
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : DefaultButton(
+                  text: "Se connecter",
+                  press: () {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      // if all are valid then go to success screen
+                      userSignIn();
+                    }
+                  },
+                ),
         ],
       ),
     );
@@ -80,6 +116,7 @@ class _SignInFormState extends State<SignInForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
+      controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
@@ -112,6 +149,7 @@ class _SignInFormState extends State<SignInForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
+      controller: _passwordController,
       obscureText: true,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {

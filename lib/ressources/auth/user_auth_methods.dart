@@ -5,7 +5,7 @@ import 'package:medical_projet/models/user_model.dart' as model;
 import 'package:medical_projet/models/antecedent_model.dart' as model;
 import 'package:medical_projet/ressources/cloud/compte_methods.dart';
 
-class UserMethods {
+class UserAuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -224,7 +224,7 @@ class UserMethods {
         );
         response = 'success';
       } else {
-        response = 'Please enter all the fields';
+        response = 'Champs vide';
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {

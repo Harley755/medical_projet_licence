@@ -45,7 +45,7 @@ class _SignUpFormState extends State<SignUpForm> {
     setState(() {
       _isLoading = true;
     });
-    String response = await UserMethods().signUpUser(
+    String response = await UserAuthMethods().signUpUser(
       nom: _nomController.text.trim(),
       prenom: _prenomController.text.trim(),
       email: _emailController.text.trim(),

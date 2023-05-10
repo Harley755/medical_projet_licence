@@ -4,7 +4,7 @@ import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 
 class UserProvider with ChangeNotifier {
   model.User? _user;
-  final UserMethods _authMethods = UserMethods();
+  final UserAuthMethods _authMethods = UserAuthMethods();
 
   model.User get getUser => _user!;
 

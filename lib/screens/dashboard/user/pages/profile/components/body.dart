@@ -104,7 +104,7 @@ class _BodyState extends State<Body> {
             text: "Déconnexion",
             icon: "assets/icons/Log out.svg",
             press: () async {
-              await UserMethods().signOut();
+              await UserAuthMethods().signOut();
             },
           ),
         ],

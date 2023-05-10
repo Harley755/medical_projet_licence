@@ -32,7 +32,7 @@ class _OtpFormState extends State<OtpForm> {
   }
 
   void code() async {
-    String response = await UserMethods().sendOtpCode(
+    String response = await UserAuthMethods().sendOtpCode(
       phoneNumber: _countryCode.text + _phoneNumberController.text,
       context: context,
     );
@@ -52,7 +52,7 @@ class _OtpFormState extends State<OtpForm> {
     setState(() {
       _isLoading = true;
     });
-    String response = await UserMethods().addPhoneNumber(
+    String response = await UserAuthMethods().addPhoneNumber(
       phoneNumber: _phoneNumberController.text,
     );
     if (response != 'success') {
