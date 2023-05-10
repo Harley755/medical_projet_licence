@@ -11,6 +11,7 @@ import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/utils/profil_picture_dialog.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/constants.dart';
+import 'package:medical_projet/utils/functions.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class ProfilePic extends StatefulWidget {
@@ -60,6 +61,28 @@ class _ProfilePicState extends State<ProfilePic> {
     setState(() {
       _profileImageUrl = imageUrl;
     });
+
+    showSnackBar("Photo de profile bien définie", context);
+  }
+
+  Future<void> _uploadCameraImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    if (pickedFile == null) return;
+
+    final user = FirebaseAuth.instance.currentUser;
+    final fileName = user!.uid;
+
+    final storageRef =
+        FirebaseStorage.instance.ref().child('avatars/$fileName');
+    final uploadTask = storageRef.putFile(File(pickedFile.path));
+    final snapshot = await uploadTask.whenComplete(() => null);
+    final imageUrl = await snapshot.ref.getDownloadURL();
+
+    setState(() {
+      _profileImageUrl = imageUrl;
+    });
+
+    showSnackBar("Photo de profile bien définie", context);
   }
 
   void _selectGallerieImage() async {
@@ -127,7 +150,9 @@ class _ProfilePicState extends State<ProfilePic> {
     final PermissionStatus permissionStatus = await Permission.camera.request();
     if (permissionStatus.isGranted) {
       // L'utilisateur a accepté l'autorisation, vous pouvez accéder à la galerie
-      try {} catch (e) {
+      try {
+        _uploadCameraImage();
+      } catch (e) {
         print(e);
       }
     } else if (permissionStatus == PermissionStatus.denied) {
@@ -137,7 +162,7 @@ class _ProfilePicState extends State<ProfilePic> {
         builder: (BuildContext context) => AlertDialog(
           title: const Text('Autorisation refusée'),
           content: const Text(
-              'Vous devez autoriser l\'accès à la galerie pour pouvoir prendre une photo.'),
+              'Vous devez autoriser l\'accès à l\'appareil photo pour pouvoir prendre une photo.'),
           actions: <Widget>[
             TextButton(
               child: const Text('Annuler'),
