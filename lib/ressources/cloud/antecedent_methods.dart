@@ -13,7 +13,7 @@ class AntecedentMethods {
     required antecedentChirurgie,
     required antecedentMaladieInfecteuse,
   }) async {
-    String response = "";
+    String response = "Aucun champs rempli";
     User? currentUser = _auth.currentUser;
     try {
       if (antecedentMedicaux.isNotEmpty ||
@@ -22,6 +22,7 @@ class AntecedentMethods {
           antecedentAllergique.isNotEmpty ||
           antecedentChirurgie.isNotEmpty ||
           antecedentMaladieInfecteuse.isNotEmpty) {
+        response = "Quelque chose s'est mal passé";
         final doc = await _firestore
             .collection('antecedents')
             .doc(currentUser!.uid)

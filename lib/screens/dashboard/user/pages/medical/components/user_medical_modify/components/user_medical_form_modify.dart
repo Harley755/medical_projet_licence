@@ -3,9 +3,11 @@ import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/components/form_error.dart';
+import 'package:medical_projet/ressources/cloud/antecedent_methods.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:medical_projet/utils/functions.dart';
 
 class UserMedicalModifyForm extends StatefulWidget {
   const UserMedicalModifyForm({super.key});
@@ -61,6 +63,60 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
         errors.remove(error);
       });
     }
+  }
+
+  late final TextEditingController _familyMedicalHistoryController;
+  late final TextEditingController _chronicIllnessesController;
+  late final TextEditingController _historySevereAllergicReactionController;
+  late final TextEditingController _historyOfTraumaController;
+  late final TextEditingController _historyOfRecentSurgeryController;
+  late final TextEditingController _historyOfInfectiousDiseasesController;
+
+  @override
+  void initState() {
+    _familyMedicalHistoryController = TextEditingController();
+    _chronicIllnessesController = TextEditingController();
+    _historySevereAllergicReactionController = TextEditingController();
+    _historyOfTraumaController = TextEditingController();
+    _historyOfRecentSurgeryController = TextEditingController();
+    _historyOfInfectiousDiseasesController = TextEditingController();
+    super.initState();
+  }
+
+  bool _isLoading = false;
+  void updateMedicalInformations() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String response = await AntecedentMethods().updateMedicalHistory(
+      antecedentMedicaux: _familyMedicalHistoryController.text,
+      maladiesChronique: _chronicIllnessesController.text,
+      antecedentTraumatique: _historyOfTraumaController.text,
+      antecedentAllergique: _historySevereAllergicReactionController.text,
+      antecedentChirurgie: _historyOfRecentSurgeryController.text,
+      antecedentMaladieInfecteuse: _historyOfInfectiousDiseasesController.text,
+    );
+    if (response != 'success') {
+      // ignore: use_build_context_synchronously
+      showSnackBar(response, context);
+    } else {
+      // ignore: use_build_context_synchronously
+      showSnackBar("Informations médicales mise à jour avec succès", context);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    _familyMedicalHistoryController.dispose();
+    _chronicIllnessesController.dispose();
+    _historySevereAllergicReactionController.dispose();
+    _historyOfTraumaController.dispose();
+    _historyOfRecentSurgeryController.dispose();
+    _historyOfInfectiousDiseasesController.dispose();
+    super.dispose();
   }
 
   @override
@@ -146,9 +202,7 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
               : const SizedBox(
                   height: 0.0,
                 ),
-          _historyOfTraumaCondition
-              ? buildHistoryOfTraumaConditionField()
-              : Container(),
+          _historyOfTraumaCondition ? buildHistoryOfTraumaField() : Container(),
 
           _historyOfTraumaCondition
               ? SizedBox(height: getProportionateScreenHeight(18))
@@ -223,16 +277,17 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
           FormError(errors: errors),
 
           SizedBox(height: SizeConfig.screenHeight * 0.1),
-          DefaultButton(
-            text: "Mettre à jour",
-            press: () {
-              if (formKey.currentState!.validate()) {
-                formKey.currentState!.save();
-                // if all are valid then go to success screen
-                // Navigator.pushNamed(context, CompleteProfileScreen.routeName);
-              }
-            },
-          ),
+          _isLoading
+              ? const CircularProgressIndicator(color: kPrimaryColor)
+              : DefaultButton(
+                  text: "Mettre à jour",
+                  press: () {
+                    if (formKey.currentState!.validate()) {
+                      formKey.currentState!.save();
+                      updateMedicalInformations();
+                    }
+                  },
+                ),
         ],
       ),
     );
@@ -324,6 +379,7 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
 
   TextFormField buildFamilyMedicalHistoryField() {
     return TextFormField(
+      controller: _familyMedicalHistoryController,
       keyboardType: TextInputType.text,
       onSaved: (newValue) => familyMedicalHistory = newValue,
       onChanged: (value) {
@@ -371,6 +427,7 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
 
   TextFormField buildChronicIllnessesField() {
     return TextFormField(
+      controller: _chronicIllnessesController,
       keyboardType: TextInputType.text,
       onSaved: (newValue) => chronicIllnesses = newValue,
       onChanged: (value) {
@@ -418,6 +475,7 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
 
   TextFormField buildHistorySevereAllergicReactionsField() {
     return TextFormField(
+      controller: _historySevereAllergicReactionController,
       keyboardType: TextInputType.text,
       onSaved: (newValue) => historySevereAllergicReactions = newValue,
       onChanged: (value) {
@@ -463,8 +521,9 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
     );
   }
 
-  TextFormField buildHistoryOfTraumaConditionField() {
+  TextFormField buildHistoryOfTraumaField() {
     return TextFormField(
+      controller: _historyOfTraumaController,
       keyboardType: TextInputType.text,
       onSaved: (newValue) => historyOfTrauma = newValue,
       onChanged: (value) {
@@ -512,6 +571,7 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
 
   TextFormField buildHistoryOfRecentSurgeryField() {
     return TextFormField(
+      controller: _historyOfRecentSurgeryController,
       keyboardType: TextInputType.text,
       onSaved: (newValue) => historyOfRecentSurgery = newValue,
       onChanged: (value) {
@@ -559,6 +619,7 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
 
   TextFormField buildHistoryOfInfectiousDiseasesField() {
     return TextFormField(
+      controller: _historyOfInfectiousDiseasesController,
       keyboardType: TextInputType.text,
       onSaved: (newValue) => historyOfInfectiousDiseases = newValue,
       onChanged: (value) {
