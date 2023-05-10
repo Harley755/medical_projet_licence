@@ -177,7 +177,7 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
 
                     // FAMILY MEDICAL HISTORY FIELD
                     _familyMedicalHistoryCondition
-                        ? buildFamilyMedicalHistoryField()
+                        ? buildFamilyMedicalHistoryField(_antecedentMedicaux)
                         : Container(),
 
                     _familyMedicalHistoryCondition
@@ -400,27 +400,15 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
       ),
       dense: true,
       value: _familyMedicalHistoryCondition,
-      onChanged: (value) {
-        setState(() {
-          _familyMedicalHistoryCondition = value;
-        });
-      },
+      onChanged: (value) {},
     );
   }
 
-  TextFormField buildFamilyMedicalHistoryField() {
+  TextFormField buildFamilyMedicalHistoryField(String antecedentMedicaux) {
     return TextFormField(
+      readOnly: true,
+      controller: TextEditingController()..text = antecedentMedicaux,
       keyboardType: TextInputType.text,
-      onSaved: (newValue) => familyMedicalHistory = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {}
-      },
-      validator: (value) {
-        if (value!.isEmpty && _familyMedicalHistoryCondition) {
-          return "";
-        }
-        return null;
-      },
       decoration: const InputDecoration(
         labelText: "Antécédents médicaux familiaux",
         hintText: "Entrer vos antécédents",
