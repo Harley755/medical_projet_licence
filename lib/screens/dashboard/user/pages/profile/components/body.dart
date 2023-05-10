@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
+import 'package:medical_projet/screens/auth/auth_screen.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/components/profile_pic.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/components/sub_profile_menu.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_profile_identity.dart';
+import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
 
 import 'profile_menu.dart';
 
@@ -105,6 +107,14 @@ class _BodyState extends State<Body> {
             icon: "assets/icons/Log out.svg",
             press: () async {
               await UserAuthMethods().signOut();
+              // ignore: use_build_context_synchronously
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AuthScreen(),
+                ),
+                (Route<dynamic> route) => false,
+              );
             },
           ),
         ],

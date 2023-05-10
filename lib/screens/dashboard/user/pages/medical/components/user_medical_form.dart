@@ -33,12 +33,6 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
 
   @override
   void initState() {
-    _familyMedicalHistoryCondition = false;
-    _chronicIllnessesContition = false;
-    _historySevereAllergicReactionsCondition = false;
-    _historyOfTraumaCondition = false;
-    _historyOfRecentSurgeryCondition = false;
-    _historyOfInfectiousDiseasesCondition = false;
     if (currentUser != null) {
       _userMedicalFuture =
           UserAuthMethods().getUserMedicalDetails(userId: currentUser!.uid);
@@ -75,6 +69,12 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
         });
       });
     }
+    _familyMedicalHistoryCondition = false;
+    _chronicIllnessesContition = false;
+    _historySevereAllergicReactionsCondition = false;
+    _historyOfTraumaCondition = false;
+    _historyOfRecentSurgeryCondition = false;
+    _historyOfInfectiousDiseasesCondition = false;
     super.initState();
   }
 
