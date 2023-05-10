@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/models/user_model.dart' as model;
+import 'package:medical_projet/models/antecedent_model.dart' as model;
 import 'package:medical_projet/ressources/cloud/compte_methods.dart';
 
 class UserMethods {
@@ -23,11 +24,25 @@ class UserMethods {
   //     );
   //   }
   // }
-  Future<model.User> getUserIdentityDetails(String userId) async {
+  Future<model.User> getUserIdentityDetails({required String userId}) async {
     if (userId != "") {
       DocumentSnapshot snap =
           await _firestore.collection('users').doc(userId).get();
       return model.User.fromSnap(snap);
+    } else {
+      throw FirebaseAuthException(
+        code: 'user-not-found',
+        message: 'No user found with this credentials.',
+      );
+    }
+  }
+
+  Future<model.Antecedent> getUserMedicalDetails(
+      {required String userId}) async {
+    if (userId != "") {
+      DocumentSnapshot snap =
+          await _firestore.collection('antecedents').doc(userId).get();
+      return model.Antecedent.fromSnap(snap);
     } else {
       throw FirebaseAuthException(
         code: 'user-not-found',
@@ -87,6 +102,21 @@ class UserMethods {
           email: email,
           password: password,
         );
+
+        // CREER SA TABLE ANTECEDENT
+        await _firestore
+            .collection('antecedents')
+            .doc(credential.user!.uid)
+            .set({
+          'antecedentId': credential.user!.uid,
+          'antecedentMedicaux': "",
+          'maladiesChronique': "",
+          'antecedentTraumatique': "",
+          'antecedentAllergique': "",
+          'antecedentChirurgie': "",
+          'antecedentMaladieInfecteuse': "",
+          'userId': credential.user!.uid,
+        });
 
         response = "success";
 
@@ -185,26 +215,32 @@ class UserMethods {
     required String email,
     required String password,
   }) async {
-    String res = "Une erreur s'est produite";
+    String response = "Une erreur s'est produite";
     try {
       if (email.isNotEmpty || password.isNotEmpty) {
         await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
-        res = 'success';
+        response = 'success';
       } else {
-        res = 'Please enter all the fields';
+        response = 'Please enter all the fields';
       }
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        res = 'There is no user record corresponding to this identifier';
+      if (e.code == 'invalid-email') {
+        response = "Votre adresse email n'est pas valide";
+      } else if (e.code == 'user-disabled') {
+        response = "Votre adresse email a été désactivé";
+      } else if (e.code == 'user-not-found') {
+        response = "Pas d'utilisateur correspondant à l'email donné";
+      } else if (e.code == 'wrong-password') {
+        response =
+            "Votre Mot de passe n'est pas valide pour l'adresse e-mail donnée";
       }
     } catch (err) {
-      res = err.toString();
-      print('res' + res);
+      response = err.toString();
     }
-    return res;
+    return response;
   }
 
   Future<void> signOut() async {

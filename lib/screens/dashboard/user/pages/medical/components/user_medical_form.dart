@@ -1,12 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/components/form_error.dart';
+import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/medical/components/user_medical_modify/user_medical_modify.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/size_config.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:medical_projet/models/user_model.dart' as model;
+import 'package:medical_projet/models/antecedent_model.dart' as model;
 
 class UserMedicalForm extends StatefulWidget {
   const UserMedicalForm({super.key});
@@ -17,20 +20,78 @@ class UserMedicalForm extends StatefulWidget {
 
 class _UserMedicalFormState extends State<UserMedicalForm> {
   static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  User? currentUser = FirebaseAuth.instance.currentUser;
+  late Future<model.Antecedent> _userMedicalFuture;
+  model.Antecedent? _antecedent;
+
+  String _antecedentMedicaux = "";
+  String _maladiesChronique = "";
+  String _antecedentTraumatique = "";
+  String _antecedentAllergique = "";
+  String _antecedentChirurgie = "";
+  String _antecedentMaladieInfecteuse = "";
+
+  @override
+  void initState() {
+    _familyMedicalHistoryCondition = false;
+    _chronicIllnessesContition = false;
+    _historySevereAllergicReactionsCondition = false;
+    _historyOfTraumaCondition = false;
+    _historyOfRecentSurgeryCondition = false;
+    _historyOfInfectiousDiseasesCondition = false;
+    if (currentUser != null) {
+      _userMedicalFuture =
+          UserMethods().getUserMedicalDetails(userId: currentUser!.uid);
+      _userMedicalFuture.then((antecedent) {
+        setState(() {
+          _antecedent = antecedent;
+          print(_antecedent!.antecedentMedicaux);
+          _antecedentMedicaux = _antecedent!.antecedentMedicaux;
+          _maladiesChronique = _antecedent!.maladiesChronique;
+          _antecedentTraumatique = _antecedent!.antecedentTraumatique;
+          _antecedentAllergique = _antecedent!.antecedentAllergique;
+          _antecedentChirurgie = _antecedent!.antecedentChirurgie;
+          _antecedentMaladieInfecteuse =
+              _antecedent!.antecedentMaladieInfecteuse;
+
+          _antecedentMedicaux.isNotEmpty
+              ? _familyMedicalHistoryCondition = true
+              : false;
+          _maladiesChronique.isNotEmpty
+              ? _chronicIllnessesContition = true
+              : false;
+          _antecedentTraumatique.isNotEmpty
+              ? _historyOfTraumaCondition = true
+              : false;
+          _antecedentAllergique.isNotEmpty
+              ? _historySevereAllergicReactionsCondition = true
+              : false;
+          _antecedentChirurgie.isNotEmpty
+              ? _historyOfRecentSurgeryCondition = true
+              : false;
+          _antecedentMaladieInfecteuse.isNotEmpty
+              ? _historyOfInfectiousDiseasesCondition = true
+              : false;
+        });
+      });
+    }
+    super.initState();
+  }
+
   // Antécédents médicaux
-  var _familyMedicalHistoryCondition = false;
-  var _chronicIllnessesContition = false;
-  var _historySevereAllergicReactionsCondition = false;
-  var _historyOfTraumaCondition = false;
-  var _historyOfRecentSurgeryCondition = false;
-  var _historyOfInfectiousDiseasesCondition = false;
+
+  late bool _familyMedicalHistoryCondition;
+  late bool _chronicIllnessesContition;
+  late bool _historySevereAllergicReactionsCondition;
+  late bool _historyOfTraumaCondition;
+  late bool _historyOfRecentSurgeryCondition;
+  late bool _historyOfInfectiousDiseasesCondition;
 
   // Médicaments
   var _listOfCurrentMedicationsCondition = false;
   // var _timingScheduleCurrentMedicationsCondition = false;
 
   // Antécédents médicaux
-  String? bloodType;
   String? familyMedicalHistory;
   String? chronicIllnesses;
   String? historySevereAllergicReactions;
@@ -46,199 +107,220 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
   String? knownFoodAllergies;
   String? knownSevereAllergic;
 
-  final List<String?> errors = [];
-
-  void addError({String? error}) {
-    if (!errors.contains(error)) {
-      setState(() {
-        errors.add(error);
-      });
-    }
-  }
-
-  void removeError({String? error}) {
-    if (errors.contains(error)) {
-      setState(() {
-        errors.remove(error);
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    String? selectedValue;
-    return Form(
-      key: formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // ANTECEDENTS MEDICAUX
-          RobotoFont(
-            title: 'Antécédents Médicaux',
-            size: getProportionateScreenWidth(22),
-            textAlign: TextAlign.center,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
+    return Column(
+      children: [
+        Form(
+          key: formKey,
+          child: FutureBuilder<model.Antecedent>(
+            future: _userMedicalFuture,
+            builder: (BuildContext context,
+                AsyncSnapshot<model.Antecedent> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(color: kPrimaryColor),
+                );
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else if (!snapshot.hasData) {
+                return const Text('No data found');
+              } else {
+                _antecedent = snapshot.data;
+                _antecedentMedicaux = _antecedent!.antecedentMedicaux;
+                _maladiesChronique = _antecedent!.maladiesChronique;
+                _antecedentTraumatique = _antecedent!.antecedentTraumatique;
+                _antecedentAllergique = _antecedent!.antecedentAllergique;
+                _antecedentChirurgie = _antecedent!.antecedentChirurgie;
+                _antecedentMaladieInfecteuse =
+                    _antecedent!.antecedentMaladieInfecteuse;
+                _antecedentMedicaux.isNotEmpty
+                    ? _familyMedicalHistoryCondition = true
+                    : false;
+                _maladiesChronique.isNotEmpty
+                    ? _chronicIllnessesContition = true
+                    : false;
+                _antecedentTraumatique.isNotEmpty
+                    ? _historyOfTraumaCondition = true
+                    : false;
+                _antecedentAllergique.isNotEmpty
+                    ? _historySevereAllergicReactionsCondition = true
+                    : false;
+                _antecedentChirurgie.isNotEmpty
+                    ? _historyOfRecentSurgeryCondition = true
+                    : false;
+                _antecedentMaladieInfecteuse.isNotEmpty
+                    ? _historyOfInfectiousDiseasesCondition = true
+                    : false;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // ANTECEDENTS MEDICAUX
+                    RobotoFont(
+                      title: 'Antécédents Médicaux',
+                      size: getProportionateScreenWidth(22),
+                      textAlign: TextAlign.center,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
 
-          SizedBox(height: SizeConfig.screenHeight * 0.03),
+                    SizedBox(height: SizeConfig.screenHeight * 0.03),
 
-          // CONDITION FOR FAMILY MEDICAL HISTORY
-          buildFamilyMedicalHistoryContition(),
+                    // CONDITION FOR FAMILY MEDICAL HISTORY
+                    buildFamilyMedicalHistoryContition(),
 
-          _familyMedicalHistoryCondition
-              ? SizedBox(height: getProportionateScreenHeight(15))
-              : const SizedBox(
-                  height: 0.0,
-                ),
+                    _familyMedicalHistoryCondition
+                        ? SizedBox(height: getProportionateScreenHeight(15))
+                        : const SizedBox(
+                            height: 0.0,
+                          ),
 
-          // FAMILY MEDICAL HISTORY FIELD
-          _familyMedicalHistoryCondition
-              ? buildFamilyMedicalHistoryField()
-              : Container(),
+                    // FAMILY MEDICAL HISTORY FIELD
+                    _familyMedicalHistoryCondition
+                        ? buildFamilyMedicalHistoryField()
+                        : Container(),
 
-          _familyMedicalHistoryCondition
-              ? SizedBox(height: getProportionateScreenHeight(16))
-              : const SizedBox(
-                  height: 0.0,
-                ),
+                    _familyMedicalHistoryCondition
+                        ? SizedBox(height: getProportionateScreenHeight(16))
+                        : const SizedBox(
+                            height: 0.0,
+                          ),
 
-          // CONDITION FOR CHRONIC ILLNESSES
-          buildChronicIllnessesContition(),
+                    // CONDITION FOR CHRONIC ILLNESSES
+                    buildChronicIllnessesContition(),
 
-          _chronicIllnessesContition
-              ? SizedBox(height: getProportionateScreenHeight(3))
-              : const SizedBox(
-                  height: 0.0,
-                ),
+                    _chronicIllnessesContition
+                        ? SizedBox(height: getProportionateScreenHeight(3))
+                        : const SizedBox(
+                            height: 0.0,
+                          ),
 
-          // CHRONIC ILLNESSES FIELD
-          _chronicIllnessesContition
-              ? buildChronicIllnessesField()
-              : Container(),
+                    // CHRONIC ILLNESSES FIELD
+                    _chronicIllnessesContition
+                        ? buildChronicIllnessesField()
+                        : Container(),
 
-          _chronicIllnessesContition
-              ? SizedBox(height: getProportionateScreenHeight(18))
-              : const SizedBox(
-                  height: 0.0,
-                ),
+                    _chronicIllnessesContition
+                        ? SizedBox(height: getProportionateScreenHeight(18))
+                        : const SizedBox(
+                            height: 0.0,
+                          ),
 
-          buildHistorySevereAllergicReactionsCondition(),
+                    buildHistorySevereAllergicReactionsCondition(),
 
-          _historySevereAllergicReactionsCondition
-              ? SizedBox(height: getProportionateScreenHeight(15))
-              : const SizedBox(
-                  height: 0.0,
-                ),
-          _historySevereAllergicReactionsCondition
-              ? buildHistorySevereAllergicReactionsField()
-              : Container(),
+                    _historySevereAllergicReactionsCondition
+                        ? SizedBox(height: getProportionateScreenHeight(15))
+                        : const SizedBox(
+                            height: 0.0,
+                          ),
+                    _historySevereAllergicReactionsCondition
+                        ? buildHistorySevereAllergicReactionsField()
+                        : Container(),
 
-          _historySevereAllergicReactionsCondition
-              ? SizedBox(height: getProportionateScreenHeight(18))
-              : SizedBox(
-                  height: getProportionateScreenHeight(15),
-                ),
+                    _historySevereAllergicReactionsCondition
+                        ? SizedBox(height: getProportionateScreenHeight(18))
+                        : SizedBox(
+                            height: getProportionateScreenHeight(15),
+                          ),
 
-          buildHistoryOfTraumaCondition(),
+                    buildHistoryOfTraumaCondition(),
 
-          _historyOfTraumaCondition
-              ? SizedBox(height: getProportionateScreenHeight(15))
-              : const SizedBox(
-                  height: 0.0,
-                ),
-          _historyOfTraumaCondition
-              ? buildHistoryOfTraumaConditionField()
-              : Container(),
+                    _historyOfTraumaCondition
+                        ? SizedBox(height: getProportionateScreenHeight(15))
+                        : const SizedBox(
+                            height: 0.0,
+                          ),
+                    _historyOfTraumaCondition
+                        ? buildHistoryOfTraumaConditionField()
+                        : Container(),
 
-          _historyOfTraumaCondition
-              ? SizedBox(height: getProportionateScreenHeight(18))
-              : SizedBox(
-                  height: getProportionateScreenHeight(18),
-                ),
+                    _historyOfTraumaCondition
+                        ? SizedBox(height: getProportionateScreenHeight(18))
+                        : SizedBox(
+                            height: getProportionateScreenHeight(18),
+                          ),
 
-          buildHistoryOfRecentSurgeryCondition(),
+                    buildHistoryOfRecentSurgeryCondition(),
 
-          _historyOfRecentSurgeryCondition
-              ? SizedBox(height: getProportionateScreenHeight(15))
-              : const SizedBox(
-                  height: 0.0,
-                ),
-          _historyOfRecentSurgeryCondition
-              ? buildHistoryOfRecentSurgeryField()
-              : Container(),
+                    _historyOfRecentSurgeryCondition
+                        ? SizedBox(height: getProportionateScreenHeight(15))
+                        : const SizedBox(
+                            height: 0.0,
+                          ),
+                    _historyOfRecentSurgeryCondition
+                        ? buildHistoryOfRecentSurgeryField()
+                        : Container(),
 
-          _historyOfRecentSurgeryCondition
-              ? SizedBox(height: getProportionateScreenHeight(18))
-              : SizedBox(
-                  height: getProportionateScreenHeight(18),
-                ),
+                    _historyOfRecentSurgeryCondition
+                        ? SizedBox(height: getProportionateScreenHeight(18))
+                        : SizedBox(
+                            height: getProportionateScreenHeight(18),
+                          ),
 
-          buildHistoryOfInfectiousDiseasesCondition(),
+                    buildHistoryOfInfectiousDiseasesCondition(),
 
-          _historyOfInfectiousDiseasesCondition
-              ? SizedBox(height: getProportionateScreenHeight(15))
-              : const SizedBox(
-                  height: 0.0,
-                ),
-          _historyOfInfectiousDiseasesCondition
-              ? buildHistoryOfInfectiousDiseasesField()
-              : Container(),
+                    _historyOfInfectiousDiseasesCondition
+                        ? SizedBox(height: getProportionateScreenHeight(15))
+                        : const SizedBox(
+                            height: 0.0,
+                          ),
+                    _historyOfInfectiousDiseasesCondition
+                        ? buildHistoryOfInfectiousDiseasesField()
+                        : Container(),
 
-          _historyOfInfectiousDiseasesCondition
-              ? SizedBox(height: getProportionateScreenHeight(18))
-              : SizedBox(
-                  height: getProportionateScreenHeight(18),
-                ),
+                    _historyOfInfectiousDiseasesCondition
+                        ? SizedBox(height: getProportionateScreenHeight(18))
+                        : SizedBox(
+                            height: getProportionateScreenHeight(18),
+                          ),
 
-          // SizedBox(height: SizeConfig.screenHeight * 0.03),
+                    // SizedBox(height: SizeConfig.screenHeight * 0.03),
 
-          // CONTACT EN CAS D'URGENCE
-          // RobotoFont(
-          //   title: 'Médicaments',
-          //   size: getProportionateScreenWidth(22),
-          //   textAlign: TextAlign.center,
-          //   fontWeight: FontWeight.w600,
-          //   color: Colors.black,
-          // ),
+                    // CONTACT EN CAS D'URGENCE
+                    // RobotoFont(
+                    //   title: 'Médicaments',
+                    //   size: getProportionateScreenWidth(22),
+                    //   textAlign: TextAlign.center,
+                    //   fontWeight: FontWeight.w600,
+                    //   color: Colors.black,
+                    // ),
 
-          // SizedBox(height: SizeConfig.screenHeight * 0.03),
+                    // SizedBox(height: SizeConfig.screenHeight * 0.03),
 
-          // buildListOfCurrentMedicationsCondition(),
+                    // buildListOfCurrentMedicationsCondition(),
 
-          // _listOfCurrentMedicationsCondition
-          //     ? SizedBox(height: getProportionateScreenHeight(15))
-          //     : const SizedBox(
-          //         height: 0.0,
-          //       ),
-          // _listOfCurrentMedicationsCondition
-          //     ? buildListOfCurrentMedicationsField()
-          //     : Container(),
+                    // _listOfCurrentMedicationsCondition
+                    //     ? SizedBox(height: getProportionateScreenHeight(15))
+                    //     : const SizedBox(
+                    //         height: 0.0,
+                    //       ),
+                    // _listOfCurrentMedicationsCondition
+                    //     ? buildListOfCurrentMedicationsField()
+                    //     : Container(),
 
-          // _listOfCurrentMedicationsCondition
-          //     ? SizedBox(height: getProportionateScreenHeight(18))
-          //     : SizedBox(
-          //         height: getProportionateScreenHeight(18),
-          //       ),
+                    // _listOfCurrentMedicationsCondition
+                    //     ? SizedBox(height: getProportionateScreenHeight(18))
+                    //     : SizedBox(
+                    //         height: getProportionateScreenHeight(18),
+                    //       ),
 
-          FormError(errors: errors),
-
-          SizedBox(height: SizeConfig.screenHeight * 0.1),
-          DefaultButton(
-            text: "Editer",
-            press: () {
-              if (formKey.currentState!.validate()) {
-                formKey.currentState!.save();
-                // if all are valid then go to success screen
-                Navigator.pushNamed(
-                  context,
-                  UserMedicalModify.routeName,
+                    SizedBox(height: SizeConfig.screenHeight * 0.02),
+                  ],
                 );
               }
             },
           ),
-        ],
-      ),
+        ),
+        DefaultButton(
+          text: "Editer",
+          press: () {
+            Navigator.pushNamed(
+              context,
+              UserMedicalModify.routeName,
+            );
+          },
+        ),
+      ],
     );
   }
 
@@ -274,14 +356,14 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
   //         .toList(),
   //     validator: (value) {
   //       if (value == null) {
-  //         addError(error: kBloodTypeNullError);
+  //
   //         return "";
   //       }
   //       return null;
   //     },
   //     onChanged: (value) {
   //       if (value == null) {
-  //         removeError(error: kBloodTypeNullError);
+  //
   //       }
   //     },
   //     onSaved: (value) {
@@ -331,13 +413,10 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
       keyboardType: TextInputType.text,
       onSaved: (newValue) => familyMedicalHistory = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kFamilyMedicalHistoryNullError);
-        }
+        if (value.isNotEmpty) {}
       },
       validator: (value) {
         if (value!.isEmpty && _familyMedicalHistoryCondition) {
-          addError(error: kFamilyMedicalHistoryNullError);
           return "";
         }
         return null;
@@ -378,13 +457,10 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
       keyboardType: TextInputType.text,
       onSaved: (newValue) => chronicIllnesses = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kChronicIllnessesNullError);
-        }
+        if (value.isNotEmpty) {}
       },
       validator: (value) {
         if (value!.isEmpty && _chronicIllnessesContition) {
-          addError(error: kChronicIllnessesNullError);
           return "";
         }
         return null;
@@ -425,13 +501,10 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
       keyboardType: TextInputType.text,
       onSaved: (newValue) => historySevereAllergicReactions = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kHistorySevereAllergicReactionsNullError);
-        }
+        if (value.isNotEmpty) {}
       },
       validator: (value) {
         if (value!.isEmpty && _chronicIllnessesContition) {
-          addError(error: kHistorySevereAllergicReactionsNullError);
           return "";
         }
         return null;
@@ -472,13 +545,10 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
       keyboardType: TextInputType.text,
       onSaved: (newValue) => historyOfTrauma = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kHistoryOfTraumaNullError);
-        }
+        if (value.isNotEmpty) {}
       },
       validator: (value) {
         if (value!.isEmpty && _historyOfTraumaCondition) {
-          addError(error: kHistoryOfTraumaNullError);
           return "";
         }
         return null;
@@ -519,13 +589,10 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
       keyboardType: TextInputType.text,
       onSaved: (newValue) => historyOfRecentSurgery = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kHistoryOfRecentSurgeryNullError);
-        }
+        if (value.isNotEmpty) {}
       },
       validator: (value) {
         if (value!.isEmpty && _historyOfRecentSurgeryCondition) {
-          addError(error: kHistoryOfRecentSurgeryNullError);
           return "";
         }
         return null;
@@ -566,13 +633,10 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
       keyboardType: TextInputType.text,
       onSaved: (newValue) => historyOfInfectiousDiseases = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kHistoryOfInfectiousDiseasesNullError);
-        }
+        if (value.isNotEmpty) {}
       },
       validator: (value) {
         if (value!.isEmpty && _historyOfInfectiousDiseasesCondition) {
-          addError(error: kHistoryOfInfectiousDiseasesNullError);
           return "";
         }
         return null;
@@ -613,13 +677,10 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
       keyboardType: TextInputType.text,
       onSaved: (newValue) => listOfCurrentMedications = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kListOfCurrentMedicationsNullError);
-        }
+        if (value.isNotEmpty) {}
       },
       validator: (value) {
         if (value!.isEmpty && _listOfCurrentMedicationsCondition) {
-          addError(error: kListOfCurrentMedicationsNullError);
           return "";
         }
         return null;
@@ -640,13 +701,10 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
       keyboardType: TextInputType.text,
       onSaved: (newValue) => listOfCurrentMedications = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kListOfCurrentMedicationsNullError);
-        }
+        if (value.isNotEmpty) {}
       },
       validator: (value) {
         if (value!.isEmpty && _listOfCurrentMedicationsCondition) {
-          addError(error: kListOfCurrentMedicationsNullError);
           print("clicked");
           return "";
         }

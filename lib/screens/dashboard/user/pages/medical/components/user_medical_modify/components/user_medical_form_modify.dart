@@ -31,7 +31,6 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
   // var _timingScheduleCurrentMedicationsCondition = false;
 
   // Antécédents médicaux
-  String? bloodType;
   String? familyMedicalHistory;
   String? chronicIllnesses;
   String? historySevereAllergicReactions;
@@ -121,7 +120,6 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
 
   @override
   Widget build(BuildContext context) {
-    String? selectedValue;
     return Form(
       key: formKey,
       child: Column(

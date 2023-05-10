@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medical_projet/models/user_model.dart' as model;
+import 'package:medical_projet/ressources/cloud/antecedent_methods.dart';
 
 class UserCloudMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -66,6 +67,7 @@ class UserCloudMethods {
           'telephoneContactUrgence': telephoneContactUrgence,
           'relation': relation,
         });
+
         response = "success";
       }
     } catch (e) {

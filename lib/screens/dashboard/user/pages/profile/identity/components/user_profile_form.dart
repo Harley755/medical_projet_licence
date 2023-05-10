@@ -37,7 +37,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   void initState() {
     if (currentUser != null) {
       _userDetailsFuture = UserMethods().getUserIdentityDetails(
-        currentUser!.uid,
+        userId: currentUser!.uid,
       );
       _userDetailsFuture.then((user) {
         setState(() {

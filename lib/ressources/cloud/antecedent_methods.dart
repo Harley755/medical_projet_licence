@@ -23,38 +23,23 @@ class AntecedentMethods {
           antecedentChirurgie.isNotEmpty ||
           antecedentMaladieInfecteuse.isNotEmpty) {
         response = "Quelque chose s'est mal passé";
-        final doc = await _firestore
-            .collection('antecedents')
-            .doc(currentUser!.uid)
-            .get();
-        if (doc.exists) {
-          await _firestore
-              .collection('antecedents')
-              .doc(currentUser.uid)
-              .update({
-            'antecedentMedicaux': antecedentMedicaux,
-            'maladiesChronique': maladiesChronique,
-            'antecedentTraumatique': antecedentTraumatique,
-            'antecedentAllergique': antecedentAllergique,
-            'antecedentChirurgie': antecedentChirurgie,
-            'antecedentMaladieInfecteuse': antecedentMaladieInfecteuse,
-          });
-        } else {
-          await _firestore.collection('antecedents').doc(currentUser.uid).set({
-            'antecedentId': currentUser.uid,
-            'antecedentMedicaux': antecedentMedicaux,
-            'maladiesChronique': maladiesChronique,
-            'antecedentTraumatique': antecedentTraumatique,
-            'antecedentAllergique': antecedentAllergique,
-            'antecedentChirurgie': antecedentChirurgie,
-            'antecedentMaladieInfecteuse': antecedentMaladieInfecteuse,
-            'userId': currentUser.uid,
-          });
-        }
+
+        final options = SetOptions(merge: true);
+        await _firestore.collection('antecedents').doc(currentUser!.uid).set({
+          'antecedentId': currentUser.uid,
+          'antecedentMedicaux': antecedentMedicaux,
+          'maladiesChronique': maladiesChronique,
+          'antecedentTraumatique': antecedentTraumatique,
+          'antecedentAllergique': antecedentAllergique,
+          'antecedentChirurgie': antecedentChirurgie,
+          'antecedentMaladieInfecteuse': antecedentMaladieInfecteuse,
+          'userId': currentUser.uid,
+        }, options);
+
         response = "success";
       }
     } catch (e) {
-      print(e);
+      response = e.toString();
     }
     return response;
   }
