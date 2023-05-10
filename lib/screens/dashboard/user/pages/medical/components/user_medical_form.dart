@@ -118,19 +118,24 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
             builder: (BuildContext context,
                 AsyncSnapshot<model.Antecedent> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(color: kPrimaryColor),
+                return Column(
+                  children: [
+                    const Center(
+                      child: CircularProgressIndicator(color: kPrimaryColor),
+                    ),
+                    SizedBox(height: SizeConfig.screenHeight * 0.03),
+                  ],
                 );
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else if (!snapshot.hasData) {
-                return const Text('No data found');
+                return const Text('Pas de données trouvées');
               } else {
                 _antecedent = snapshot.data;
                 _antecedentMedicaux = _antecedent!.antecedentMedicaux;
                 _maladiesChronique = _antecedent!.maladiesChronique;
-                _antecedentTraumatique = _antecedent!.antecedentTraumatique;
                 _antecedentAllergique = _antecedent!.antecedentAllergique;
+                _antecedentTraumatique = _antecedent!.antecedentTraumatique;
                 _antecedentChirurgie = _antecedent!.antecedentChirurgie;
                 _antecedentMaladieInfecteuse =
                     _antecedent!.antecedentMaladieInfecteuse;
@@ -197,7 +202,7 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
 
                     // CHRONIC ILLNESSES FIELD
                     _chronicIllnessesContition
-                        ? buildChronicIllnessesField()
+                        ? buildChronicIllnessesField(_maladiesChronique)
                         : Container(),
 
                     _chronicIllnessesContition
@@ -214,7 +219,9 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
                             height: 0.0,
                           ),
                     _historySevereAllergicReactionsCondition
-                        ? buildHistorySevereAllergicReactionsField()
+                        ? buildHistorySevereAllergicReactionsField(
+                            _antecedentAllergique,
+                          )
                         : Container(),
 
                     _historySevereAllergicReactionsCondition
@@ -231,7 +238,9 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
                             height: 0.0,
                           ),
                     _historyOfTraumaCondition
-                        ? buildHistoryOfTraumaConditionField()
+                        ? buildHistoryOfTraumaConditionField(
+                            _antecedentTraumatique,
+                          )
                         : Container(),
 
                     _historyOfTraumaCondition
@@ -248,7 +257,7 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
                             height: 0.0,
                           ),
                     _historyOfRecentSurgeryCondition
-                        ? buildHistoryOfRecentSurgeryField()
+                        ? buildHistoryOfRecentSurgeryField(_antecedentChirurgie)
                         : Container(),
 
                     _historyOfRecentSurgeryCondition
@@ -265,7 +274,9 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
                             height: 0.0,
                           ),
                     _historyOfInfectiousDiseasesCondition
-                        ? buildHistoryOfInfectiousDiseasesField()
+                        ? buildHistoryOfInfectiousDiseasesField(
+                            _antecedentMaladieInfecteuse,
+                          )
                         : Container(),
 
                     _historyOfInfectiousDiseasesCondition
@@ -407,8 +418,9 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
   TextFormField buildFamilyMedicalHistoryField(String antecedentMedicaux) {
     return TextFormField(
       readOnly: true,
+      maxLines: null,
       controller: TextEditingController()..text = antecedentMedicaux,
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.multiline,
       decoration: const InputDecoration(
         labelText: "Antécédents médicaux familiaux",
         hintText: "Entrer vos antécédents",
@@ -432,27 +444,16 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
       ),
       dense: true,
       value: _chronicIllnessesContition,
-      onChanged: (value) {
-        setState(() {
-          _chronicIllnessesContition = value;
-        });
-      },
+      onChanged: (value) {},
     );
   }
 
-  TextFormField buildChronicIllnessesField() {
+  TextFormField buildChronicIllnessesField(String maladiesChronique) {
     return TextFormField(
-      keyboardType: TextInputType.text,
-      onSaved: (newValue) => chronicIllnesses = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {}
-      },
-      validator: (value) {
-        if (value!.isEmpty && _chronicIllnessesContition) {
-          return "";
-        }
-        return null;
-      },
+      readOnly: true,
+      maxLines: null,
+      controller: TextEditingController()..text = maladiesChronique,
+      keyboardType: TextInputType.multiline,
       decoration: const InputDecoration(
         labelText: "Maladies chroniques",
         hintText: "Entrer vos maladies chroniques",
@@ -476,27 +477,19 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
       ),
       dense: true,
       value: _historySevereAllergicReactionsCondition,
-      onChanged: (value) {
-        setState(() {
-          _historySevereAllergicReactionsCondition = value;
-        });
-      },
+      onChanged: (value) {},
     );
   }
 
-  TextFormField buildHistorySevereAllergicReactionsField() {
+  TextFormField buildHistorySevereAllergicReactionsField(
+    String antecedentAllergique,
+  ) {
     return TextFormField(
-      keyboardType: TextInputType.text,
+      readOnly: true,
+      maxLines: null,
+      controller: TextEditingController()..text = antecedentAllergique,
+      keyboardType: TextInputType.multiline,
       onSaved: (newValue) => historySevereAllergicReactions = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {}
-      },
-      validator: (value) {
-        if (value!.isEmpty && _chronicIllnessesContition) {
-          return "";
-        }
-        return null;
-      },
       decoration: const InputDecoration(
         labelText: "Antécédents de réactions allergiques graves",
         hintText: "Entrer vos antécédents",
@@ -520,27 +513,18 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
       ),
       dense: true,
       value: _historyOfTraumaCondition,
-      onChanged: (value) {
-        setState(() {
-          _historyOfTraumaCondition = value;
-        });
-      },
+      onChanged: (value) {},
     );
   }
 
-  TextFormField buildHistoryOfTraumaConditionField() {
+  TextFormField buildHistoryOfTraumaConditionField(
+    String antecedentTraumatique,
+  ) {
     return TextFormField(
-      keyboardType: TextInputType.text,
-      onSaved: (newValue) => historyOfTrauma = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {}
-      },
-      validator: (value) {
-        if (value!.isEmpty && _historyOfTraumaCondition) {
-          return "";
-        }
-        return null;
-      },
+      readOnly: true,
+      maxLines: null,
+      controller: TextEditingController()..text = antecedentTraumatique,
+      keyboardType: TextInputType.multiline,
       decoration: const InputDecoration(
         labelText: "Antécédents de traumatismes",
         hintText: "Entrer vos antécédents",
@@ -564,27 +548,17 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
       ),
       dense: true,
       value: _historyOfRecentSurgeryCondition,
-      onChanged: (value) {
-        setState(() {
-          _historyOfRecentSurgeryCondition = value;
-        });
-      },
+      onChanged: (value) {},
     );
   }
 
-  TextFormField buildHistoryOfRecentSurgeryField() {
+  TextFormField buildHistoryOfRecentSurgeryField(String antecedentChirurgie) {
     return TextFormField(
-      keyboardType: TextInputType.text,
+      readOnly: true,
+      maxLines: null,
+      controller: TextEditingController()..text = _antecedentChirurgie,
+      keyboardType: TextInputType.multiline,
       onSaved: (newValue) => historyOfRecentSurgery = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {}
-      },
-      validator: (value) {
-        if (value!.isEmpty && _historyOfRecentSurgeryCondition) {
-          return "";
-        }
-        return null;
-      },
       decoration: const InputDecoration(
         labelText: "Antécédents de chirurgie récente",
         hintText: "Entrer vos antécédents",
@@ -616,9 +590,14 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
     );
   }
 
-  TextFormField buildHistoryOfInfectiousDiseasesField() {
+  TextFormField buildHistoryOfInfectiousDiseasesField(
+    String antecedentMaladieInfecteuse,
+  ) {
     return TextFormField(
-      keyboardType: TextInputType.text,
+      readOnly: true,
+      controller: TextEditingController()..text = antecedentMaladieInfecteuse,
+      maxLines: null,
+      keyboardType: TextInputType.multiline,
       onSaved: (newValue) => historyOfInfectiousDiseases = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {}
@@ -662,7 +641,7 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
 
   TextFormField buildListOfCurrentMedicationsField() {
     return TextFormField(
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.multiline,
       onSaved: (newValue) => listOfCurrentMedications = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {}
@@ -686,7 +665,7 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
 
   TextFormField buildDosageCurrentMedicationsField() {
     return TextFormField(
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.multiline,
       onSaved: (newValue) => listOfCurrentMedications = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {}
