@@ -94,7 +94,9 @@ class _OtpFormState extends State<OtpForm> {
           FormError(errors: errors),
           SizedBox(height: SizeConfig.screenHeight * 0.05),
           _isLoading
-              ? const CircularProgressIndicator(color: kPrimaryColor)
+              ? const Center(
+                  child: CircularProgressIndicator(color: kPrimaryColor),
+                )
               : DefaultButton(
                   text: "Continuer",
                   press: () {

@@ -111,7 +111,9 @@ class _SignUpFormState extends State<SignUpForm> {
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(60)),
           _isLoading
-              ? const CircularProgressIndicator(color: kPrimaryColor)
+              ? const Center(
+                  child: CircularProgressIndicator(color: kPrimaryColor),
+                )
               : DefaultButton(
                   text: "S'inscrire",
                   press: () {

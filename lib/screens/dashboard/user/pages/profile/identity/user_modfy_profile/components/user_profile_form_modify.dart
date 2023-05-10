@@ -228,11 +228,13 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
             future: _bloodTypeListFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator(); // Afficher une indication de chargement si la liste est en cours de récupération
+                return const Center(
+                    child:
+                        CircularProgressIndicator()); // Afficher une indication de chargement si la liste est en cours de récupération
               } else if (snapshot.hasError) {
                 return Text('Une erreur est survenue : ${snapshot.error}');
               } else if (!snapshot.hasData) {
-                return Text('Aucune donnée trouvée.');
+                return const Text('Aucune donnée trouvée.');
               } else {
                 print(snapshot.data);
                 // Afficher la liste de dropdowns une fois qu'elle est disponible
@@ -296,7 +298,7 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
                     }
                   },
                 )
-              : const CircularProgressIndicator(),
+              : const Center(child: CircularProgressIndicator()),
         ],
       ),
     );

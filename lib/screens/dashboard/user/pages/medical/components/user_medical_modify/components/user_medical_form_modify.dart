@@ -278,7 +278,8 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
 
           SizedBox(height: SizeConfig.screenHeight * 0.1),
           _isLoading
-              ? const CircularProgressIndicator(color: kPrimaryColor)
+              ? const Center(
+                  child: CircularProgressIndicator(color: kPrimaryColor))
               : DefaultButton(
                   text: "Mettre à jour",
                   press: () {
