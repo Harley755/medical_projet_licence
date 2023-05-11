@@ -57,7 +57,7 @@ class _SignUpFormState extends State<SignUpForm> {
           buildPasswordFormField(),
           // buildConformPassFormField(),
           FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(25)),
+          SizedBox(height: getProportionateScreenHeight(22)),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -72,7 +72,7 @@ class _SignUpFormState extends State<SignUpForm> {
               ),
             ],
           ),
-          SizedBox(height: getProportionateScreenHeight(30)),
+          SizedBox(height: getProportionateScreenHeight(28)),
           DefaultButton(
             text: "S'inscrire",
             press: () {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/screens/auth/auth_screen.dart';
+import 'package:medical_projet/screens/auth/medical_account/sign_up/sign_up_screen.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/components/profile_pic.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/components/sub_profile_menu.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_profile_identity.dart';
@@ -85,6 +86,17 @@ class _BodyState extends State<Body> {
             icon: "assets/icons/add_user.svg",
             width: 28,
             press: () => {},
+          ),
+
+          // CREATE MEDICAL ACCOUNT
+          ProfileMenu(
+            text: "Compte Médical",
+            icon: "assets/icons/add_user.svg",
+            width: 28,
+            press: () => Navigator.pushNamed(
+              context,
+              MedicalSignUpScreen.routeName,
+            ),
           ),
 
           // TOOGLE DARK/WHITE MODE AND CHANGE LANGUAGE
