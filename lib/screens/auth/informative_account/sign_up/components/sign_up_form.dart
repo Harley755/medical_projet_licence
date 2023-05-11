@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
+import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/components/form_error.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/user_send_verification_email.dart';
 import 'package:medical_projet/utils/constants.dart';
@@ -109,7 +110,22 @@ class _SignUpFormState extends State<SignUpForm> {
           buildPasswordFormField(),
           // buildConformPassFormField(),
           FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(60)),
+          SizedBox(height: getProportionateScreenHeight(25)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              InkWell(
+                onTap: () {},
+                child: RobotoFont(
+                  size: getProportionateScreenHeight(17),
+                  title: "Mot de passe oublié ?",
+                  fontWeight: FontWeight.w500,
+                  textAlign: TextAlign.right,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: getProportionateScreenHeight(30)),
           _isLoading
               ? const Center(
                   child: CircularProgressIndicator(color: kPrimaryColor),

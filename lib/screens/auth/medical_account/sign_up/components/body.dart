@@ -21,15 +21,9 @@ class BodyMedicalSignUp extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: SizeConfig.screenHeight * 0.02), // 4%
-              Text(
-                "Complete your detail",
-                style: headingStyle,
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: SizeConfig.screenHeight * 0.04),
+              SizedBox(height: SizeConfig.screenHeight * 0.05), // 6%
               const SignUpForm(),
-              SizedBox(height: SizeConfig.screenHeight * 0.02),
+              SizedBox(height: SizeConfig.screenHeight * 0.04),
               // TRANSITIONING TO SIGNING UP
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
