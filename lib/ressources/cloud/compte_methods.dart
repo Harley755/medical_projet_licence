@@ -20,25 +20,28 @@ class CompteMethods {
   }
 
   Future<String> addCompte({
-    required String userId,
+    required String compteId,
     required String email,
-    required String password,
+    required String compteType,
+    required String userId,
   }) async {
     String response = "Une erreur s'est produite";
 
     try {
       // VERIFICATION DES CHAMPS
-      if (userId.isNotEmpty || email.isNotEmpty || password.isNotEmpty) {
+      if (userId.isNotEmpty ||
+          email.isNotEmpty ||
+          compteType.isNotEmpty ||
+          userId.isNotEmpty) {
         // ON ENREGISTRE L'UTILISATEUR
         // convertit la chaîne en une liste de bytes
-        String passwordHashe = hashPassword(passwordToHash: password);
         model.Compte compte = model.Compte(
           compteId: userId,
-          userId: userId,
           email: email,
-          password: passwordHashe,
+          compteType: compteType,
+          userId: userId,
         );
-        // ON AJOUTE L'UTILISATEUR A FIREBASE
+        // ON AJOUTE LE COMPTE A FIREBASE
         await _firestore.collection('comptes').doc(userId).set(compte.toJson());
         response = "success";
       }

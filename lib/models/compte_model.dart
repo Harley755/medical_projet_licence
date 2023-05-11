@@ -2,21 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Compte {
   final String compteId;
-  final String password;
   final String email;
+  final String compteType;
   final String userId;
 
   const Compte({
     required this.compteId,
-    required this.password,
     required this.email,
+    required this.compteType,
     required this.userId,
   });
 
   Map<String, dynamic> toJson() => {
         'compteId': compteId,
         'email': email,
-        'password': password,
+        'compteType': compteType,
         'userId': userId,
       };
 
@@ -25,9 +25,9 @@ class Compte {
 
     return Compte(
       compteId: snapshot['compteId'],
-      userId: snapshot['userId'],
       email: snapshot['email'],
-      password: snapshot['password'],
+      compteType: snapshot['compteType'],
+      userId: snapshot['userId'],
     );
   }
 }

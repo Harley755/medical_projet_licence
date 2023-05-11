@@ -96,12 +96,13 @@ class UserAuthMethods {
             .set(user.toJson());
 
         // ON AJOUTE LE COMPTE
-        print("Compte Ajouté");
         await CompteMethods().addCompte(
-          userId: credential.user!.uid,
+          compteId: credential.user!.uid,
           email: email,
-          password: password,
+          compteType: 'informatif',
+          userId: credential.user!.uid,
         );
+        print("Compte Ajouté");
 
         // CREER SA TABLE ANTECEDENT
         await _firestore
@@ -117,6 +118,7 @@ class UserAuthMethods {
           'antecedentMaladieInfecteuse': "",
           'userId': credential.user!.uid,
         });
+        print("Compte Ajouté");
 
         response = "success";
 
@@ -286,39 +288,22 @@ class UserAuthMethods {
           role: 'user',
         );
         // ON AJOUTE L'UTILISATEUR A FIREBASE
-        print("user Ajouté");
         await _firestore
             .collection('users')
             .doc(credential.user!.uid)
             .set(user.toJson());
+        print("user Ajouté");
 
-        // ON AJOUTE LE COMPTE
-        print("Compte Ajouté");
+        // ON AJOUTE LE COMPTE MEDICAL
+        print(_auth.currentUser!.uid);
         await CompteMethods().addCompte(
-          userId: credential.user!.uid,
+          compteId: _auth.currentUser!.uid,
           email: email,
-          password: password,
+          compteType: 'Medical',
+          userId: _auth.currentUser!.uid,
         );
 
-        // CREER SA TABLE ANTECEDENT
-        await _firestore
-            .collection('antecedents')
-            .doc(credential.user!.uid)
-            .set({
-          'antecedentId': credential.user!.uid,
-          'antecedentMedicaux': "",
-          'maladiesChronique': "",
-          'antecedentTraumatique': "",
-          'antecedentAllergique': "",
-          'antecedentChirurgie': "",
-          'antecedentMaladieInfecteuse': "",
-          'userId': credential.user!.uid,
-        });
-
         response = "success";
-
-        // ENVOIE UN MAIL DE VERIFICATION D'EMAIL
-        // await sendEmailVerification();
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
