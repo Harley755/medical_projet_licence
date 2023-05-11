@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +58,12 @@ class _ProfilePicState extends State<ProfilePic> {
     final uploadTask = storageRef.putFile(File(pickedFile.path));
     final snapshot = await uploadTask.whenComplete(() => null);
     final imageUrl = await snapshot.ref.getDownloadURL();
+
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    await firestore
+        .collection('users')
+        .doc(fileName)
+        .update({'photoUrl': imageUrl});
 
     setState(() {
       _profileImageUrl = imageUrl;
