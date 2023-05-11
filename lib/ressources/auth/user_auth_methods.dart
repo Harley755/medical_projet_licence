@@ -246,4 +246,93 @@ class UserAuthMethods {
   Future<void> signOut() async {
     await _auth.signOut();
   }
+
+  /// PROFESSIONAL
+  // INSCRIPTION COMPTE INFORMATIF
+  Future<String> signUpProfessional({
+    required nom,
+    required prenom,
+    required email,
+    required password,
+  }) async {
+    String response = "Une erreur s'est produite";
+
+    try {
+      // VERIFICATION DES CHAMPS
+      if (nom.isNotEmpty ||
+          prenom.isNotEmpty ||
+          email.isNotEmpty ||
+          password.isNotEmpty) {
+        // ON ENREGISTRE L'UTILISATEUR
+        UserCredential credential = await _auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        model.User user = model.User(
+          userId: credential.user!.uid,
+          nom: nom,
+          prenom: prenom,
+          email: email,
+          poids: '',
+          sexe: '',
+          age: '',
+          photoUrl: '',
+          telephone: '',
+          groupeSanguinId: '',
+          nomContactUrgence: '',
+          telephoneContactUrgence: '',
+          relation: '',
+          hasTwoAccount: false,
+          role: 'user',
+        );
+        // ON AJOUTE L'UTILISATEUR A FIREBASE
+        print("user Ajouté");
+        await _firestore
+            .collection('users')
+            .doc(credential.user!.uid)
+            .set(user.toJson());
+
+        // ON AJOUTE LE COMPTE
+        print("Compte Ajouté");
+        await CompteMethods().addCompte(
+          userId: credential.user!.uid,
+          email: email,
+          password: password,
+        );
+
+        // CREER SA TABLE ANTECEDENT
+        await _firestore
+            .collection('antecedents')
+            .doc(credential.user!.uid)
+            .set({
+          'antecedentId': credential.user!.uid,
+          'antecedentMedicaux': "",
+          'maladiesChronique': "",
+          'antecedentTraumatique': "",
+          'antecedentAllergique': "",
+          'antecedentChirurgie': "",
+          'antecedentMaladieInfecteuse': "",
+          'userId': credential.user!.uid,
+        });
+
+        response = "success";
+
+        // ENVOIE UN MAIL DE VERIFICATION D'EMAIL
+        // await sendEmailVerification();
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-email') {
+        response = "L'e-mail est mal valide.";
+      } else if (e.code == 'email-already-in-use') {
+        response = "Votre adresse email a déja été utilisé.";
+      } else if (e.code == 'operation-not-allowed') {
+        response = "Votre compte n'a pas été activé.";
+      } else if (e.code == 'weak-password') {
+        response = 'Votre mot de passe doit comporter au moins 8 caractères.';
+      }
+    } catch (e) {
+      response = e.toString();
+    }
+    return response;
+  }
 }
