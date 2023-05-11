@@ -85,6 +85,12 @@ class _ProfilePicState extends State<ProfilePic> {
     final snapshot = await uploadTask.whenComplete(() => null);
     final imageUrl = await snapshot.ref.getDownloadURL();
 
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    await firestore
+        .collection('users')
+        .doc(fileName)
+        .update({'photoUrl': imageUrl});
+
     setState(() {
       _profileImageUrl = imageUrl;
     });

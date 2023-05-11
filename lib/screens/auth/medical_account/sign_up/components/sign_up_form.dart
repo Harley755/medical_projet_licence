@@ -3,6 +3,7 @@ import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/components/form_error.dart';
+import 'package:medical_projet/screens/auth/medical_account/sign_up/components/fileInput/file_input_controller.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/size_config.dart';
 
@@ -14,6 +15,7 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
+  final _fileInputController = FileInputController();
   final _formKey = GlobalKey<FormState>();
   String? firstName;
   String? lastName;
@@ -54,6 +56,8 @@ class _SignUpFormState extends State<SignUpForm> {
           SizedBox(height: getProportionateScreenHeight(30)),
           buildSpecialityFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
+          buildInputField(_fileInputController),
+          SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordFormField(),
           // buildConformPassFormField(),
           FormError(errors: errors),
@@ -85,6 +89,16 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
         ],
       ),
+    );
+  }
+
+  FileInputField buildInputField(FileInputController fileInputController) {
+    return FileInputField(
+      labelText: 'Selectionner un ficher',
+      controller: fileInputController,
+      onFileSelected: () {
+        // Do something with the selected file
+      },
     );
   }
 
