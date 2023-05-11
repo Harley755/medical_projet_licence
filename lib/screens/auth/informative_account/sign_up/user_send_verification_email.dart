@@ -12,7 +12,7 @@ import 'package:medical_projet/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 class UserSendEmailVerification extends StatefulWidget {
-  const UserSendEmailVerification({super.key});
+  const UserSendEmailVerification({Key? key}) : super(key: key);
 
   @override
   State<UserSendEmailVerification> createState() =>
@@ -20,14 +20,14 @@ class UserSendEmailVerification extends StatefulWidget {
 }
 
 class _UserSendEmailVerificationState extends State<UserSendEmailVerification> {
-  late bool isEmailVerified = false;
-  late bool canResendEmail = false;
-  final User? user = FirebaseAuth.instance.currentUser;
+  bool isEmailVerified = false;
+  bool canResendEmail = false;
+  User? user = FirebaseAuth.instance.currentUser;
   Timer? timer;
-  bool isDisposed = false;
 
   @override
   void initState() {
+    super.initState();
     if (user != null) {
       isEmailVerified = user!.emailVerified;
 
@@ -39,31 +39,30 @@ class _UserSendEmailVerificationState extends State<UserSendEmailVerification> {
         );
       }
     }
-    super.initState();
   }
 
-  Future emailVerification() async {
-    if (isDisposed) return;
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  Future<void> emailVerification() async {
+    if (!mounted) return; // Vérifie si le State est toujours actif
     UserAuthMethods().sendEmailVerification();
     setState(() => canResendEmail = false);
     await Future.delayed(const Duration(seconds: 5));
+    if (!mounted) return; // Vérifie si le State est toujours actif
     setState(() => canResendEmail = true);
   }
 
-  Future checkEmailVerified() async {
-    if (isDisposed) return;
+  Future<void> checkEmailVerified() async {
+    if (!mounted) return; // Vérifie si le State est toujours actif
     await FirebaseAuth.instance.currentUser!.reload();
     setState(() {
       isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
     });
     if (isEmailVerified) timer!.cancel();
-  }
-
-  @override
-  void dispose() {
-    isDisposed = true;
-    timer?.cancel;
-    super.dispose();
   }
 
   @override
@@ -89,7 +88,7 @@ class _UserSendEmailVerificationState extends State<UserSendEmailVerification> {
                     SizedBox(height: SizeConfig.screenHeight * .025),
                     RobotoFont(
                       title:
-                          "Si vous n'avez pas encore reçu un mail de vérifivation, veuillez cliquer sur le bouton ci-dessous",
+                          "Si vous n'avez pas encore reçu un mail de vérification, veuillez cliquer sur le bouton ci-dessous",
                       size: getProportionateScreenWidth(16),
                       textAlign: TextAlign.center,
                     ),

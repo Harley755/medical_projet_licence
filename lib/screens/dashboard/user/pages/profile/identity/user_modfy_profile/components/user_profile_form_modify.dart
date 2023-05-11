@@ -10,6 +10,7 @@ import 'package:medical_projet/models/user_model.dart' as model;
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/ressources/cloud/user_cloud_methods.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_modfy_profile/user_profile_identity_modify.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_profile_identity.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -183,6 +184,12 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
     } else {
       // ignore: use_build_context_synchronously
       showSnackBar("Information mise à jour avec succès", context);
+
+      // ignore: use_build_context_synchronously
+      Navigator.pushNamed(
+        context,
+        UserProfileIdentity.routeName,
+      );
     }
     setState(() {
       _isLoading = false;

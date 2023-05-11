@@ -12,73 +12,84 @@ class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        // NESTEDSCROLLVIEW définit une vue de défilement qui contient un header et un body.
-        body: NestedScrollView(
-          // HEADER RETURN UNE LISTE DE WIDGET DE TYPE SLIVER
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                // l'AppBar flotte lors du défilement vers le haut,
-                floating: false,
-                // pinned est définie sur true pour que l'AppBar soit épinglée en haut lorsque le défilement atteint le haut de la vue.
-                pinned: true,
-                // snap est également définie sur true pour que l'AppBar se fixe rapidement en place lorsqu'elle est épinglée.
-                snap: false,
-                title: PoppinsFont(
-                  title: "Créer un compte",
-                  size: getProportionateScreenWidth(32),
-                  fontWeight: FontWeight.bold,
-                ),
-                centerTitle: true,
-                flexibleSpace: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
-                ),
-                bottom: TabBar(
-                  dividerColor: const Color.fromARGB(255, 255, 0, 0),
-                  indicatorWeight: 5.0,
-                  indicatorColor: kPrimaryColor,
-                  tabs: [
-                    Tab(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          RobotoFont(
-                            title: "Informatif",
-                            size: getProportionateScreenWidth(16),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Tab(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          RobotoFont(
-                            title: "Médical",
-                            size: getProportionateScreenWidth(16),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ];
-          },
-          // BODY
-          body: const TabBarView(
-            children: [
-              BodyInfoSignUp(),
-              BodyMedicalSignUp(),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: PoppinsFont(
+          title: "Créer un compte",
+          size: getProportionateScreenWidth(30.0),
+          fontWeight: FontWeight.w600,
         ),
+        centerTitle: true,
       ),
+      body: const BodyInfoSignUp(),
     );
+    // return DefaultTabController(
+    //   length: 1,
+    //   child: Scaffold(
+    //     // NESTEDSCROLLVIEW définit une vue de défilement qui contient un header et un body.
+    //     body: NestedScrollView(
+    //       // HEADER RETURN UNE LISTE DE WIDGET DE TYPE SLIVER
+    //       headerSliverBuilder: (context, innerBoxIsScrolled) {
+    //         return [
+    //           SliverAppBar(
+    //             // l'AppBar flotte lors du défilement vers le haut,
+    //             floating: false,
+    //             // pinned est définie sur true pour que l'AppBar soit épinglée en haut lorsque le défilement atteint le haut de la vue.
+    //             pinned: true,
+    //             // snap est également définie sur true pour que l'AppBar se fixe rapidement en place lorsqu'elle est épinglée.
+    //             snap: false,
+    //             title: PoppinsFont(
+    //               title: "Créer un compte",
+    //               size: getProportionateScreenWidth(32),
+    //               fontWeight: FontWeight.bold,
+    //             ),
+    //             centerTitle: true,
+    //             flexibleSpace: Container(
+    //               decoration: const BoxDecoration(
+    //                 color: Colors.white,
+    //               ),
+    //             ),
+    //             bottom: TabBar(
+    //               dividerColor: const Color.fromARGB(255, 255, 0, 0),
+    //               indicatorWeight: 5.0,
+    //               indicatorColor: kPrimaryColor,
+    //               tabs: [
+    //                 Tab(
+    //                   child: Row(
+    //                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //                     children: [
+    //                       RobotoFont(
+    //                         title: "Informatif",
+    //                         size: getProportionateScreenWidth(16),
+    //                       ),
+    //                     ],
+    //                   ),
+    //                 ),
+    //                 Tab(
+    //                   child: Row(
+    //                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //                     children: [
+    //                       RobotoFont(
+    //                         title: "Médical",
+    //                         size: getProportionateScreenWidth(16),
+    //                       ),
+    //                     ],
+    //                   ),
+    //                 ),
+    //               ],
+    //             ),
+    //           ),
+    //         ];
+    //       },
+    //       // BODY
+    //       body: const TabBarView(
+    //         children: [
+    //           BodyInfoSignUp(),
+    //           // BodyMedicalSignUp(),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 }
