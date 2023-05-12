@@ -16,6 +16,7 @@ class _ProfessionalGetPageState extends State<ProfessionalGetPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: const Text(
             "Professional Get Page",
             style: TextStyle(color: Colors.black),

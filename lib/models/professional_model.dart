@@ -6,6 +6,8 @@ class Professional {
   final String prenom;
   final String email;
   final String photoUrl;
+  final String photoCarteMedicale;
+  final String photoPieceIdentite;
   final String telephone;
   final bool hasTwoAccount;
   final String role;
@@ -16,6 +18,8 @@ class Professional {
     required this.prenom,
     required this.email,
     required this.photoUrl,
+    required this.photoCarteMedicale,
+    required this.photoPieceIdentite,
     required this.telephone,
     this.hasTwoAccount = true,
     required this.role,
@@ -27,6 +31,8 @@ class Professional {
         'prenom': prenom,
         'email': email,
         'photoUrl': photoUrl,
+        'photoCarteMedicale': photoCarteMedicale,
+        'photoPieceIdentite': photoPieceIdentite,
         'telephone': telephone,
         'hasTwoAccount': hasTwoAccount,
         'role': role,
@@ -41,6 +47,8 @@ class Professional {
       prenom: snapshot['prenom'],
       email: snapshot['email'],
       telephone: snapshot['telephone'],
+      photoCarteMedicale: snapshot['photoCarteMedicale'],
+      photoPieceIdentite: snapshot['photoPieceIdentite'],
       photoUrl: snapshot['photoUrl'],
       hasTwoAccount: snapshot['hasTwoAccount'],
       role: snapshot['role'],

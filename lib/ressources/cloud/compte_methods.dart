@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 
 import 'package:medical_projet/models/compte_model.dart' as model;
+import 'package:uuid/uuid.dart';
 
 class CompteMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -21,6 +22,8 @@ class CompteMethods {
 
   Future<String> addCompte({
     required String compteId,
+    required String nom,
+    required String prenom,
     required String email,
     required String compteType,
     required String userId,
@@ -30,19 +33,27 @@ class CompteMethods {
     try {
       // VERIFICATION DES CHAMPS
       if (userId.isNotEmpty ||
+          nom.isNotEmpty ||
+          prenom.isNotEmpty ||
           email.isNotEmpty ||
           compteType.isNotEmpty ||
           userId.isNotEmpty) {
         // ON ENREGISTRE L'UTILISATEUR
         // convertit la chaîne en une liste de bytes
+        var compteID = const Uuid().v1();
         model.Compte compte = model.Compte(
-          compteId: userId,
+          compteId: compteID,
+          nom: nom,
+          prenom: prenom,
           email: email,
           compteType: compteType,
           userId: userId,
         );
         // ON AJOUTE LE COMPTE A FIREBASE
-        await _firestore.collection('comptes').doc(userId).set(compte.toJson());
+        await _firestore
+            .collection('comptes')
+            .doc(compteID)
+            .set(compte.toJson());
         response = "success";
       }
     } catch (e) {

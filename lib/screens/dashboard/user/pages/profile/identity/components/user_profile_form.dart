@@ -25,13 +25,13 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
 
   String _nom = "";
   String _prenom = "";
-  String _sexe = "";
-  String _groupeSanguinId = "";
-  String _poids = "";
-  String _age = "";
-  String _nomContactUrgence = "";
-  String _telephoneContactUrgence = "";
-  String _relation = "";
+  String? _sexe = "";
+  String? _groupeSanguinId = "";
+  String? _poids = "";
+  String? _age = "";
+  String? _nomContactUrgence = "";
+  String? _telephoneContactUrgence = "";
+  String? _relation = "";
 
   @override
   void initState() {
@@ -269,7 +269,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   TextFormField buildPoidsFormField() {
     return TextFormField(
       readOnly: true,
-      controller: TextEditingController()..text = _poids,
+      controller: TextEditingController()..text = _poids!,
       keyboardType: TextInputType.number,
       onChanged: (value) {},
       decoration: const InputDecoration(
@@ -303,7 +303,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   TextFormField buildEmergenceNameField() {
     return TextFormField(
       readOnly: true,
-      controller: TextEditingController()..text = _nomContactUrgence,
+      controller: TextEditingController()..text = _nomContactUrgence!,
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Nom",
@@ -319,7 +319,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   TextFormField buildEmergenceContactField() {
     return TextFormField(
       readOnly: true,
-      controller: TextEditingController()..text = _telephoneContactUrgence,
+      controller: TextEditingController()..text = _telephoneContactUrgence!,
       keyboardType: TextInputType.phone,
       onChanged: (value) {},
       decoration: const InputDecoration(
@@ -336,7 +336,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   TextFormField buildEmergenceRelationshipField() {
     return TextFormField(
       readOnly: true,
-      controller: TextEditingController()..text = _relation,
+      controller: TextEditingController()..text = _relation!,
       keyboardType: TextInputType.text,
       onChanged: (value) {},
       decoration: const InputDecoration(

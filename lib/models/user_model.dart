@@ -5,15 +5,15 @@ class User {
   final String nom;
   final String prenom;
   final String email;
-  final String poids;
-  final String sexe;
-  final String age;
-  final String photoUrl;
-  final String telephone;
-  final String groupeSanguinId;
-  final String nomContactUrgence;
-  final String telephoneContactUrgence;
-  final String relation;
+  final String? poids;
+  final String? sexe;
+  final String? age;
+  final String? photoUrl;
+  final String? telephone;
+  final String? groupeSanguinId;
+  final String? nomContactUrgence;
+  final String? telephoneContactUrgence;
+  final String? relation;
   final bool hasTwoAccount;
   final String role;
 

@@ -13,12 +13,12 @@ class FileInputController extends TextEditingController {
 class FileInputField extends StatefulWidget {
   final String labelText;
   final FileInputController controller;
-  final VoidCallback? onFileSelected;
+  final Function() press;
   const FileInputField({
     super.key,
     required this.labelText,
     required this.controller,
-    this.onFileSelected,
+    required this.press,
   });
 
   @override
@@ -50,25 +50,7 @@ class _FileInputFieldState extends State<FileInputField> {
       decoration: InputDecoration(
         labelText: widget.labelText,
         suffixIcon: IconButton(
-          onPressed: () async {
-            _clearError();
-            final permissionStatus = await Permission.storage.request();
-            if (permissionStatus == PermissionStatus.granted) {
-              // SE LIMITER AU FICHIER D'EXTENSIONS JPG, PDF, DOC
-              final file = await FilePicker.platform.pickFiles(
-                type: FileType.custom,
-                allowedExtensions: ['jpg', 'pdf', 'doc'],
-              );
-              if (file != null) {
-                widget.controller.text = file.files.single.name;
-                widget.onFileSelected?.call();
-              } else {
-                _setError('Aucun fichier sélectionné');
-              }
-            } else {
-              _setError('Permissions refusées');
-            }
-          },
+          onPressed: widget.press,
           icon: Padding(
             padding: EdgeInsets.fromLTRB(
               0,
@@ -83,7 +65,7 @@ class _FileInputFieldState extends State<FileInputField> {
       ),
       validator: (value) {
         if (value?.isEmpty ?? true) {
-          return 'Veuillez entrer un fichier de preuve';
+          return 'Le fichier doit etre sélectionner';
         }
         return null;
       },

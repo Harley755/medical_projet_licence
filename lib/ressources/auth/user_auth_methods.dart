@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:medical_projet/models/professional_model.dart' as model;
 import 'package:medical_projet/models/user_model.dart' as model;
 import 'package:medical_projet/models/antecedent_model.dart' as model;
 import 'package:medical_projet/ressources/cloud/compte_methods.dart';
+import 'package:medical_projet/ressources/cloud/pieces_storage.dart';
+import 'package:uuid/uuid.dart';
 
 class UserAuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -97,7 +103,9 @@ class UserAuthMethods {
 
         // ON AJOUTE LE COMPTE
         await CompteMethods().addCompte(
-          compteId: credential.user!.uid,
+          compteId: const Uuid().v1(),
+          nom: nom,
+          prenom: prenom,
           email: email,
           compteType: 'informatif',
           userId: credential.user!.uid,
@@ -255,7 +263,12 @@ class UserAuthMethods {
     required nom,
     required prenom,
     required email,
+    required pieceIdentiteName,
+    required pieceIdentitePath,
     required password,
+    required specialite,
+    required carteMedicaleName,
+    required carteMedicalePath,
   }) async {
     String response = "Une erreur s'est produite";
 
@@ -264,44 +277,60 @@ class UserAuthMethods {
       if (nom.isNotEmpty ||
           prenom.isNotEmpty ||
           email.isNotEmpty ||
-          password.isNotEmpty) {
+          password.isNotEmpty ||
+          pieceIdentiteName.isNotEmpty ||
+          pieceIdentitePath.isNotEmpty ||
+          carteMedicaleName.isNotEmpty ||
+          carteMedicalePath.isNotEmpty ||
+          password.isNotEmpty ||
+          specialite.isNotEmpty) {
+        // ON AJOUTE LE COMPTE MEDICAL
+        print(_auth.currentUser!.uid);
+        var compteID = const Uuid().v1();
+        await CompteMethods().addCompte(
+          compteId: compteID,
+          nom: nom,
+          prenom: prenom,
+          email: email,
+          compteType: 'Medical',
+          userId: _auth.currentUser!.uid,
+        );
         // ON ENREGISTRE L'UTILISATEUR
         UserCredential credential = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
-        model.User user = model.User(
+
+        String pieceI = await PiecesStorage().uploadPieces(
+          uid: credential.user!.uid,
+          pieceName: pieceIdentiteName,
+          piecePath: pieceIdentitePath,
+        );
+
+        String carteM = await PiecesStorage().uploadPieces(
+          uid: credential.user!.uid,
+          pieceName: carteMedicaleName,
+          piecePath: carteMedicalePath,
+        );
+
+        model.Professional user = model.Professional(
           userId: credential.user!.uid,
           nom: nom,
           prenom: prenom,
           email: email,
-          poids: '',
-          sexe: '',
-          age: '',
           photoUrl: '',
+          photoCarteMedicale: carteM,
+          photoPieceIdentite: pieceI,
           telephone: '',
-          groupeSanguinId: '',
-          nomContactUrgence: '',
-          telephoneContactUrgence: '',
-          relation: '',
-          hasTwoAccount: false,
-          role: 'user',
+          hasTwoAccount: true,
+          role: 'professional',
         );
         // ON AJOUTE L'UTILISATEUR A FIREBASE
         await _firestore
             .collection('users')
             .doc(credential.user!.uid)
             .set(user.toJson());
-        print("user Ajouté");
-
-        // ON AJOUTE LE COMPTE MEDICAL
-        print(_auth.currentUser!.uid);
-        await CompteMethods().addCompte(
-          compteId: _auth.currentUser!.uid,
-          email: email,
-          compteType: 'Medical',
-          userId: _auth.currentUser!.uid,
-        );
+        print("Professionel Ajouté");
 
         response = "success";
       }

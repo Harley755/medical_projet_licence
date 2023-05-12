@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
@@ -23,6 +24,9 @@ class _ProfessionalNavigationBarState extends State<ProfessionalNavigationBar> {
 
   @override
   void initState() {
+    final user = FirebaseAuth.instance.currentUser;
+    final userid = user!.uid;
+    print("USERID" + userid);
     pageController = PageController();
     super.initState();
   }

@@ -6,6 +6,7 @@ import 'package:medical_projet/screens/dashboard/administrator/components/admin_
 import 'package:medical_projet/screens/dashboard/health_professional/components/professional_navigation_bar.dart';
 import 'package:medical_projet/screens/dashboard/user/components/user_navigation_bar.dart';
 import 'package:medical_projet/size_config.dart';
+import 'package:medical_projet/utils/constants.dart';
 
 class UsersDashboardScreen extends StatefulWidget {
   static String routeName = "/users_dashboard";
@@ -40,18 +41,18 @@ class _UsersDashboardScreenState extends State<UsersDashboardScreen> {
   }
 
   Widget getNavigationBar() {
-    if (_role == 'user') {
-      if (!_hasTwoAccount) {
+    switch (_role) {
+      case 'user':
         return const UserNavigationBar();
-      } else {
-        if (_role == "admin") {
-          return const AdminNavigationBar();
-        } else {
-          return const ProfessionalNavigationBar();
-        }
-      }
-    } else {
-      return const SizedBox();
+        break;
+      case 'professional':
+        return const ProfessionalNavigationBar();
+        break;
+      case 'admin':
+        return const AdminNavigationBar();
+        break;
+      default:
+        return const SizedBox();
     }
   }
 
@@ -61,6 +62,13 @@ class _UsersDashboardScreenState extends State<UsersDashboardScreen> {
     return FutureBuilder<model.User>(
       future: _userRoleFuture,
       builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: kPrimaryColor,
+            ),
+          );
+        }
         if (snapshot.hasData) {
           _user = snapshot.data!;
           _role = _user!.role;

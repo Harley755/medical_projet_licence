@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
+import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
 import 'package:medical_projet/size_config.dart';
+import 'package:medical_projet/utils/functions.dart';
 
 class MedicalSignInForm extends StatefulWidget {
   const MedicalSignInForm({super.key});
@@ -19,6 +21,24 @@ class _MedicalSignInFormState extends State<MedicalSignInForm> {
   String? kPassEmpty = kPassNullError;
   String? conformPassword;
   bool remember = false;
+
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   final List<String?> errors = [];
 
   void addError({String? error}) {
@@ -37,6 +57,33 @@ class _MedicalSignInFormState extends State<MedicalSignInForm> {
     }
   }
 
+  bool _isLoading = false;
+  void userSignIn() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String response = await UserAuthMethods().loginUser(
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
+    if (response != 'success') {
+      // ignore: use_build_context_synchronously
+      showSnackBar(response, context);
+    } else {
+      // ignore: use_build_context_synchronously
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const UsersDashboardScreen(),
+        ),
+        (Route<dynamic> route) => false,
+      );
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -48,16 +95,21 @@ class _MedicalSignInFormState extends State<MedicalSignInForm> {
           buildPasswordFormField(),
           // buildConformPassFormField(),
           SizedBox(height: getProportionateScreenHeight(60)),
-          DefaultButton(
-            text: "Se connecter",
-            press: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                // if all are valid then go to success screen
-                Navigator.pushNamed(context, UsersDashboardScreen.routeName);
-              }
-            },
-          ),
+          _isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(color: kPrimaryColor),
+                )
+              : DefaultButton(
+                  text: "Se connecter",
+                  press: () {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      // if all are valid then go to success screen
+                      Navigator.pushNamed(
+                          context, UsersDashboardScreen.routeName);
+                    }
+                  },
+                ),
         ],
       ),
     );
@@ -65,6 +117,7 @@ class _MedicalSignInFormState extends State<MedicalSignInForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
+      controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
@@ -97,6 +150,7 @@ class _MedicalSignInFormState extends State<MedicalSignInForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
+      controller: _passwordController,
       obscureText: true,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {

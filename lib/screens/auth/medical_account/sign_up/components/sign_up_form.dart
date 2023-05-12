@@ -1,11 +1,16 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/components/form_error.dart';
+import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
+import 'package:medical_projet/screens/auth/informative_account/sign_up/user_send_verification_email.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_up/components/fileInput/file_input_controller.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/size_config.dart';
+import 'package:medical_projet/utils/functions.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
@@ -15,16 +20,89 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
-  final _fileInputController = FileInputController();
+  final _fileMedicalInputController = FileInputController();
+  final _fileIdentiteInputController = FileInputController();
+
+  late final TextEditingController _lastNameController;
+  late final TextEditingController _firstNameController;
+  late final TextEditingController _emailController;
+  String fileIdentiteInputName = "";
+  String fileIdentiteInputPath = "";
+  late final TextEditingController _specialiteController;
+  String fileMedicalInputName = "";
+  String fileMedicalInputPath = "";
+  late final TextEditingController _passwordController;
+
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    _lastNameController = TextEditingController();
+    _firstNameController = TextEditingController();
+    _emailController = TextEditingController();
+    _specialiteController = TextEditingController();
+    _passwordController = TextEditingController();
+    super.initState();
+  }
+
+  void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String response = await UserAuthMethods().signUpProfessional(
+      nom: _lastNameController.text.trim(),
+      prenom: _firstNameController.text.trim(),
+      email: _emailController.text.trim(),
+      pieceIdentiteName: fileIdentiteInputName,
+      pieceIdentitePath: fileIdentiteInputPath,
+      password: _passwordController.text.trim(),
+      specialite: _specialiteController.text.trim(),
+      carteMedicaleName: fileMedicalInputName,
+      carteMedicalePath: fileMedicalInputPath,
+    );
+    if (response != 'success') {
+      // ignore: use_build_context_synchronously
+      showSnackBar(response, context);
+    } else {
+      // ignore: use_build_context_synchronously
+      showSnackBar("Compte Médical créé !", context);
+      // UserAuthMethods().logOut();
+      // ignore: use_build_context_synchronously
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const UserSendEmailVerification(),
+        ),
+        (Route<dynamic> route) => false,
+      );
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   final _formKey = GlobalKey<FormState>();
   String? firstName;
   String? lastName;
   String? email;
+  String? _errorText;
   String? password;
   String? speciality;
   String? conformPassword;
   bool remember = false;
   final List<String?> errors = [];
+
+  void _clearError() {
+    setState(() {
+      _errorText = null;
+    });
+  }
+
+  void _setError(String errorText) {
+    setState(() {
+      _errorText = errorText;
+    });
+  }
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
@@ -54,9 +132,11 @@ class _SignUpFormState extends State<SignUpForm> {
           SizedBox(height: getProportionateScreenHeight(30)),
           buildEmailFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
+          buildInputIdentiteField(_fileIdentiteInputController),
+          SizedBox(height: getProportionateScreenHeight(30)),
           buildSpecialityFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildInputField(_fileInputController),
+          buildInputMedicalField(_fileMedicalInputController),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordFormField(),
           // buildConformPassFormField(),
@@ -77,33 +157,89 @@ class _SignUpFormState extends State<SignUpForm> {
             ],
           ),
           SizedBox(height: getProportionateScreenHeight(28)),
-          DefaultButton(
-            text: "S'inscrire",
-            press: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                // if all are valid then go to success screen
-                // Navigator.pushNamed(context, CompleteProfileScreen.routeName);
-              }
-            },
-          ),
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : DefaultButton(
+                  text: "S'inscrire",
+                  press: () {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      // if all are valid then go to success screen
+                      signUpUser();
+                      // Navigator.pushNamed(context, CompleteProfileScreen.routeName);
+                    }
+                  },
+                ),
         ],
       ),
     );
   }
 
-  FileInputField buildInputField(FileInputController fileInputController) {
+  FileInputField buildInputMedicalField(
+    FileInputController fileMedicalInputController,
+  ) {
     return FileInputField(
-      labelText: 'Selectionner un ficher',
-      controller: fileInputController,
-      onFileSelected: () {
-        // Do something with the selected file
+      labelText: 'Carte Médicale',
+      controller: fileMedicalInputController,
+      press: () async {
+        _clearError();
+        final permissionStatus = await Permission.storage.request();
+        if (permissionStatus == PermissionStatus.granted) {
+          // SE LIMITER AU FICHIER D'EXTENSIONS JPG, PDF
+          final file = await FilePicker.platform.pickFiles(
+            type: FileType.custom,
+            allowedExtensions: ['jpg', 'pdf'],
+          );
+          if (file != null) {
+            _fileMedicalInputController.text = file.files.single.name;
+            setState(() {
+              fileMedicalInputName = file.files.single.name;
+              fileMedicalInputPath = file.files.single.path!;
+            });
+          } else {
+            _setError('Aucun fichier sélectionné');
+          }
+        } else {
+          _setError('Permissions refusées');
+        }
+      },
+    );
+  }
+
+  FileInputField buildInputIdentiteField(
+    FileInputController fileIdentiteInputController,
+  ) {
+    return FileInputField(
+      labelText: 'Piece d\'identité',
+      controller: fileIdentiteInputController,
+      press: () async {
+        _clearError();
+        final permissionStatus = await Permission.storage.request();
+        if (permissionStatus == PermissionStatus.granted) {
+          // SE LIMITER AU FICHIER D'EXTENSIONS JPG, PDF
+          final file = await FilePicker.platform.pickFiles(
+            type: FileType.custom,
+            allowedExtensions: ['jpg', 'pdf'],
+          );
+          if (file != null) {
+            _fileIdentiteInputController.text = file.files.single.name;
+            setState(() {
+              fileIdentiteInputName = file.files.single.name;
+              fileIdentiteInputPath = file.files.single.path!;
+            });
+          } else {
+            _setError('Aucun fichier sélectionné');
+          }
+        } else {
+          _setError('Permissions refusées');
+        }
       },
     );
   }
 
   TextFormField buildLastNameFormField() {
     return TextFormField(
+      controller: _lastNameController,
       keyboardType: TextInputType.text,
       onSaved: (newValue) => lastName = newValue,
       onChanged: (value) {
@@ -131,6 +267,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildFirstNameFormField() {
     return TextFormField(
+      controller: _firstNameController,
       keyboardType: TextInputType.text,
       onSaved: (newValue) => firstName = newValue,
       onChanged: (value) {
@@ -158,6 +295,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildSpecialityFormField() {
     return TextFormField(
+      controller: _specialiteController,
       keyboardType: TextInputType.text,
       onSaved: (newValue) => speciality = newValue,
       onChanged: (value) {
@@ -185,6 +323,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
+      controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
@@ -250,6 +389,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
+      controller: _passwordController,
       obscureText: true,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
