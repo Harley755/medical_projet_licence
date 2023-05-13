@@ -9,7 +9,7 @@ class Professional {
   final String photoCarteMedicale;
   final String photoPieceIdentite;
   final String telephone;
-  final bool hasTwoAccount;
+  final bool hasTwoAccount; // A RETIRER
   final String role;
 
   const Professional({

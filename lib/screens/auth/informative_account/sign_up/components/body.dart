@@ -50,7 +50,7 @@ class BodyInfoSignUp extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Vous avez déja un compte professionel ? "),
+                  const Text("Vous avez déja un compte médical ? "),
                   SizedBox(height: getProportionateScreenHeight(5.0)),
                   GestureDetector(
                     onTap: () {

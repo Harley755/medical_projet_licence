@@ -582,11 +582,7 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
       ),
       dense: true,
       value: _historyOfInfectiousDiseasesCondition,
-      onChanged: (value) {
-        setState(() {
-          _historyOfInfectiousDiseasesCondition = value;
-        });
-      },
+      onChanged: (value) {},
     );
   }
 
@@ -598,16 +594,6 @@ class _UserMedicalFormState extends State<UserMedicalForm> {
       controller: TextEditingController()..text = antecedentMaladieInfecteuse,
       maxLines: null,
       keyboardType: TextInputType.multiline,
-      onSaved: (newValue) => historyOfInfectiousDiseases = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {}
-      },
-      validator: (value) {
-        if (value!.isEmpty && _historyOfInfectiousDiseasesCondition) {
-          return "";
-        }
-        return null;
-      },
       decoration: const InputDecoration(
         labelText: "Antécédents de maladies infectieuses",
         hintText: "Entrer vos antécédents",
