@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
+import 'package:medical_projet/screens/auth/medical_account/sign_in/sign_in_screen.dart';
+import 'package:medical_projet/screens/auth/medical_account/sign_up/sign_up_screen.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/components/professional_profile_menu.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/components/professional_profile_pic.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/components/professional_sub_profile_menu.dart';
@@ -93,7 +96,17 @@ class _ProfessionalBodyState extends State<ProfessionalBody> {
           ProfessionalProfileMenu(
             text: "Déconnexion",
             icon: "assets/icons/Log out.svg",
-            press: () {},
+            press: () async {
+              await UserAuthMethods().signOut();
+              // ignore: use_build_context_synchronously
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MedicalSignInScreen(),
+                ),
+                (Route<dynamic> route) => false,
+              );
+            },
           ),
         ],
       ),

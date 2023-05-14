@@ -47,26 +47,26 @@ class BodyInfoSignUp extends StatelessWidget {
                 ],
               ),
               SizedBox(height: SizeConfig.screenHeight * 0.02),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Vous avez déja un compte médical ? "),
-                  SizedBox(height: getProportionateScreenHeight(5.0)),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        MedicalSignInScreen.routeName,
-                      );
-                    },
-                    child: RobotoFont(
-                      size: getProportionateScreenWidth(16),
-                      title: "Connectez-vous",
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                ],
-              ),
+              // Column(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     const Text("Vous avez déja un compte médical ? "),
+              //     SizedBox(height: getProportionateScreenHeight(5.0)),
+              //     GestureDetector(
+              //       onTap: () {
+              //         Navigator.pushNamed(
+              //           context,
+              //           MedicalSignInScreen.routeName,
+              //         );
+              //       },
+              //       child: RobotoFont(
+              //         size: getProportionateScreenWidth(16),
+              //         title: "Connectez-vous",
+              //         fontWeight: FontWeight.bold,
+              //       ),
+              //     )
+              //   ],
+              // ),
               SizedBox(height: SizeConfig.screenHeight * 0.048),
               RobotoFont(
                 title:

@@ -21,8 +21,13 @@ class BodyInfoSignIn extends StatelessWidget {
               children: [
                 SizedBox(height: SizeConfig.screenHeight * 0.1),
 
+                // Text(
+                //   "Bienvenue sur votre compte informatif",
+                //   style: headingStyle,
+                //   textAlign: TextAlign.center,
+                // ),
                 Text(
-                  "Bienvenue sur votre compte informatif",
+                  "Bienvenue sur votre compte",
                   style: headingStyle,
                   textAlign: TextAlign.center,
                 ),
@@ -34,10 +39,29 @@ class BodyInfoSignIn extends StatelessWidget {
 
                 SizedBox(height: SizeConfig.screenHeight * 0.2),
 
+                // Column(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     const Text("Vous n'avez pas un compte informatif ? \n"),
+                //     InkWell(
+                //       onTap: () {
+                //         Navigator.pushNamed(
+                //           context,
+                //           AuthScreen.routeName,
+                //         );
+                //       },
+                //       child: RobotoFont(
+                //         size: getProportionateScreenWidth(16),
+                //         title: "Inscrivez-vous",
+                //         fontWeight: FontWeight.bold,
+                //       ),
+                //     )
+                //   ],
+                // ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Vous n'avez pas un compte informatif ? \n"),
+                    const Text("Vous n'avez pas un compte ? \n"),
                     InkWell(
                       onTap: () {
                         Navigator.pushNamed(

@@ -63,9 +63,11 @@ class _UsersDashboardScreenState extends State<UsersDashboardScreen> {
       future: _userRoleFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(
-              color: kPrimaryColor,
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(
+                color: kPrimaryColor,
+              ),
             ),
           );
         }
