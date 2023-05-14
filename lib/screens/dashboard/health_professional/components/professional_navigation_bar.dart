@@ -107,8 +107,8 @@ class _ProfessionalNavigationBarState extends State<ProfessionalNavigationBar> {
                   backgroundColor: selectTabBg,
                   iconSize: 24,
                   padding: padding,
-                  icon: LineIcons.medicalClinic,
-                  text: 'Info médicales',
+                  icon: LineIcons.search,
+                  text: 'Rechercher',
                 ),
                 GButton(
                   gap: gap,

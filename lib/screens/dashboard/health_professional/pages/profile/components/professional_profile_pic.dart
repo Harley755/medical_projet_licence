@@ -24,6 +24,8 @@ class ProfessionalProfilePic extends StatefulWidget {
 class _ProfessionalProfilePicState extends State<ProfessionalProfilePic> {
   late String _profileImageUrl;
 
+  bool _isLoading = false;
+
   @override
   void initState() {
     _profileImageUrl =
@@ -46,6 +48,9 @@ class _ProfessionalProfilePicState extends State<ProfessionalProfilePic> {
   final picker = ImagePicker();
 
   Future<void> _uploadGalleryImage() async {
+    setState(() {
+      _isLoading = true;
+    });
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile == null) return;
 
@@ -66,6 +71,7 @@ class _ProfessionalProfilePicState extends State<ProfessionalProfilePic> {
 
     setState(() {
       _profileImageUrl = imageUrl;
+      _isLoading = false;
     });
 
     showSnackBar("Photo de profile bien définie", context);
@@ -271,58 +277,61 @@ class _ProfessionalProfilePicState extends State<ProfessionalProfilePic> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 115,
-      width: 115,
-      child: Stack(
-        fit: StackFit.expand,
-        clipBehavior: Clip.none,
-        children: [
-          FutureBuilder<String>(
-            future: Future.value(_profileImageUrl),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: kPrimaryColor,
-                  ),
-                );
-              }
-              if (snapshot.hasData) {
-                return CircleAvatar(
-                  backgroundImage: NetworkImage(snapshot.data!),
-                );
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: kPrimaryColor,
-                  ),
-                );
-              }
-            },
-          ),
-          Positioned(
-            right: -9,
-            bottom: 0,
-            child: SizedBox(
-              height: 46,
-              width: 46,
-              child: Container(
-                height: 50.0,
-                width: 50.0,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xFFF5F6F9),
+    return _isLoading
+        ? const Center(child: CircularProgressIndicator(color: kPrimaryColor))
+        : SizedBox(
+            height: 115,
+            width: 115,
+            child: Stack(
+              fit: StackFit.expand,
+              clipBehavior: Clip.none,
+              children: [
+                FutureBuilder<String>(
+                  future: Future.value(_profileImageUrl),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: kPrimaryColor,
+                        ),
+                      );
+                    }
+                    if (snapshot.hasData) {
+                      return CircleAvatar(
+                        backgroundImage: NetworkImage(snapshot.data!),
+                      );
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: kPrimaryColor,
+                        ),
+                      );
+                    }
+                  },
                 ),
-                child: IconButton(
-                  icon: SvgPicture.asset("assets/icons/Camera Icon.svg"),
-                  onPressed: () => showChangeProfilePictureDialog(context),
-                ),
-              ),
+                Positioned(
+                  right: -9,
+                  bottom: 0,
+                  child: SizedBox(
+                    height: 46,
+                    width: 46,
+                    child: Container(
+                      height: 50.0,
+                      width: 50.0,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFFF5F6F9),
+                      ),
+                      child: IconButton(
+                        icon: SvgPicture.asset("assets/icons/Camera Icon.svg"),
+                        onPressed: () =>
+                            showChangeProfilePictureDialog(context),
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
-          )
-        ],
-      ),
-    );
+          );
   }
 }

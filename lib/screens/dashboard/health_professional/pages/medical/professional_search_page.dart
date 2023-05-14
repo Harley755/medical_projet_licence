@@ -3,29 +3,28 @@ import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/body.dart';
 import 'package:medical_projet/size_config.dart';
 
-class ProfessionalMedicalPage extends StatefulWidget {
-  static String routeName = "/user/info_medicales";
+class ProfessionalSearchPage extends StatefulWidget {
+  static String routeName = "/professional/search";
 
-  const ProfessionalMedicalPage({super.key});
+  const ProfessionalSearchPage({super.key});
 
   @override
-  State<ProfessionalMedicalPage> createState() => _UseMedicalPageState();
+  State<ProfessionalSearchPage> createState() => _ProfessionalSearchState();
 }
 
-class _UseMedicalPageState extends State<ProfessionalMedicalPage> {
-  static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+class _ProfessionalSearchState extends State<ProfessionalSearchPage> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Mes Informations Privées",
+          "Utilisateurs",
           style: TextStyle(color: kSecondaryColor),
         ),
         centerTitle: true,
       ),
-      body: BodyProfessionalMedical(formKey: formKey),
+      body: const BodyProfessionalSearch(),
     );
   }
 }
