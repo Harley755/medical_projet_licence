@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/details/components/medical_detail_page/components/medical_detail_form.dart';
-import 'package:medical_projet/screens/dashboard/user/pages/medical/components/user_medical_form.dart';
 import 'package:medical_projet/size_config.dart';
 
 class MedicalDetail extends StatelessWidget {
