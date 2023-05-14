@@ -99,13 +99,13 @@ class _IdentityDetailFormReadOnlyState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // IDENTITY
-          RobotoFont(
-            title: 'Identité',
-            size: getProportionateScreenWidth(22),
-            textAlign: TextAlign.center,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
+          // RobotoFont(
+          //   title: 'Identité',
+          //   size: getProportionateScreenWidth(22),
+          //   textAlign: TextAlign.center,
+          //   fontWeight: FontWeight.w600,
+          //   color: Colors.black,
+          // ),
           SizedBox(height: SizeConfig.screenHeight * 0.03),
           buildLastNameFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
