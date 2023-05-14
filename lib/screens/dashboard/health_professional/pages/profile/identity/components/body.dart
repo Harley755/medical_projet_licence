@@ -19,7 +19,7 @@ class BodyProfessionalIdentityReadOnly extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: SizeConfig.screenHeight * 0.02), // 4%
-              ProfessionalProfileFormReadOnly(formKey: formKey),
+              const ProfessionalProfileFormReadOnly(),
               SizedBox(height: SizeConfig.screenHeight * 0.02),
             ],
           ),

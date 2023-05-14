@@ -43,6 +43,20 @@ class UserAuthMethods {
     }
   }
 
+  Future<model.Professional> getProfessionalIdentityDetails(
+      {required String userId}) async {
+    if (userId != "") {
+      DocumentSnapshot snap =
+          await _firestore.collection('users').doc(userId).get();
+      return model.Professional.fromSnap(snap);
+    } else {
+      throw FirebaseAuthException(
+        code: 'user-not-found',
+        message: 'No user found with this credentials.',
+      );
+    }
+  }
+
   Future<model.Antecedent> getUserMedicalDetails(
       {required String userId}) async {
     if (userId != "") {

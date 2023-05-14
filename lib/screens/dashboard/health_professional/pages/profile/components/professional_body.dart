@@ -28,7 +28,7 @@ class _ProfessionalBodyState extends State<ProfessionalBody> {
           const SizedBox(height: 20),
           // MES INFORMATIONS D'IDENTITE
           ProfessionalProfileMenu(
-            text: "Mes informations d'identité",
+            text: "Mes informations",
             icon: "assets/icons/User Icon.svg",
             press: () => Navigator.pushNamed(
               context,
