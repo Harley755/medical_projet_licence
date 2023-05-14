@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/fonts.dart';
+import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/details/components/identity_detail_page/identity_detail_page.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/components/body.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_up/components/body.dart';
@@ -7,7 +8,11 @@ import 'package:medical_projet/size_config.dart';
 
 class DetailPage extends StatefulWidget {
   static String routeName = "/professional/details";
-  const DetailPage({super.key});
+  final String userId;
+  const DetailPage({
+    super.key,
+    required this.userId,
+  });
 
   @override
   State<DetailPage> createState() => _DetailPageState();
@@ -44,7 +49,6 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ),
                 bottom: TabBar(
-                  dividerColor: const Color.fromARGB(255, 255, 0, 0),
                   indicatorWeight: 2.5,
                   indicatorColor: kPrimaryColor,
                   tabs: [
@@ -76,10 +80,10 @@ class _DetailPageState extends State<DetailPage> {
             ];
           },
           // BODY
-          body: const TabBarView(
+          body: TabBarView(
             children: [
-              Center(child: Text("Identite")),
-              Center(child: Text("Medical")),
+              IdentityDetail(userId: widget.userId),
+              const Center(child: Text("Medical")),
               // BodyMedicalSignUp(),
             ],
           ),

@@ -47,7 +47,9 @@ class _ProfessionalUserListState extends State<ProfessionalUserList> {
                     final user = users[index];
                     return InkWell(
                       onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const DetailPage(),
+                        builder: (context) => DetailPage(
+                          userId: user['userId'],
+                        ),
                       )),
                       child: ListTile(
                         contentPadding: const EdgeInsets.all(0.0),

@@ -58,7 +58,7 @@ final Map<String, WidgetBuilder> routes = {
       const ProfessionalProfilePage(),
   // medical page
   ProfessionalSearchPage.routeName: (context) => const ProfessionalSearchPage(),
-  DetailPage.routeName: (context) => const DetailPage(),
+  // DetailPage.routeName: (context) => const DetailPage(),
 
   // ADMIN
   AdminDetailConversation.routeName: (context) =>
