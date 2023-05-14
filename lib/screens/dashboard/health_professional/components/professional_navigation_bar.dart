@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
@@ -21,6 +22,7 @@ class _ProfessionalNavigationBarState extends State<ProfessionalNavigationBar> {
   double gap = 10;
 
   late PageController pageController;
+  late String _profileImageUrl;
 
   @override
   void initState() {
@@ -28,6 +30,20 @@ class _ProfessionalNavigationBarState extends State<ProfessionalNavigationBar> {
     final userid = user!.uid;
     print("USERID" + userid);
     pageController = PageController();
+    _profileImageUrl =
+        "https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg";
+    // Chargement de l'image de profil à partir de Firebase Storage si elle existe.
+
+    final fileName = user.uid;
+    final storageRef =
+        FirebaseStorage.instance.ref().child('avatars/$fileName');
+    storageRef.getDownloadURL().then((url) {
+      setState(() {
+        _profileImageUrl = url;
+      });
+    }).catchError((error) {
+      print(error);
+    });
     super.initState();
   }
 
@@ -103,11 +119,33 @@ class _ProfessionalNavigationBarState extends State<ProfessionalNavigationBar> {
                   iconSize: 24,
                   padding: padding,
                   icon: LineIcons.user,
-                  leading: const CircleAvatar(
-                    radius: 12,
-                    backgroundImage: NetworkImage(
-                      'https://wallpapers-clan.com/wp-content/uploads/2022/07/anime-default-pfp-2.jpg',
-                    ),
+                  leading: FutureBuilder<String>(
+                    future: Future.value(_profileImageUrl),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            color: kPrimaryColor,
+                          ),
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        print(snapshot.hasError);
+                      }
+                      if (snapshot.hasData) {
+                        return CircleAvatar(
+                          radius: 12.0,
+                          backgroundImage: NetworkImage(snapshot.data!),
+                        );
+                      } else {
+                        return const CircleAvatar(
+                          radius: 12.0,
+                          backgroundImage: NetworkImage(
+                            "https://64.media.tumblr.com/eb8013a5fded5dcb55eee5ba2e48c86c/012efcaf904bfd8e-89/s640x960/cbb4836ddab081451c45286f7f9ab278f99f59f7.pnj",
+                          ),
+                        );
+                      }
+                    },
                   ),
                   text: 'Profile',
                 )
