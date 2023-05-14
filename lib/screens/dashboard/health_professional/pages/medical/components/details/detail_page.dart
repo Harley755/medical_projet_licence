@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/details/components/identity_detail_page/identity_detail_page.dart';
+import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/details/components/medical_detail_page/medical_detail_page.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/components/body.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_up/components/body.dart';
@@ -83,7 +84,7 @@ class _DetailPageState extends State<DetailPage> {
           body: TabBarView(
             children: [
               IdentityDetail(userId: widget.userId),
-              const Center(child: Text("Medical")),
+              MedicalDetail(userId: widget.userId),
               // BodyMedicalSignUp(),
             ],
           ),
