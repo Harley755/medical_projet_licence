@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/default_button.dart';
+import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/identity/professional_modfy_profile/professional_modify_profile.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/identity/components/body.dart';
 import 'package:medical_projet/size_config.dart';
@@ -16,7 +17,6 @@ class ProfessionalProfileIdentity extends StatefulWidget {
 
 class _ProfessionalProfileIdentityState
     extends State<ProfessionalProfileIdentity> {
-  static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -28,7 +28,7 @@ class _ProfessionalProfileIdentityState
         ),
         centerTitle: true,
       ),
-      body: BodyProfessionalIdentityReadOnly(formKey: formKey),
+      body: const BodyProfessionalIdentityReadOnly(),
       bottomNavigationBar: SafeArea(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 17.0, vertical: 5.0),
@@ -45,13 +45,9 @@ class _ProfessionalProfileIdentityState
             ],
           ),
           child: DefaultButton(
-            text: "Mettre à jour",
+            text: "Editer",
             press: () {
-              if (formKey.currentState!.validate()) {
-                formKey.currentState!.save();
-                // if all are valid then go to success screen
-                // Navigator.pushNamed(context, CompleteProfileScreen.routeName);
-              }
+              Navigator.pushNamed(context, ProfessionalModifyProfile.routeName);
             },
           ),
         ),

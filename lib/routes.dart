@@ -10,6 +10,7 @@ import 'package:medical_projet/screens/dashboard/administrator/pages/chat/admin_
 import 'package:medical_projet/screens/dashboard/administrator/pages/chat/components/admin_chat_page_body.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/details/detail_page.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/professional_search_page.dart';
+import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/identity/professional_modfy_profile/professional_modify_profile.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/identity/professional_profile_identity.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/professional_profile_page.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/medical/components/user_medical_modify/user_medical_modify.dart';
@@ -59,6 +60,8 @@ final Map<String, WidgetBuilder> routes = {
   // medical page
   ProfessionalSearchPage.routeName: (context) => const ProfessionalSearchPage(),
   // DetailPage.routeName: (context) => const DetailPage(),
+  ProfessionalModifyProfile.routeName: (context) =>
+      const ProfessionalModifyProfile(),
 
   // ADMIN
   AdminDetailConversation.routeName: (context) =>
