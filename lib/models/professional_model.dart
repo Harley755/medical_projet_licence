@@ -5,11 +5,11 @@ class Professional {
   final String nom;
   final String prenom;
   final String email;
+  final String specialite;
   final String photoUrl;
   final String photoCarteMedicale;
   final String photoPieceIdentite;
   final String telephone;
-  final bool hasTwoAccount; // A RETIRER
   final String role;
 
   const Professional({
@@ -17,11 +17,11 @@ class Professional {
     required this.nom,
     required this.prenom,
     required this.email,
+    required this.specialite,
     required this.photoUrl,
     required this.photoCarteMedicale,
     required this.photoPieceIdentite,
     required this.telephone,
-    this.hasTwoAccount = true,
     required this.role,
   });
 
@@ -30,11 +30,11 @@ class Professional {
         'nom': nom,
         'prenom': prenom,
         'email': email,
+        'specialite': specialite,
         'photoUrl': photoUrl,
         'photoCarteMedicale': photoCarteMedicale,
         'photoPieceIdentite': photoPieceIdentite,
         'telephone': telephone,
-        'hasTwoAccount': hasTwoAccount,
         'role': role,
       };
 
@@ -46,11 +46,11 @@ class Professional {
       nom: snapshot['nom'],
       prenom: snapshot['prenom'],
       email: snapshot['email'],
+      specialite: snapshot['specialite'],
       telephone: snapshot['telephone'],
       photoCarteMedicale: snapshot['photoCarteMedicale'],
       photoPieceIdentite: snapshot['photoPieceIdentite'],
       photoUrl: snapshot['photoUrl'],
-      hasTwoAccount: snapshot['hasTwoAccount'],
       role: snapshot['role'],
     );
   }

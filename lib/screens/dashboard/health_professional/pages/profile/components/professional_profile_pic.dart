@@ -9,7 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:medical_projet/components/fonts.dart';
+import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/size_config.dart';
+import 'package:medical_projet/models/user_model.dart' as model;
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/utils/functions.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -25,6 +27,10 @@ class _ProfessionalProfilePicState extends State<ProfessionalProfilePic> {
   late String _profileImageUrl;
 
   bool _isLoading = false;
+
+  String _email = "";
+  late Future<model.User> _userDetailsFuture;
+  model.User? _user;
 
   @override
   void initState() {
@@ -42,6 +48,19 @@ class _ProfessionalProfilePicState extends State<ProfessionalProfilePic> {
     }).catchError((error) {
       // Ignorer l'erreur si l'image de profil n'existe pas encore.
     });
+
+    if (fileName != "") {
+      _userDetailsFuture = UserAuthMethods().getUserIdentityDetails(
+        userId: fileName,
+      );
+      _userDetailsFuture.then((user) {
+        setState(() {
+          _user = user;
+          print(_user!.email);
+          _email = _user!.email;
+        });
+      });
+    }
     super.initState();
   }
 
@@ -69,6 +88,11 @@ class _ProfessionalProfilePicState extends State<ProfessionalProfilePic> {
         .doc(fileName)
         .update({'photoUrl': imageUrl});
 
+    await firestore
+        .collection('comptes')
+        .doc(_email)
+        .update({'photoUrl': imageUrl});
+
     setState(() {
       _profileImageUrl = imageUrl;
       _isLoading = false;
@@ -94,6 +118,11 @@ class _ProfessionalProfilePicState extends State<ProfessionalProfilePic> {
     await firestore
         .collection('users')
         .doc(fileName)
+        .update({'photoUrl': imageUrl});
+
+    await firestore
+        .collection('comptes')
+        .doc(_email)
         .update({'photoUrl': imageUrl});
 
     setState(() {

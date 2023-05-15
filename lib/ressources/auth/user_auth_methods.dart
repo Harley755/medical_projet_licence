@@ -333,11 +333,11 @@ class UserAuthMethods {
           nom: nom,
           prenom: prenom,
           email: email,
+          specialite: specialite,
           photoUrl: '',
           photoCarteMedicale: carteM,
           photoPieceIdentite: pieceI,
           telephone: '',
-          hasTwoAccount: true,
           role: 'professional',
         );
         // ON AJOUTE L'UTILISATEUR A FIREBASE
