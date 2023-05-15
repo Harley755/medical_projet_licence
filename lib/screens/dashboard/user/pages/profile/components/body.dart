@@ -3,6 +3,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/screens/auth/auth_screen.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_up/sign_up_screen.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/associated_account/associated_account.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/components/profile_pic.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/components/sub_profile_menu.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_profile_identity.dart';
@@ -85,7 +86,10 @@ class _BodyState extends State<Body> {
             text: "Comptes Associés",
             icon: "assets/icons/add_user.svg",
             width: 28,
-            press: () => {},
+            press: () => Navigator.pushNamed(
+              context,
+              AssociatedAccount.routeName,
+            ),
           ),
 
           // CREATE MEDICAL ACCOUNT
