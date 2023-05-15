@@ -81,4 +81,26 @@ class CompteMethods {
     }
     return response;
   }
+
+  Future<List<DocumentSnapshot>> getUserInformatifAccounts() async {
+    // Récupérer l'utilisateur couramment connecté
+    User? currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser != null) {
+      // Effectuer la requête pour récupérer les comptes informatifs de l'utilisateur
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('Compte')
+          .where('userId', isEqualTo: currentUser.uid)
+          .where('typeCompte', isEqualTo: 'informatif')
+          .get();
+
+      // Retourner les résultats sous forme de liste de DocumentSnapshot
+      return querySnapshot.docs;
+    } else {
+      throw FirebaseAuthException(
+        code: 'user-not-found',
+        message: 'No user currently logged in.',
+      );
+    }
+  }
 }

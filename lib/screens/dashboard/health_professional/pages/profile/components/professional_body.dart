@@ -4,6 +4,7 @@ import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/screens/auth/auth_screen.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_in/sign_in_screen.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_up/sign_up_screen.dart';
+import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/associated_account/associated_account.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/components/professional_profile_menu.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/components/professional_profile_pic.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/components/professional_sub_profile_menu.dart';
@@ -50,6 +51,17 @@ class _ProfessionalBodyState extends State<ProfessionalBody> {
               });
             },
           ),
+
+          // USER ACCOUNT
+          ProfessionalProfileMenu(
+            text: "Compte Associé",
+            icon: "assets/icons/User Icon.svg",
+            press: () => Navigator.pushNamed(
+              context,
+              ProfessionalAssociatedAccount.routeName,
+            ),
+          ),
+
           // DROPDOWN CHILD
           isClicked
               ? Column(
