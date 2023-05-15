@@ -50,10 +50,30 @@ class CompteMethods {
           userId: userId,
         );
         // ON AJOUTE LE COMPTE A FIREBASE
-        await _firestore
-            .collection('comptes')
-            .doc(compteID)
-            .set(compte.toJson());
+        await _firestore.collection('comptes').doc(email).set(compte.toJson());
+        response = "success";
+      }
+    } catch (e) {
+      response = e.toString();
+    }
+    return response;
+  }
+
+  Future<String> updateCompte({
+    required String nom,
+    required String prenom,
+    required String email,
+  }) async {
+    String response = "Une erreur s'est produite";
+
+    try {
+      // VERIFICATION DES CHAMPS
+      if (nom.isNotEmpty || prenom.isNotEmpty || email.isNotEmpty) {
+        // ON AJOUTE LE COMPTE A FIREBASE
+        await _firestore.collection('comptes').doc(email).update({
+          'nom': nom,
+          'prenom': prenom,
+        });
         response = "success";
       }
     } catch (e) {

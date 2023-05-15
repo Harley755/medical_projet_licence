@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medical_projet/models/user_model.dart' as model;
 import 'package:medical_projet/ressources/cloud/antecedent_methods.dart';
+import 'package:medical_projet/ressources/cloud/compte_methods.dart';
 import 'package:medical_projet/ressources/cloud/pieces_storage.dart';
+import 'package:uuid/uuid.dart';
 
 class UserCloudMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -34,6 +36,7 @@ class UserCloudMethods {
   Future<String> updateUserIdentity({
     required nom,
     required prenom,
+    required email,
     required sexe,
     required poids,
     required age,
@@ -49,6 +52,7 @@ class UserCloudMethods {
       // VERIFICATION DES CHAMPS
       if (nom.isNotEmpty ||
           prenom.isNotEmpty ||
+          email.isNotEmpty ||
           sexe.isNotEmpty ||
           poids.isNotEmpty ||
           age.isNotEmpty ||
@@ -68,7 +72,12 @@ class UserCloudMethods {
           'telephoneContactUrgence': telephoneContactUrgence,
           'relation': relation,
         });
-
+        // UPDATE LE COMPTE
+        await CompteMethods().updateCompte(
+          nom: nom,
+          prenom: prenom,
+          email: email,
+        );
         response = "success";
       }
     } catch (e) {

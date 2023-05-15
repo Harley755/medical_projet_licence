@@ -25,6 +25,9 @@ class UserProfileFormModify extends StatefulWidget {
 }
 
 class _UserProfileFormModifyState extends State<UserProfileFormModify> {
+  User? currentUser = FirebaseAuth.instance.currentUser;
+  late Future<model.User> _userDetailsFuture;
+  model.User? _user;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late final TextEditingController _nomController;
   late final TextEditingController _prenomController;
@@ -61,6 +64,19 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
     _poidsController = TextEditingController();
     _emergenceNameController = TextEditingController();
     _emergenceContactController = TextEditingController();
+
+    if (currentUser != null) {
+      _userDetailsFuture = UserAuthMethods().getUserIdentityDetails(
+        userId: currentUser!.uid,
+      );
+      _userDetailsFuture.then((user) {
+        setState(() {
+          _user = user;
+          print(_user!.email);
+          _email = _user!.email;
+        });
+      });
+    }
 
     super.initState();
   }
@@ -106,7 +122,9 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
   String? emergenceContact;
   String? emergenceRelationship;
   String? conformPassword;
-  bool remember = false;
+
+  String _email = "";
+
   final List<String?> errors = [];
 
   void addError({String? error}) {
@@ -177,6 +195,7 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
       nomContactUrgence: _emergenceNameController.text,
       telephoneContactUrgence: _emergenceContactController.text,
       relation: _relation.text,
+      email: _email,
     );
     if (response != 'success') {
       // ignore: use_build_context_synchronously
