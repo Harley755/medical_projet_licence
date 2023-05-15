@@ -89,9 +89,9 @@ class CompteMethods {
     if (currentUser != null) {
       // Effectuer la requête pour récupérer les comptes informatifs de l'utilisateur
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('Compte')
+          .collection('comptes')
           .where('userId', isEqualTo: currentUser.uid)
-          .where('typeCompte', isEqualTo: 'informatif')
+          .where('compteType', isEqualTo: 'informatif')
           .get();
 
       // Retourner les résultats sous forme de liste de DocumentSnapshot
