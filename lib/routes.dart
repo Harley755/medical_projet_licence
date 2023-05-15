@@ -17,6 +17,7 @@ import 'package:medical_projet/screens/dashboard/health_professional/pages/profi
 import 'package:medical_projet/screens/dashboard/user/pages/medical/components/user_medical_modify/user_medical_modify.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/medical/user_medical_page.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/associated_account/associated_account.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/associated_account/new_signup_account/new_signup.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_modfy_profile/user_profile_identity_modify.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_profile_identity.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
@@ -53,6 +54,7 @@ final Map<String, WidgetBuilder> routes = {
   UserMedicalModify.routeName: (context) => const UserMedicalModify(),
   // ASSOCIATED ACCOUNT
   AssociatedAccount.routeName: (context) => const AssociatedAccount(),
+  NewSignUp.routeName: (context) => const NewSignUp(),
 
   // MEDICAL PROFESSIONAL
   // identity form

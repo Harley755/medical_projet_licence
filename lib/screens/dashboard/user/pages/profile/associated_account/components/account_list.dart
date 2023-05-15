@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/ressources/cloud/compte_methods.dart';
+import 'package:medical_projet/screens/auth/informative_account/sign_in/sign_in_screen.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/details/detail_page.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/constants.dart';
@@ -45,43 +46,68 @@ class _AccountListState extends State<AccountList> {
         } else {
           List<DocumentSnapshot> accounts = snapshot.data!;
           print(accounts);
-          return SizedBox(
-            height: SizeConfig.screenHeight,
-            child: Expanded(
-              child: ListView.builder(
-                itemCount: accounts.length,
-                itemBuilder: (BuildContext context, int index) {
-                  DocumentSnapshot accountSnapshot = accounts[index];
-                  Map<String, dynamic> accountData =
-                      accountSnapshot.data() as Map<String, dynamic>;
-                  return InkWell(
-                    // onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    //   builder: (context) => DetailPage(
-                    //     userId: accountData['userId'],
-                    //   ),
-                    // )),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(0.0),
-                      leading: CircleAvatar(
-                        radius: 26.0,
-                        backgroundImage: NetworkImage(
-                          '${accountData['phototUrl']}',
+          return Column(
+            children: [
+              SizedBox(
+                height: SizeConfig.screenHeight,
+                child: Expanded(
+                  child: ListView.builder(
+                    itemCount: accounts.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      DocumentSnapshot accountSnapshot = accounts[index];
+                      Map<String, dynamic> accountData =
+                          accountSnapshot.data() as Map<String, dynamic>;
+
+                      return InkWell(
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const InfoSignInScreen(),
+                          ),
                         ),
-                      ),
-                      title: RobotoFont(
-                        title: '${accountData['prenom']} ${accountData['nom']}',
-                        size: getProportionateScreenWidth(17.0),
-                        fontWeight: FontWeight.w500,
-                      ),
-                      subtitle: RobotoFont(
-                        title: accountData['email'],
-                        size: getProportionateScreenWidth(13.0),
-                      ),
-                    ),
-                  );
-                },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                            vertical: getProportionateScreenHeight(10.0),
+                          ),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(0.0),
+                            leading: CircleAvatar(
+                              radius: 26.0,
+                              backgroundImage: NetworkImage(
+                                '${accountData['phototUrl']}',
+                              ),
+                            ),
+                            title: RobotoFont(
+                              title:
+                                  '${accountData['prenom']} ${accountData['nom']}',
+                              size: getProportionateScreenWidth(17.0),
+                              fontWeight: FontWeight.w500,
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                    height: getProportionateScreenHeight(5.0)),
+                                RobotoFont(
+                                  title: accountData['email'],
+                                  size: getProportionateScreenWidth(13.0),
+                                ),
+                                SizedBox(
+                                    height: getProportionateScreenHeight(5.0)),
+                                RobotoFont(
+                                  title: 'compte ${accountData['compteType']}',
+                                  size: getProportionateScreenWidth(13.0),
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
-            ),
+            ],
           );
         }
       },

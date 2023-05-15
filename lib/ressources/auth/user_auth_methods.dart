@@ -163,6 +163,99 @@ class UserAuthMethods {
     return response;
   }
 
+  // INSCRIPTION COMPTE INFORMATIF
+  Future<String> signUpUserAssociatedAccount({
+    required nom,
+    required prenom,
+    required email,
+    required password,
+  }) async {
+    String response = "Une erreur s'est produite";
+
+    try {
+      // VERIFICATION DES CHAMPS
+      if (nom.isNotEmpty ||
+          prenom.isNotEmpty ||
+          email.isNotEmpty ||
+          password.isNotEmpty) {
+        // AJOUTE LE COMPTE
+        print(_auth.currentUser!.uid);
+        var compteID = const Uuid().v1();
+        await CompteMethods().addCompte(
+          compteId: compteID,
+          nom: nom,
+          prenom: prenom,
+          email: email,
+          compteType: 'informatif',
+          userId: _auth.currentUser!.uid,
+          photoUrl: '',
+        );
+        print("Compte Ajouté");
+        // ON ENREGISTRE L'UTILISATEUR
+        UserCredential credential = await _auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        model.User user = model.User(
+          userId: credential.user!.uid,
+          nom: nom,
+          prenom: prenom,
+          email: email,
+          poids: '',
+          sexe: '',
+          age: '',
+          photoUrl: '',
+          telephone: '',
+          groupeSanguinId: '',
+          nomContactUrgence: '',
+          telephoneContactUrgence: '',
+          relation: '',
+          role: 'user',
+        );
+        // ON AJOUTE L'UTILISATEUR A FIREBASE
+        print("user Ajouté");
+        await _firestore
+            .collection('users')
+            .doc(credential.user!.uid)
+            .set(user.toJson());
+
+        // CREER SA TABLE ANTECEDENT
+        await _firestore
+            .collection('antecedents')
+            .doc(credential.user!.uid)
+            .set({
+          'antecedentId': credential.user!.uid,
+          'antecedentMedicaux': "",
+          'maladiesChronique': "",
+          'antecedentTraumatique': "",
+          'antecedentAllergique': "",
+          'antecedentChirurgie': "",
+          'antecedentMaladieInfecteuse': "",
+          'userId': credential.user!.uid,
+        });
+        print("Compte Ajouté");
+
+        response = "success";
+
+        // ENVOIE UN MAIL DE VERIFICATION D'EMAIL
+        // await sendEmailVerification();
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-email') {
+        response = "L'e-mail est mal valide.";
+      } else if (e.code == 'email-already-in-use') {
+        response = "Votre adresse email a déja été utilisé.";
+      } else if (e.code == 'operation-not-allowed') {
+        response = "Votre compte n'a pas été activé.";
+      } else if (e.code == 'weak-password') {
+        response = 'Votre mot de passe doit comporter au moins 8 caractères.';
+      }
+    } catch (e) {
+      response = e.toString();
+    }
+    return response;
+  }
+
   Future<String> addPhoneNumber({
     required String phoneNumber,
   }) async {
