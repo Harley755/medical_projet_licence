@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
+import 'package:medical_projet/screens/auth/auth_screen.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_in/sign_in_screen.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_up/sign_up_screen.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/components/professional_profile_menu.dart';
@@ -102,7 +103,7 @@ class _ProfessionalBodyState extends State<ProfessionalBody> {
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const MedicalSignInScreen(),
+                  builder: (context) => const AuthScreen(),
                 ),
                 (Route<dynamic> route) => false,
               );
