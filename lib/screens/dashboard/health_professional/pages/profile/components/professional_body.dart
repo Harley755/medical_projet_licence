@@ -52,15 +52,15 @@ class _ProfessionalBodyState extends State<ProfessionalBody> {
             },
           ),
 
-          // USER ACCOUNT
-          ProfessionalProfileMenu(
-            text: "Compte Associé",
-            icon: "assets/icons/User Icon.svg",
-            press: () => Navigator.pushNamed(
-              context,
-              ProfessionalAssociatedAccount.routeName,
-            ),
-          ),
+          // // USER ACCOUNT
+          // ProfessionalProfileMenu(
+          //   text: "Compte Associé",
+          //   icon: "assets/icons/User Icon.svg",
+          //   press: () => Navigator.pushNamed(
+          //     context,
+          //     ProfessionalAssociatedAccount.routeName,
+          //   ),
+          // ),
 
           // DROPDOWN CHILD
           isClicked
