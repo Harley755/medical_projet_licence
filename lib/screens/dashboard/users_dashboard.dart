@@ -21,7 +21,6 @@ class _UsersDashboardScreenState extends State<UsersDashboardScreen> {
   late Future<model.User> _userRoleFuture;
   model.User? _user;
   String _role = "";
-  bool _hasTwoAccount = false;
 
   @override
   void initState() {

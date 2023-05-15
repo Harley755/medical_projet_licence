@@ -62,6 +62,12 @@ class _AccountListState extends State<AccountList> {
                     // )),
                     child: ListTile(
                       contentPadding: const EdgeInsets.all(0.0),
+                      leading: CircleAvatar(
+                        radius: 26.0,
+                        backgroundImage: NetworkImage(
+                          '${accountData['phototUrl']}',
+                        ),
+                      ),
                       title: RobotoFont(
                         title: '${accountData['prenom']} ${accountData['nom']}',
                         size: getProportionateScreenWidth(17.0),
