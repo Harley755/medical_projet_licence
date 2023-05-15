@@ -105,7 +105,6 @@ class UserAuthMethods {
           nomContactUrgence: '',
           telephoneContactUrgence: '',
           relation: '',
-          hasTwoAccount: false,
           role: 'user',
         );
         // ON AJOUTE L'UTILISATEUR A FIREBASE
@@ -122,6 +121,7 @@ class UserAuthMethods {
           prenom: prenom,
           email: email,
           compteType: 'informatif',
+          photoUrl: '',
           userId: credential.user!.uid,
         );
         print("Compte Ajouté");
@@ -308,6 +308,7 @@ class UserAuthMethods {
           email: email,
           compteType: 'Medical',
           userId: _auth.currentUser!.uid,
+          photoUrl: '',
         );
         // ON ENREGISTRE L'UTILISATEUR
         UserCredential credential = await _auth.createUserWithEmailAndPassword(

@@ -14,7 +14,6 @@ class User {
   final String? nomContactUrgence;
   final String? telephoneContactUrgence;
   final String? relation;
-  final bool hasTwoAccount;
   final String role;
 
   const User({
@@ -31,7 +30,6 @@ class User {
     required this.nomContactUrgence,
     required this.telephoneContactUrgence,
     required this.relation,
-    this.hasTwoAccount = false,
     required this.role,
   });
 
@@ -49,7 +47,6 @@ class User {
         'nomContactUrgence': nomContactUrgence,
         'telephoneContactUrgence': telephoneContactUrgence,
         'relation': relation,
-        'hasTwoAccount': hasTwoAccount,
         'role': role,
       };
 
@@ -70,7 +67,6 @@ class User {
       nomContactUrgence: snapshot['nomContactUrgence'],
       telephoneContactUrgence: snapshot['telephoneContactUrgence'],
       relation: snapshot['relation'],
-      hasTwoAccount: snapshot['hasTwoAccount'],
       role: snapshot['role'],
     );
   }

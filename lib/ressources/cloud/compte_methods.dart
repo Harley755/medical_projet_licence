@@ -26,6 +26,7 @@ class CompteMethods {
     required String prenom,
     required String email,
     required String compteType,
+    required String photoUrl,
     required String userId,
   }) async {
     String response = "Une erreur s'est produite";
@@ -37,7 +38,8 @@ class CompteMethods {
           prenom.isNotEmpty ||
           email.isNotEmpty ||
           compteType.isNotEmpty ||
-          userId.isNotEmpty) {
+          userId.isNotEmpty ||
+          photoUrl.isNotEmpty) {
         // ON ENREGISTRE L'UTILISATEUR
         // convertit la chaîne en une liste de bytes
         var compteID = const Uuid().v1();
@@ -47,7 +49,10 @@ class CompteMethods {
           prenom: prenom,
           email: email,
           compteType: compteType,
+          photoUrl: photoUrl,
           userId: userId,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
         );
         // ON AJOUTE LE COMPTE A FIREBASE
         await _firestore.collection('comptes').doc(email).set(compte.toJson());
@@ -73,6 +78,7 @@ class CompteMethods {
         await _firestore.collection('comptes').doc(email).update({
           'nom': nom,
           'prenom': prenom,
+          'updatedAt': DateTime.now(),
         });
         response = "success";
       }

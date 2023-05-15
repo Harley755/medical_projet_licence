@@ -6,7 +6,10 @@ class Compte {
   final String prenom;
   final String email;
   final String compteType;
+  final String photoUrl;
   final String userId;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   const Compte({
     required this.compteId,
@@ -14,7 +17,10 @@ class Compte {
     required this.prenom,
     required this.email,
     required this.compteType,
+    required this.photoUrl,
     required this.userId,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   Map<String, dynamic> toJson() => {
@@ -23,7 +29,10 @@ class Compte {
         'prenom': prenom,
         'email': email,
         'compteType': compteType,
+        'photoUrl': photoUrl,
         'userId': userId,
+        'createdAt': createdAt,
+        'updatedAt': updatedAt,
       };
 
   static Compte fromSnap(DocumentSnapshot snap) {
@@ -35,7 +44,10 @@ class Compte {
       prenom: snapshot['prenom'],
       email: snapshot['email'],
       compteType: snapshot['compteType'],
+      photoUrl: snapshot['photoUrl'],
       userId: snapshot['userId'],
+      createdAt: snapshot['createdAt'],
+      updatedAt: snapshot['updatedAt'],
     );
   }
 }

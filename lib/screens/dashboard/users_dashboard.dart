@@ -74,7 +74,6 @@ class _UsersDashboardScreenState extends State<UsersDashboardScreen> {
         if (snapshot.hasData) {
           _user = snapshot.data!;
           _role = _user!.role;
-          _hasTwoAccount = _user!.hasTwoAccount;
 
           return getNavigationBar();
         } else if (snapshot.hasError) {
