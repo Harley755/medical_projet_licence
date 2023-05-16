@@ -7,6 +7,8 @@ import 'package:medical_projet/screens/dashboard/user/pages/profile/associated_a
 import 'package:medical_projet/screens/dashboard/user/pages/profile/components/profile_pic.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/components/sub_profile_menu.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_profile_identity.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/security/change_email/user_change_email.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/security/change_password/user_change_password.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
 
 import 'profile_menu.dart';
@@ -59,7 +61,10 @@ class _BodyState extends State<Body> {
                     SubProfileMenu(
                       text: "Changer d'adresse email",
                       icon: "assets/icons/Lock.svg",
-                      press: () => {},
+                      press: () => Navigator.pushNamed(
+                        context,
+                        UserChangeEmail.routeName,
+                      ),
                     ),
                     SubProfileMenu(
                       text: "Ajouter des empreintes",
@@ -69,7 +74,10 @@ class _BodyState extends State<Body> {
                     SubProfileMenu(
                       text: "Changer de mot de passe",
                       icon: "assets/icons/Lock.svg",
-                      press: () => {},
+                      press: () => Navigator.pushNamed(
+                        context,
+                        UserChangePassword.routeName,
+                      ),
                     ),
                     SubProfileMenu(
                       downPadding: 14,

@@ -20,6 +20,8 @@ import 'package:medical_projet/screens/dashboard/user/pages/profile/associated_a
 import 'package:medical_projet/screens/dashboard/user/pages/profile/associated_account/new_signup_account/new_signup.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_modfy_profile/user_profile_identity_modify.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_profile_identity.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/security/change_email/user_change_email.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/security/change_password/user_change_password.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
 
 import 'screens/dashboard/administrator/pages/chat/components/details_conversation.dart';
@@ -55,6 +57,8 @@ final Map<String, WidgetBuilder> routes = {
   // ASSOCIATED ACCOUNT
   AssociatedAccount.routeName: (context) => const AssociatedAccount(),
   NewSignUp.routeName: (context) => const NewSignUp(),
+  UserChangeEmail.routeName: (context) => const UserChangeEmail(),
+  UserChangePassword.routeName: (context) => const UserChangePassword(),
 
   // MEDICAL PROFESSIONAL
   // identity form

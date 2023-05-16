@@ -378,8 +378,9 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
 
   TextFormField buildFamilyMedicalHistoryField() {
     return TextFormField(
+      maxLines: null,
+      keyboardType: TextInputType.multiline,
       controller: _familyMedicalHistoryController,
-      keyboardType: TextInputType.text,
       onSaved: (newValue) => familyMedicalHistory = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -426,8 +427,9 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
 
   TextFormField buildChronicIllnessesField() {
     return TextFormField(
+       maxLines: null,
+      keyboardType: TextInputType.multiline,
       controller: _chronicIllnessesController,
-      keyboardType: TextInputType.text,
       onSaved: (newValue) => chronicIllnesses = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -474,8 +476,9 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
 
   TextFormField buildHistorySevereAllergicReactionsField() {
     return TextFormField(
+       maxLines: null,
+      keyboardType: TextInputType.multiline,
       controller: _historySevereAllergicReactionController,
-      keyboardType: TextInputType.text,
       onSaved: (newValue) => historySevereAllergicReactions = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -522,8 +525,9 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
 
   TextFormField buildHistoryOfTraumaField() {
     return TextFormField(
+     maxLines: null,
+      keyboardType: TextInputType.multiline,
       controller: _historyOfTraumaController,
-      keyboardType: TextInputType.text,
       onSaved: (newValue) => historyOfTrauma = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -570,8 +574,9 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
 
   TextFormField buildHistoryOfRecentSurgeryField() {
     return TextFormField(
+       maxLines: null,
+      keyboardType: TextInputType.multiline,
       controller: _historyOfRecentSurgeryController,
-      keyboardType: TextInputType.text,
       onSaved: (newValue) => historyOfRecentSurgery = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -618,8 +623,9 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
 
   TextFormField buildHistoryOfInfectiousDiseasesField() {
     return TextFormField(
+       maxLines: null,
+      keyboardType: TextInputType.multiline,
       controller: _historyOfInfectiousDiseasesController,
-      keyboardType: TextInputType.text,
       onSaved: (newValue) => historyOfInfectiousDiseases = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -666,7 +672,8 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
 
   TextFormField buildListOfCurrentMedicationsField() {
     return TextFormField(
-      keyboardType: TextInputType.text,
+       maxLines: null,
+      keyboardType: TextInputType.multiline,
       onSaved: (newValue) => listOfCurrentMedications = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -693,7 +700,8 @@ class _UserMedicalModifyFormState extends State<UserMedicalModifyForm> {
 
   TextFormField buildDosageCurrentMedicationsField() {
     return TextFormField(
-      keyboardType: TextInputType.text,
+       maxLines: null,
+      keyboardType: TextInputType.multiline,
       onSaved: (newValue) => listOfCurrentMedications = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {

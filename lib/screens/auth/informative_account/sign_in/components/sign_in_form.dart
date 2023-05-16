@@ -97,18 +97,22 @@ class _SignInFormState extends State<SignInForm> {
           // buildConformPassFormField(),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(22)),
-          _isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : DefaultButton(
-                  text: "Se connecter",
-                  press: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      // if all are valid then go to success screen
-                      userSignIn();
-                    }
-                  },
-                ),
+          Visibility(
+            visible: !_isLoading,
+            replacement: const Center(
+              child: CircularProgressIndicator(color: kPrimaryColor),
+            ),
+            child: DefaultButton(
+              text: "Se connecter",
+              press: () {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  // if all are valid then go to success screen
+                  userSignIn();
+                }
+              },
+            ),
+          )
         ],
       ),
     );
