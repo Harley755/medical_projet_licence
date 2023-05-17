@@ -146,9 +146,11 @@ class UserCloudMethods {
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'firebase_auth/invalid-email':
-          throw response = "Email invalid";
+          response = "Email invalid";
+          break;
         case 'firebase_auth/user-not-found':
-          throw "Cette adresse email n'est pas utilisé";
+          response = "Cette adresse email n'est pas utilisé";
+          break;
         default:
           throw response;
       }
