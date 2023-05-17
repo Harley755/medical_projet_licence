@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
+import 'package:medical_projet/ressources/cloud/user_cloud_methods.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
 import 'package:medical_projet/size_config.dart';
@@ -57,6 +58,28 @@ class _UserChangePasswordFormState extends State<UserChangePasswordForm> {
 
   bool _isLoading = false;
 
+  void resetUserPassword() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String response = await UserCloudMethods().resetPassword(
+      toEmail: _emailController.text.trim(),
+    );
+    if (response != 'success') {
+      // ignore: use_build_context_synchronously
+      showSnackBar(response, context);
+    } else {
+      // ignore: use_build_context_synchronously
+      showSnackBar(
+        "Nous vous avons envoyé un mail\nMerci de bien suivre les indications !",
+        context,
+      );
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -66,19 +89,22 @@ class _UserChangePasswordFormState extends State<UserChangePasswordForm> {
           buildEmailFormField(),
           // buildConformPassFormField(),
           SizedBox(height: getProportionateScreenHeight(60)),
-          _isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(color: kPrimaryColor),
-                )
-              : DefaultButton(
-                  text: "Changer mot de passe",
-                  press: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      // if all are valid then go to success screen
-                    }
-                  },
-                ),
+          Visibility(
+            visible: !_isLoading,
+            replacement: const Center(
+              child: CircularProgressIndicator(color: kPrimaryColor),
+            ),
+            child: DefaultButton(
+              text: "Changer mot de passe",
+              press: () {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  // if all are valid then go to success screen
+                  resetUserPassword();
+                }
+              },
+            ),
+          ),
         ],
       ),
     );

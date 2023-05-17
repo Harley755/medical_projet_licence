@@ -134,4 +134,27 @@ class UserCloudMethods {
     }
     return response;
   }
+
+  Future<String> resetPassword({required String toEmail}) async {
+    String response = "Une erreur s'est produite";
+    try {
+      // VERIFICATION DES CHAMPS
+      if (toEmail.isNotEmpty) {
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: toEmail);
+        response = "success";
+      }
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'firebase_auth/invalid-email':
+          throw response = "Email invalid";
+        case 'firebase_auth/user-not-found':
+          throw "Cette adresse email n'est pas utilisé";
+        default:
+          throw response;
+      }
+    } catch (e) {
+      response = e.toString();
+    }
+    return response;
+  }
 }
