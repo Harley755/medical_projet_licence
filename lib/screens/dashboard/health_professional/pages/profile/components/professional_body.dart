@@ -9,6 +9,7 @@ import 'package:medical_projet/screens/dashboard/health_professional/pages/profi
 import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/components/professional_profile_pic.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/components/professional_sub_profile_menu.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/profile/identity/professional_profile_identity.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/security/change_password/user_change_password.dart';
 
 class ProfessionalBody extends StatefulWidget {
   const ProfessionalBody({super.key});
@@ -79,7 +80,10 @@ class _ProfessionalBodyState extends State<ProfessionalBody> {
                     ProfessionalSubProfileMenu(
                       text: "Changer de mot de passe",
                       icon: "assets/icons/Lock.svg",
-                      press: () => {},
+                      press: () => Navigator.pushNamed(
+                        context,
+                        UserChangePassword.routeName,
+                      ),
                     ),
                     ProfessionalSubProfileMenu(
                       downPadding: 14,
