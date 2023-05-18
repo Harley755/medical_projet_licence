@@ -11,15 +11,6 @@ import 'package:uuid/uuid.dart';
 class CompteMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  String hashPassword({required passwordToHash}) {
-    List<int> bytes = utf8.encode(passwordToHash);
-    // calcule le hash SHA-256
-    Digest hash = sha256.convert(bytes);
-    // affiche le hash sous forme de chaîne de caractères hexadéc
-    print(hash.toString());
-    return hash.toString();
-  }
-
   Future<String> addCompte({
     required String compteId,
     required String nom,

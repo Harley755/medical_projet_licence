@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:medical_projet/models/professional_model.dart' as model;
 import 'package:medical_projet/models/user_model.dart' as model;
 import 'package:medical_projet/models/antecedent_model.dart' as model;
+import 'package:medical_projet/models/admin_model.dart' as model;
 import 'package:medical_projet/ressources/cloud/compte_methods.dart';
 import 'package:medical_projet/ressources/cloud/pieces_storage.dart';
 import 'package:uuid/uuid.dart';
