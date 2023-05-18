@@ -25,10 +25,13 @@ class _ProfessionalListResultState extends State<ProfessionalListResult> {
           )
           .get(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(color: kPrimaryColor),
           );
+        }
+        if (!snapshot.hasData) {
+          return const Text("Pas d'utilisateurs avec ce nom de famille");
         }
         return SizedBox(
           height: SizeConfig.screenHeight,
