@@ -3,7 +3,8 @@ import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/size_config.dart';
 
 class ProfessionalSearch extends StatefulWidget {
-  const ProfessionalSearch({super.key});
+  late bool isShowUsers;
+  ProfessionalSearch({super.key, required this.isShowUsers});
 
   @override
   State<ProfessionalSearch> createState() => _ProfessionalSearchState();
@@ -19,7 +20,6 @@ class _ProfessionalSearchState extends State<ProfessionalSearch> {
         vertical: getProportionateScreenHeight(10),
       ),
       child: TextFormField(
-        readOnly: true,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(
             vertical: getProportionateScreenHeight(15),
@@ -33,7 +33,15 @@ class _ProfessionalSearchState extends State<ProfessionalSearch> {
           hintText: "Rechercher un utilisateur",
           floatingLabelBehavior: FloatingLabelBehavior.always,
         ),
-        onChanged: (String _) {},
+        onChanged: (String _) {
+          setState(() {
+            if (_ == "") {
+              widget.isShowUsers = false;
+            } else {
+              widget.isShowUsers = true;
+            }
+          });
+        },
       ),
     );
   }
