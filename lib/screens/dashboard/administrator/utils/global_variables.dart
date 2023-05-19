@@ -11,7 +11,7 @@ const TextStyle optionStyle = TextStyle(
 
 List<Widget> adminScreenItems = [
   const AdminStatePage(),
-  const AdminChatPage(),
+  // const AdminChatPage(),
   const AdminSearchPage(),
   const AdminNotificationPage(),
 ];

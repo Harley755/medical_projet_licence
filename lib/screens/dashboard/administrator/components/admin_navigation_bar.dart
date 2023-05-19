@@ -92,36 +92,6 @@ class _AdminNavigationBarState extends State<AdminNavigationBar> {
                   backgroundColor: selectTabBg,
                   iconSize: 24,
                   padding: padding,
-                  icon: Icons.messenger_outline,
-                  leading: _selectedIndex == 1 || badgeMessenger == 0
-                      ? null
-                      : badges.Badge(
-                          position:
-                              badges.BadgePosition.topEnd(top: -12, end: -12),
-                          badgeContent: Text(
-                            badgeMessenger.toString(),
-                            style: TextStyle(color: Colors.red.shade900),
-                          ),
-                          badgeStyle: badges.BadgeStyle(
-                            badgeColor: Colors.red.shade100,
-                            elevation: 0,
-                          ),
-                          child: Icon(
-                            Icons.messenger_outline,
-                            color: _selectedIndex == 1
-                                ? Colors.pink
-                                : Colors.black,
-                          ),
-                        ),
-                ),
-                GButton(
-                  gap: gap,
-                  iconActiveColor: kPrimaryColor,
-                  iconColor: Colors.black,
-                  textColor: kPrimaryColor,
-                  backgroundColor: selectTabBg,
-                  iconSize: 24,
-                  padding: padding,
                   icon: Icons.search,
                   text: 'Search',
                 ),
