@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/utils/constants.dart';
@@ -13,24 +15,68 @@ class AdminStatePage extends StatefulWidget {
 }
 
 class _AdminStatePageState extends State<AdminStatePage> {
+  late String _profileImageUrl;
+
+  @override
+  void initState() {
+    _profileImageUrl =
+        "https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg";
+    // Chargement de l'image de profil à partir de Firebase Storage si elle existe.
+
+    final user = FirebaseAuth.instance.currentUser;
+    final fileName = user!.uid;
+    final storageRef =
+        FirebaseStorage.instance.ref().child('avatars/$fileName');
+    storageRef.getDownloadURL().then((url) {
+      setState(() {
+        _profileImageUrl = url;
+      });
+    }).catchError((error) {
+      print(error);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
-            "Admin State Page",
+            "Statistiques",
             style: TextStyle(color: kSecondaryColor),
           ),
           centerTitle: true,
           leading: Builder(
             builder: (context) {
               return IconButton(
-                icon: const CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    'https://i.pinimg.com/736x/08/2a/1b/082a1bb32a158d7270582c044fca7bfd.jpg',
-                  ), // URL de votre image
-                ),
+                icon: StreamBuilder<String>(
+                    stream: Stream.value(_profileImageUrl),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            color: kPrimaryColor,
+                          ),
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        print(snapshot.hasError);
+                      }
+                      if (snapshot.hasData) {
+                        return CircleAvatar(
+                          radius: 12.0,
+                          backgroundImage: NetworkImage(snapshot.data!),
+                        );
+                      } else {
+                        return const CircleAvatar(
+                          radius: 12.0,
+                          backgroundImage: NetworkImage(
+                            "https://64.media.tumblr.com/eb8013a5fded5dcb55eee5ba2e48c86c/012efcaf904bfd8e-89/s640x960/cbb4836ddab081451c45286f7f9ab278f99f59f7.pnj",
+                          ),
+                        );
+                      }
+                    }),
                 onPressed: () {
                   Scaffold.of(context).openDrawer();
                 },
@@ -42,6 +88,7 @@ class _AdminStatePageState extends State<AdminStatePage> {
           child: ListView(
             children: [
               UserAccountsDrawerHeader(
+                currentAccountPicture: const AdminProfilePic(),
                 accountName: RobotoFont(
                   title: "John Doe",
                   size: getProportionateScreenWidth(16),
@@ -54,7 +101,6 @@ class _AdminStatePageState extends State<AdminStatePage> {
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
                 ),
-                currentAccountPicture: const AdminProfilePic(),
                 decoration: const BoxDecoration(
                   color: kPrimaryColor,
                 ),
