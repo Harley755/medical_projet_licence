@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/models/user_model.dart' as model;
+import 'package:medical_projet/models/admin_model.dart' as model;
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/screens/dashboard/administrator/components/admin_navigation_bar.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/components/professional_navigation_bar.dart';
@@ -21,6 +22,7 @@ class _UsersDashboardScreenState extends State<UsersDashboardScreen> {
   late Future<model.User> _userRoleFuture;
   model.User? _user;
   String _role = "";
+  // String _codeSecret = "";
 
   @override
   void initState() {
@@ -28,31 +30,21 @@ class _UsersDashboardScreenState extends State<UsersDashboardScreen> {
       _userRoleFuture = UserAuthMethods().getUserIdentityDetails(
         userId: currentUser!.uid,
       );
-      // _userRoleFuture.then((user) {
-      //   setState(() {
-      //     _user = user;
-      //     _role = _user!.role;
-      //     _hasTwoAccount = _user!.hasTwoAccount;
-      //   });
-      // });
     }
     super.initState();
   }
 
   Widget getNavigationBar() {
-    switch (_role) {
-      case 'user':
-        return const UserNavigationBar();
-        break;
-      case 'professional':
-        return const ProfessionalNavigationBar();
-        break;
-      case 'admin':
-        return const AdminNavigationBar();
-        break;
-      default:
-        return const SizedBox();
+    if (_role == 'user') {
+      return const UserNavigationBar();
+    } else if (_role == 'professional') {
+      return const ProfessionalNavigationBar();
+    } else if (_role == 'professional') {
+      return const ProfessionalNavigationBar();
+    } else if (_role == 'admin') {
+      return const AdminNavigationBar();
     }
+    return const SizedBox();
   }
 
   @override

@@ -6,10 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/user_otp_verification/user_otp.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
-import 'package:medical_projet/services/provider/user_provider.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/constants.dart';
-import 'package:provider/provider.dart';
 
 class UserSendEmailVerification extends StatefulWidget {
   const UserSendEmailVerification({Key? key}) : super(key: key);

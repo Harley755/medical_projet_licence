@@ -6,6 +6,7 @@ import 'package:medical_projet/screens/auth/informative_account/sign_up/user_otp
 import 'package:medical_projet/screens/auth/informative_account/sign_up/user_otp_verification/user_otp.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_in/sign_in_screen.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_up/sign_up_screen.dart';
+import 'package:medical_projet/screens/dashboard/administrator/pages/auth/sign_up/admin_sign_up.dart';
 import 'package:medical_projet/screens/dashboard/administrator/pages/chat/admin_chat_page.dart';
 import 'package:medical_projet/screens/dashboard/administrator/pages/chat/components/admin_chat_page_body.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/details/detail_page.dart';
@@ -76,6 +77,7 @@ final Map<String, WidgetBuilder> routes = {
       const ProfessionalAssociatedAccount(),
 
   // ADMIN
+  AdminSignUpScreen.routeName: (context) => const AdminSignUpScreen(),
   AdminDetailConversation.routeName: (context) =>
       const AdminDetailConversation(),
   AdminChatPage.routeName: (context) => const AdminChatPage(),

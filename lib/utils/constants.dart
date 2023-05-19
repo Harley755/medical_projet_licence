@@ -92,3 +92,7 @@ const String kPhoneNumberNullError =
     "Veuillez entrer votre numéro de téléphone";
 
 const String kSpecialityNullError = "Veuillez entrer votre specialité";
+
+
+// ADMIN
+const String kSecretCodeNullError = "Veuillez entrer votre code secret";

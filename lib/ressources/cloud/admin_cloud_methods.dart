@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
@@ -11,7 +12,7 @@ class AdminCloudMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  String hashPassword({required passwordToHash}) {
+  String hashPassword({required String passwordToHash}) {
     String salt = "110ec58a-a0f2-4ac4-8393-c866d813b8d1";
     List<int> bytes = utf8.encode(passwordToHash + salt);
     // calcule le hash SHA-256
@@ -42,7 +43,7 @@ class AdminCloudMethods {
         // ON ENREGISTRE L'UTILISATEUR
         String hashSecretCode = hashPassword(passwordToHash: secretCode);
         if (hashSecretCode ==
-            "587f2ef4ebd8d216e80d6f0e091dd794c5a6ce58d6b80b7a71bfb12f69ce3a8d") {
+            "6df809c2b81414e46c2fca398c89497ffd29533877aa280433846dec476d8250") {
           UserCredential credential =
               await _auth.createUserWithEmailAndPassword(
             email: email,
@@ -53,12 +54,12 @@ class AdminCloudMethods {
             nom: nom,
             prenom: prenom,
             email: email,
-            secretCode: secretCode,
+            secretCode: hashSecretCode,
             telephone: '',
             role: 'admin',
           );
           // ON AJOUTE L'UTILISATEUR A FIREBASE
-          print("user Ajouté");
+          log("Admin Ajouté");
           await _firestore
               .collection('users')
               .doc(credential.user!.uid)
@@ -74,23 +75,7 @@ class AdminCloudMethods {
             photoUrl: '',
             userId: credential.user!.uid,
           );
-          print("Compte Ajouté");
-
-          // CREER SA TABLE ANTECEDENT
-          await _firestore
-              .collection('antecedents')
-              .doc(credential.user!.uid)
-              .set({
-            'antecedentId': credential.user!.uid,
-            'antecedentMedicaux': "",
-            'maladiesChronique': "",
-            'antecedentTraumatique': "",
-            'antecedentAllergique': "",
-            'antecedentChirurgie': "",
-            'antecedentMaladieInfecteuse': "",
-            'userId': credential.user!.uid,
-          });
-          print("Compte Ajouté");
+          log("Compte Ajouté");
 
           response = "success";
         } else {
