@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/fonts.dart';
+import 'package:medical_projet/models/user_model.dart' as model;
+import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/dashboard/administrator/pages/profile/components/admin_profile_pic.dart';
 import 'package:medical_projet/screens/dashboard/administrator/pages/profile/components/body.dart';
@@ -16,6 +18,14 @@ class AdminStatePage extends StatefulWidget {
 
 class _AdminStatePageState extends State<AdminStatePage> {
   late String _profileImageUrl;
+
+  User? currentUser = FirebaseAuth.instance.currentUser;
+  late Future<model.User> _userDetailsFuture;
+  model.User? _user;
+
+  String _nom = "";
+  String _prenom = "";
+  String _email = "";
 
   @override
   void initState() {
@@ -34,6 +44,23 @@ class _AdminStatePageState extends State<AdminStatePage> {
     }).catchError((error) {
       print(error);
     });
+
+    // GET NAME AND EMAIL
+    if (currentUser != null) {
+      _userDetailsFuture = UserAuthMethods().getUserIdentityDetails(
+        userId: currentUser!.uid,
+      );
+      _userDetailsFuture.then((user) {
+        setState(() {
+          _user = user;
+          print(_user!.age);
+          _nom = _user!.nom;
+          _prenom = _user!.prenom;
+          _email = _user!.email;
+        });
+      });
+    }
+
     super.initState();
   }
 
@@ -65,12 +92,12 @@ class _AdminStatePageState extends State<AdminStatePage> {
                       }
                       if (snapshot.hasData) {
                         return CircleAvatar(
-                          radius: 12.0,
+                          radius: 15.0,
                           backgroundImage: NetworkImage(snapshot.data!),
                         );
                       } else {
                         return const CircleAvatar(
-                          radius: 12.0,
+                          radius: 15.0,
                           backgroundImage: NetworkImage(
                             "https://64.media.tumblr.com/eb8013a5fded5dcb55eee5ba2e48c86c/012efcaf904bfd8e-89/s640x960/cbb4836ddab081451c45286f7f9ab278f99f59f7.pnj",
                           ),
@@ -90,13 +117,13 @@ class _AdminStatePageState extends State<AdminStatePage> {
               UserAccountsDrawerHeader(
                 currentAccountPicture: const AdminProfilePic(),
                 accountName: RobotoFont(
-                  title: "John Doe",
+                  title: '$_prenom $_nom',
                   size: getProportionateScreenWidth(16),
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
                 ),
                 accountEmail: RobotoFont(
-                  title: "johndoe@gmailcom",
+                  title: _email,
                   size: getProportionateScreenWidth(16),
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
