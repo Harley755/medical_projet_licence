@@ -69,7 +69,7 @@ class _MyAppState extends State<MyApp> {
               ),
             );
           }
-          return const AdminSignUpScreen();
+          return const AuthScreen();
         },
       ),
       // initialRoute: AuthScreen.routeName,

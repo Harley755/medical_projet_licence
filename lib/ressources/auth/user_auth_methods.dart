@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,6 +11,7 @@ import 'package:medical_projet/models/user_model.dart' as model;
 import 'package:medical_projet/models/antecedent_model.dart' as model;
 import 'package:medical_projet/ressources/cloud/compte_methods.dart';
 import 'package:medical_projet/ressources/cloud/pieces_storage.dart';
+import 'package:medical_projet/ressources/cloud/statut_methods.dart';
 import 'package:uuid/uuid.dart';
 
 class UserAuthMethods {
@@ -393,7 +395,7 @@ class UserAuthMethods {
           password.isNotEmpty ||
           specialite.isNotEmpty) {
         // ON AJOUTE LE COMPTE MEDICAL
-        print(_auth.currentUser!.uid);
+        log(_auth.currentUser!.uid);
         var compteID = const Uuid().v1();
         await CompteMethods().addCompte(
           compteId: compteID,
@@ -404,11 +406,29 @@ class UserAuthMethods {
           userId: _auth.currentUser!.uid,
           photoUrl: '',
         );
+
+        await StatutMethods().addStatut(
+          doc: email,
+          statutId: _auth.currentUser!.uid,
+          estAccepte: false,
+          motif: '',
+          userId: '',
+          compteId: _auth.currentUser!.uid,
+        );
+
         // ON ENREGISTRE L'UTILISATEUR
         UserCredential credential = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
+
+        await StatutMethods().updateStatut(
+          statutId: credential.user!.uid,
+          userId: credential.user!.uid,
+          doc: email,
+        );
+
+        log("Statut créé");
 
         String pieceI = await PiecesStorage().uploadPieces(
           uid: credential.user!.uid,

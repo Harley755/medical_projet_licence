@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/screens/dashboard/administrator/pages/profile/components/admin_profile_menu.dart';
 import 'package:medical_projet/screens/dashboard/administrator/pages/profile/components/admin_sub_profile_menu.dart';
 
@@ -75,7 +76,7 @@ class _DrawerBodyState extends State<DrawerBody> {
           AdminProfileMenu(
             text: "Déconnexion",
             icon: "assets/icons/Log out.svg",
-            press: () {},
+            press: () => UserAuthMethods().logOut(),
           ),
         ],
       ),

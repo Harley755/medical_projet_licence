@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -49,6 +46,16 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCxwnoSLya_TfU3CK39wcPN1HBmLK2Xe9s',
+    appId: '1:818661847615:web:6b03f3657c6b7fa11e7e8a',
+    messagingSenderId: '818661847615',
+    projectId: 'medical-projet-licence',
+    authDomain: 'medical-projet-licence.firebaseapp.com',
+    storageBucket: 'medical-projet-licence.appspot.com',
+    measurementId: 'G-C94GQLS3B7',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyD4_FXu6xukPmbYa4IhK3uuOdtHJ7bEn3Y',
     appId: '1:818661847615:android:070dfe79a22bbb341e7e8a',
@@ -63,6 +70,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '818661847615',
     projectId: 'medical-projet-licence',
     storageBucket: 'medical-projet-licence.appspot.com',
+    androidClientId: '818661847615-64ch9qoc3k71k3suq8eu9ttgra325s3k.apps.googleusercontent.com',
     iosClientId: '818661847615-s2c1cco1p8jrjftjecegsd09ipnbd2mt.apps.googleusercontent.com',
     iosBundleId: 'com.example.medicalProjet',
   );
