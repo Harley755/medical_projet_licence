@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
@@ -5,6 +7,7 @@ import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/components/form_error.dart';
 import 'package:medical_projet/ressources/cloud/admin_cloud_methods.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/user_send_verification_email.dart';
+import 'package:medical_projet/services/notification/notification_service.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/size_config.dart';
@@ -26,6 +29,16 @@ class _AdminSignUpFormState extends State<AdminSignUpForm> {
 
   bool _isLoading = false;
 
+  String token = "";
+
+  initializeToken() async {
+    String newToken = await NotificationServices().getToken();
+    setState(() {
+      token = newToken;
+    });
+    log("TOKEN $token");
+  }
+
   @override
   void initState() {
     _nomController = TextEditingController();
@@ -33,6 +46,8 @@ class _AdminSignUpFormState extends State<AdminSignUpForm> {
     _emailController = TextEditingController();
     _secretCodeController = TextEditingController();
     _passwordController = TextEditingController();
+
+    initializeToken();
     super.initState();
   }
 
@@ -51,6 +66,7 @@ class _AdminSignUpFormState extends State<AdminSignUpForm> {
       _isLoading = true;
     });
     String response = await AdminCloudMethods().signUpAdmin(
+      token: token,
       nom: _nomController.text.trim(),
       prenom: _prenomController.text.trim(),
       email: _emailController.text.trim(),

@@ -12,6 +12,7 @@ import 'package:medical_projet/models/antecedent_model.dart' as model;
 import 'package:medical_projet/ressources/cloud/compte_methods.dart';
 import 'package:medical_projet/ressources/cloud/pieces_storage.dart';
 import 'package:medical_projet/ressources/cloud/statut_methods.dart';
+import 'package:medical_projet/services/notification/notification_service.dart';
 import 'package:uuid/uuid.dart';
 
 class UserAuthMethods {
@@ -379,6 +380,7 @@ class UserAuthMethods {
     required specialite,
     required carteMedicaleName,
     required carteMedicalePath,
+    required token,
   }) async {
     String response = "Une erreur s'est produite";
 
@@ -393,7 +395,8 @@ class UserAuthMethods {
           carteMedicaleName.isNotEmpty ||
           carteMedicalePath.isNotEmpty ||
           password.isNotEmpty ||
-          specialite.isNotEmpty) {
+          specialite.isNotEmpty ||
+          token.isNotEmpty) {
         // ON AJOUTE LE COMPTE MEDICAL
         log(_auth.currentUser!.uid);
         var compteID = const Uuid().v1();
@@ -459,7 +462,16 @@ class UserAuthMethods {
             .collection('users')
             .doc(credential.user!.uid)
             .set(user.toJson());
-        print("Professionel Ajouté");
+        log("Professionel Ajouté");
+
+        // ADD DEVICE TOKEN
+        NotificationServices().saveTokenAndId(
+          collection: 'professionalToken',
+          doc: credential.user!.uid,
+          token: token,
+          userId: credential.user!.uid,
+        );
+        log("TOKEN ENVOYEE");
 
         response = "success";
       }

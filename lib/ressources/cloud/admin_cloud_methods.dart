@@ -6,6 +6,7 @@ import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medical_projet/models/admin_model.dart' as model;
 import 'package:medical_projet/ressources/cloud/compte_methods.dart';
+import 'package:medical_projet/services/notification/notification_service.dart';
 import 'package:uuid/uuid.dart';
 
 class AdminCloudMethods {
@@ -30,12 +31,14 @@ class AdminCloudMethods {
     required email,
     required secretCode,
     required password,
+    required token,
   }) async {
     String response = "Une erreur s'est produite";
 
     try {
       // VERIFICATION DES CHAMPS
-      if (nom.isNotEmpty ||
+      if (token.isNotEmpty ||
+          nom.isNotEmpty ||
           prenom.isNotEmpty ||
           email.isNotEmpty ||
           secretCode.isNotEmpty ||
@@ -76,6 +79,15 @@ class AdminCloudMethods {
             userId: credential.user!.uid,
           );
           log("Compte Ajouté");
+
+          // ADD DEVICE TOKEN
+          NotificationServices().saveTokenAndId(
+            collection: 'professionalToken',
+            doc: credential.user!.uid,
+            token: token,
+            userId: credential.user!.uid,
+          );
+          log("TOKEN ENVOYEE");
 
           response = "success";
         } else {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/components/body.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_up/components/body.dart';
+import 'package:medical_projet/services/notification/notification_service.dart';
 import 'package:medical_projet/size_config.dart';
 
 class MedicalSignUpScreen extends StatefulWidget {
@@ -17,6 +18,7 @@ class _MedicalSignUpScreenState extends State<MedicalSignUpScreen> {
   @override
   void initState() {
     currentUser();
+
     super.initState();
   }
 

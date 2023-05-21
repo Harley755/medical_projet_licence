@@ -1,16 +1,24 @@
+import 'dart:developer';
+
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/components/form_error.dart';
+import 'package:medical_projet/main.dart';
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/user_send_verification_email.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_up/components/fileInput/file_input_controller.dart';
+import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/details/detail_page.dart';
+import 'package:medical_projet/services/notification/notification_service.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/functions.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
@@ -35,6 +43,13 @@ class _SignUpFormState extends State<SignUpForm> {
 
   bool _isLoading = false;
 
+  String token = "";
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
   @override
   void initState() {
     _lastNameController = TextEditingController();
@@ -42,7 +57,75 @@ class _SignUpFormState extends State<SignUpForm> {
     _emailController = TextEditingController();
     _specialiteController = TextEditingController();
     _passwordController = TextEditingController();
+
+    initializeToken();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (android != null) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification!.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              color: Colors.blue,
+              playSound: true,
+              icon: '@mipmap/ic_launcher',
+            ),
+          ),
+        );
+      }
+      if (message.notification != null) {
+        showLocalNotification(
+          title: message.notification!.title!,
+          body: message.notification!.body!,
+          payload: message.data['senderId'],
+        );
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      // Gérez les notifications lorsque l'utilisateur clique sur la notification
+      // Naviguez vers l'écran d'affichage des informations de l'expéditeur
+      String senderId = message.data['senderId'];
+      navigateToSenderProfileScreen(senderId);
+    });
+
     super.initState();
+  }
+
+  // Méthode pour afficher une notification locale
+  void showLocalNotification({
+    required String title,
+    required String body,
+    required String payload,
+  }) {
+    // Utilisez flutter_local_notifications pour afficher une notification locale
+    // avec le titre et le corps spécifiés
+    // Le payload peut être utilisé pour transmettre l'ID de l'expéditeur
+    // afin de l'utiliser pour afficher les informations de l'expéditeur sur l'écran correspondant
+  }
+
+  // Méthode pour naviguer vers l'écran d'affichage des informations de l'expéditeur
+  void navigateToSenderProfileScreen(String senderId) {
+    log(senderId);
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => DetailPage(
+        userId: senderId,
+      ),
+    ));
+  }
+
+  initializeToken() async {
+    String newToken = await NotificationServices().getToken();
+    setState(() {
+      token = newToken;
+    });
+    log("TOKEN $token");
   }
 
   void signUpUser() async {
@@ -50,6 +133,7 @@ class _SignUpFormState extends State<SignUpForm> {
       _isLoading = true;
     });
     String response = await UserAuthMethods().signUpProfessional(
+      token: token,
       nom: _lastNameController.text.trim(),
       prenom: _firstNameController.text.trim(),
       email: _emailController.text.trim(),
@@ -66,14 +150,21 @@ class _SignUpFormState extends State<SignUpForm> {
     } else {
       // ignore: use_build_context_synchronously
       showSnackBar("Compte Médical créé !", context);
+
       // UserAuthMethods().logOut();
       // ignore: use_build_context_synchronously
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const UserSendEmailVerification(),
-        ),
-        (Route<dynamic> route) => false,
+      // Navigator.pushAndRemoveUntil(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => const UserSendEmailVerification(),
+      //   ),
+      //   (Route<dynamic> route) => false,
+      // );
+      NotificationServices().sendNotificationToUser(
+        token: token,
+        title: "Demande de création de compte",
+        body:
+            "${_firstNameController.text} ${_lastNameController.text} demande a créé un compte",
       );
     }
     setState(() {
@@ -118,6 +209,16 @@ class _SignUpFormState extends State<SignUpForm> {
         errors.remove(error);
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _lastNameController.dispose();
+    _firstNameController.dispose();
+    _emailController.dispose();
+    _specialiteController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override

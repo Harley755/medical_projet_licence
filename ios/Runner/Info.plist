@@ -53,5 +53,12 @@
 	<string>L'application a besoin d'accéder à votre galerie de photos pour pouvoir charger votre photo de profil.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>L'application a besoin d'accéder à la camera pour prendre des photos.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Notification will be sent using local network</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 </dict>
 </plist>
