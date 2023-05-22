@@ -7,7 +7,8 @@ import 'package:medical_projet/screens/auth/informative_account/sign_in/componen
 import 'package:medical_projet/size_config.dart';
 
 class AccountBodyInfoSignIn extends StatelessWidget {
-  const AccountBodyInfoSignIn({super.key});
+  final String email;
+  const AccountBodyInfoSignIn({super.key, required this.email});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class AccountBodyInfoSignIn extends StatelessWidget {
                 const SizedBox(height: 64.0),
 
                 // CIRCULAR WIDGET TO ACCEPT AND SHOW OUR SELECTED FILE
-                const AccountSignInForm(),
+                AccountSignInForm(email: email),
 
                 SizedBox(height: SizeConfig.screenHeight * 0.2),
 

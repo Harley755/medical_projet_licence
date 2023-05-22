@@ -10,7 +10,8 @@ import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/functions.dart';
 
 class AccountSignInForm extends StatefulWidget {
-  const AccountSignInForm({super.key});
+  final String email;
+  const AccountSignInForm({super.key, required this.email});
 
   @override
   State<AccountSignInForm> createState() => _AccountSignInFormState();
@@ -24,7 +25,7 @@ class _AccountSignInFormState extends State<AccountSignInForm> {
 
   @override
   void initState() {
-    _emailController = TextEditingController();
+    _emailController = TextEditingController(text: widget.email);
     _passwordController = TextEditingController();
     super.initState();
   }

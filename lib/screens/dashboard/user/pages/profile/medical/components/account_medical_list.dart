@@ -5,6 +5,7 @@ import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/ressources/cloud/compte_methods.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_in/sign_in_screen.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/details/detail_page.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/sign_in/account_sign_in_screen.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/constants.dart';
 
@@ -61,7 +62,9 @@ class _AccountMedicalListState extends State<AccountMedicalList> {
                       return InkWell(
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const InfoSignInScreen(),
+                            builder: (context) => AccountInfoSignInScreen(
+                              email: accountData['email'],
+                            ),
                           ),
                         ),
                         child: Container(

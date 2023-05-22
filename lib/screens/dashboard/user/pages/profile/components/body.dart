@@ -109,8 +109,6 @@ class _BodyState extends State<Body> {
             width: 28,
             press: () => Navigator.pushNamed(
               context,
-              // MedicalSignUpScreen.routeName,
-              // MedicalAccount.routeName,
               InterScreens.routeName,
             ),
           ),

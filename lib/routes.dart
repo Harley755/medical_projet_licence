@@ -25,6 +25,7 @@ import 'package:medical_projet/screens/dashboard/user/pages/profile/medical/inte
 import 'package:medical_projet/screens/dashboard/user/pages/profile/medical/medical_account.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/security/change_email/user_change_email.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/security/change_password/user_change_password.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/sign_in/account_sign_in_screen.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
 
 import 'screens/dashboard/administrator/pages/chat/components/details_conversation.dart';

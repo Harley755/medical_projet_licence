@@ -4,9 +4,9 @@ import 'package:medical_projet/screens/dashboard/user/pages/profile/sign_in/comp
 import 'package:medical_projet/size_config.dart';
 
 class AccountInfoSignInScreen extends StatelessWidget {
-  static String routeName = "/info_sign_in";
-
-  const AccountInfoSignInScreen({super.key});
+  static String routeName = "/profile/info_sign_in";
+  final String email;
+  const AccountInfoSignInScreen({super.key, required this.email});
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -22,7 +22,7 @@ class AccountInfoSignInScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: const AccountBodyInfoSignIn(),
+      body: AccountBodyInfoSignIn(email: email),
     );
   }
 }
