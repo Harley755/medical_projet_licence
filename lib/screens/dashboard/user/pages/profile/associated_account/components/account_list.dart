@@ -73,7 +73,9 @@ class _AccountListState extends State<AccountList> {
                             leading: CircleAvatar(
                               radius: 26.0,
                               backgroundImage: NetworkImage(
-                                '${accountData['phototUrl']}',
+                                accountData['photoUrl'] == ""
+                                    ? "https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg"
+                                    : accountData['photoUrl'],
                               ),
                             ),
                             title: RobotoFont(
