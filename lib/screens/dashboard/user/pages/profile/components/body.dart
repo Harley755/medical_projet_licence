@@ -7,6 +7,8 @@ import 'package:medical_projet/screens/dashboard/user/pages/profile/associated_a
 import 'package:medical_projet/screens/dashboard/user/pages/profile/components/profile_pic.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/components/sub_profile_menu.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/identity/user_profile_identity.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/medical/inter_screens/inter_screens.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/medical/medical_account.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/security/change_email/user_change_email.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/security/change_password/user_change_password.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
@@ -107,7 +109,9 @@ class _BodyState extends State<Body> {
             width: 28,
             press: () => Navigator.pushNamed(
               context,
-              MedicalSignUpScreen.routeName,
+              // MedicalSignUpScreen.routeName,
+              // MedicalAccount.routeName,
+              InterScreens.routeName,
             ),
           ),
 

@@ -48,7 +48,10 @@ class _ProfessionalListResultState extends State<ProfessionalListResult> {
                   child: ListTile(
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(
-                        (snapshot.data! as dynamic).docs[index]['photoUrl'],
+                        (snapshot.data! as dynamic).docs[index]['photoUrl']
+                            ? (snapshot.data! as dynamic).docs[index]
+                                ['photoUrl']
+                            : "https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg",
                       ),
                     ),
                     title: RobotoFont(

@@ -8,14 +8,14 @@ import 'package:medical_projet/screens/dashboard/health_professional/pages/medic
 import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/constants.dart';
 
-class AccountList extends StatefulWidget {
-  const AccountList({super.key});
+class AccountMedicalList extends StatefulWidget {
+  const AccountMedicalList({super.key});
 
   @override
-  State<AccountList> createState() => _AccountListState();
+  State<AccountMedicalList> createState() => _AccountMedicalListState();
 }
 
-class _AccountListState extends State<AccountList> {
+class _AccountMedicalListState extends State<AccountMedicalList> {
   @override
   void initState() {
     User currentUser = FirebaseAuth.instance.currentUser!;
@@ -26,7 +26,7 @@ class _AccountListState extends State<AccountList> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<DocumentSnapshot>>(
-      future: CompteMethods().getUserAccounts(typeCompte: 'informatif'),
+      future: CompteMethods().getUserAccounts(typeCompte: 'Medical'),
       builder: (
         BuildContext context,
         AsyncSnapshot<List<DocumentSnapshot>> snapshot,
@@ -73,7 +73,9 @@ class _AccountListState extends State<AccountList> {
                             leading: CircleAvatar(
                               radius: 26.0,
                               backgroundImage: NetworkImage(
-                                '${accountData['phototUrl']}',
+                                accountData['phototUrl'] == ""
+                                    ? '${accountData['phototUrl']}'
+                                    : "https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg",
                               ),
                             ),
                             title: RobotoFont(
@@ -107,6 +109,9 @@ class _AccountListState extends State<AccountList> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: getProportionateScreenHeight(80.0),
+              )
             ],
           );
         }

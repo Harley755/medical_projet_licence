@@ -27,7 +27,7 @@ class _ProfessionaAssociatedListState
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<DocumentSnapshot>>(
-      future: CompteMethods().getUserInformatifAccounts(),
+      future: CompteMethods().getUserAccounts(typeCompte: 'informatif'),
       builder: (BuildContext context,
           AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {

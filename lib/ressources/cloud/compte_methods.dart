@@ -79,7 +79,8 @@ class CompteMethods {
     return response;
   }
 
-  Future<List<DocumentSnapshot>> getUserInformatifAccounts() async {
+  Future<List<DocumentSnapshot>> getUserAccounts(
+      {required String typeCompte}) async {
     // Récupérer l'utilisateur couramment connecté
     User? currentUser = FirebaseAuth.instance.currentUser;
 
@@ -88,7 +89,7 @@ class CompteMethods {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('comptes')
           .where('userId', isEqualTo: currentUser.uid)
-          .where('compteType', isEqualTo: 'informatif')
+          .where('compteType', isEqualTo: typeCompte)
           .get();
 
       // Retourner les résultats sous forme de liste de DocumentSnapshot
