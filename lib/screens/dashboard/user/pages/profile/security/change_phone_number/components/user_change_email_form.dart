@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
-import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
 import 'package:medical_projet/size_config.dart';
-import 'package:medical_projet/utils/functions.dart';
 
 class UserChangeEmailForm extends StatefulWidget {
   const UserChangeEmailForm({super.key});

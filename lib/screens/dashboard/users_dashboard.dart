@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/models/user_model.dart' as model;
-import 'package:medical_projet/models/admin_model.dart' as model;
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/screens/dashboard/administrator/components/admin_navigation_bar.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/components/professional_navigation_bar.dart';

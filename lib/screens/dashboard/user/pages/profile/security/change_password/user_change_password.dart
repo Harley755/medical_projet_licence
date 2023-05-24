@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:medical_projet/screens/dashboard/user/pages/profile/security/change_email/components/user_change_email_body.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/security/change_password/components/user_change_password_body.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/constants.dart';

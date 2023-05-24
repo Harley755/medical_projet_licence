@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/default_button.dart';
@@ -25,7 +27,7 @@ class _BodyState extends State<Body> {
               scrollDirection: Axis.horizontal,
               reverse: false,
               onPageChanged: (index) {
-                print(index);
+                log(index.toString());
                 changePage(index);
               },
               controller: PageController(

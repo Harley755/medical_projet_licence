@@ -112,7 +112,7 @@ class UserAuthMethods {
           role: 'user',
         );
         // ON AJOUTE L'UTILISATEUR A FIREBASE
-        print("user Ajouté");
+        log("user Ajouté");
         await _firestore
             .collection('users')
             .doc(credential.user!.uid)
@@ -128,7 +128,7 @@ class UserAuthMethods {
           photoUrl: '',
           userId: credential.user!.uid,
         );
-        print("Compte Ajouté");
+        log("Compte Ajouté");
 
         // CREER SA TABLE ANTECEDENT
         await _firestore
@@ -144,7 +144,7 @@ class UserAuthMethods {
           'antecedentMaladieInfecteuse': "",
           'userId': credential.user!.uid,
         });
-        print("Compte Ajouté");
+        log("Compte Ajouté");
 
         response = "success";
 
@@ -183,7 +183,7 @@ class UserAuthMethods {
           email.isNotEmpty ||
           password.isNotEmpty) {
         // AJOUTE LE COMPTE
-        print(_auth.currentUser!.uid);
+        log(_auth.currentUser!.uid);
         var compteID = const Uuid().v1();
         await CompteMethods().addCompte(
           compteId: compteID,
@@ -194,7 +194,7 @@ class UserAuthMethods {
           userId: _auth.currentUser!.uid,
           photoUrl: '',
         );
-        print("Compte Ajouté");
+        log("Compte Ajouté");
         // ON ENREGISTRE L'UTILISATEUR
         UserCredential credential = await _auth.createUserWithEmailAndPassword(
           email: email,
@@ -217,7 +217,7 @@ class UserAuthMethods {
           role: 'user',
         );
         // ON AJOUTE L'UTILISATEUR A FIREBASE
-        print("user Ajouté");
+        log("user Ajouté");
         await _firestore
             .collection('users')
             .doc(credential.user!.uid)
@@ -237,7 +237,7 @@ class UserAuthMethods {
           'antecedentMaladieInfecteuse': "",
           'userId': credential.user!.uid,
         });
-        print("Compte Ajouté");
+        log("Compte Ajouté");
 
         response = "success";
 
@@ -275,7 +275,7 @@ class UserAuthMethods {
             .doc(currentUser!.uid)
             .update({'telephone': phoneNumber});
         response = "success";
-        print("phone Number Update successfully");
+        log("phone Number Update successfully");
       }
     } catch (e) {
       response = e.toString();
@@ -318,7 +318,7 @@ class UserAuthMethods {
     if (user != null) {
       await user.sendEmailVerification();
     } else {
-      print("user est null pour lui envoyer un mail de verification");
+      log("user est null pour lui envoyer un mail de verification");
     }
   }
 
@@ -327,7 +327,7 @@ class UserAuthMethods {
     if (user != null) {
       await user.signOut();
     } else {
-      print("user est null pour lui envoyer un mail de verification");
+      log("user est null pour lui envoyer un mail de verification");
     }
   }
 

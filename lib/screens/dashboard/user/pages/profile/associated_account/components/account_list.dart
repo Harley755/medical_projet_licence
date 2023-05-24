@@ -5,6 +5,7 @@ import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/ressources/cloud/compte_methods.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_in/sign_in_screen.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/details/detail_page.dart';
+import 'package:medical_projet/screens/dashboard/user/pages/profile/sign_in/account_sign_in_screen.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/constants.dart';
 
@@ -59,10 +60,39 @@ class _AccountListState extends State<AccountList> {
                           accountSnapshot.data() as Map<String, dynamic>;
 
                       return InkWell(
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const InfoSignInScreen(),
+                        // onTap: () => Navigator.of(context).push(
+                        //   MaterialPageRoute(
+                        //     builder: (context) => AccountInfoSignInScreen(
+                        //       email: accountData['email'],
+                        //     ),
+                        //   ),
+                        // ),
+                        onTap: () => showModalBottomSheet(
+                          isScrollControlled: true,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(30.0),
+                            ),
                           ),
+                          context: context,
+                          builder: (context) {
+                            return DraggableScrollableSheet(
+                              expand: false,
+                              initialChildSize: 0.6,
+                              maxChildSize: 0.9,
+                              minChildSize: 0.32,
+                              builder: (
+                                BuildContext context,
+                                ScrollController scrollController,
+                              ) =>
+                                  SingleChildScrollView(
+                                controller: scrollController,
+                                child: AccountInfoSignInScreen(
+                                  email: accountData['email'],
+                                ),
+                              ),
+                            );
+                          },
                         ),
                         child: Container(
                           margin: EdgeInsets.symmetric(
