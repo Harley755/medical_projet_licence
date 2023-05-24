@@ -69,11 +69,6 @@ class _BodyState extends State<Body> {
                       ),
                     ),
                     SubProfileMenu(
-                      text: "Ajouter des empreintes",
-                      icon: "assets/icons/Lock.svg",
-                      press: () => {},
-                    ),
-                    SubProfileMenu(
                       text: "Changer de mot de passe",
                       icon: "assets/icons/Lock.svg",
                       press: () => Navigator.pushNamed(
