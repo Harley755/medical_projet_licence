@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/fonts.dart';
-import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/details/detail_page.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/constants.dart';
 
@@ -38,39 +37,31 @@ class _ProfessionalUserListState extends State<ProfessionalUserList> {
             );
           } else if (snapshot.hasData) {
             final users = snapshot.data!.docs;
-            return SizedBox(
-              height: SizeConfig.screenHeight,
-              child: Expanded(
-                child: ListView.builder(
-                  itemCount: users.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final user = users[index];
-                    return InkWell(
-                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => DetailPage(
-                          userId: user['userId'],
-                        ),
-                      )),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(0.0),
-                        leading: CircleAvatar(
-                          radius: 26.0,
-                          backgroundImage: NetworkImage(user['photoUrl']),
-                        ),
-                        title: RobotoFont(
-                          title: '${user['prenom']} ${user['nom']}',
-                          size: getProportionateScreenWidth(17.0),
-                          fontWeight: FontWeight.w500,
-                        ),
-                        subtitle: RobotoFont(
-                          title: user['email'],
-                          size: getProportionateScreenWidth(13.0),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: users.length,
+              itemBuilder: (BuildContext context, int index) {
+                final user = users[index];
+                return ListTile(
+                  contentPadding: const EdgeInsets.all(0.0),
+                  leading: CircleAvatar(
+                    radius: 26.0,
+                    backgroundImage: NetworkImage(user['photoUrl'] == ""
+                        ? "https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg"
+                        : user['photoUrl']),
+                  ),
+                  title: RobotoFont(
+                    title: '${user['prenom']} ${user['nom']}',
+                    size: getProportionateScreenWidth(17.0),
+                    fontWeight: FontWeight.w500,
+                  ),
+                  subtitle: RobotoFont(
+                    title: user['email'],
+                    size: getProportionateScreenWidth(13.0),
+                  ),
+                );
+              },
             );
           }
         }

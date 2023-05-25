@@ -21,31 +21,28 @@ class _BodyUserHomePageState extends State<BodyUserHomePage> {
             padding: EdgeInsets.symmetric(
               horizontal: getProportionateScreenWidth(20.0),
             ),
-            child: GridView.builder(
-              itemCount: 4,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            child: GridView(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: .75,
-                mainAxisSpacing: getProportionateScreenWidth(20.0),
-                crossAxisSpacing: getProportionateScreenHeight(20.0),
+                crossAxisSpacing: 16,
+                childAspectRatio: 0.8,
               ),
-              itemBuilder: (context, index) => Container(
-                width: 200.0,
-                height: 500.0,
-                key: ValueKey(index),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20.0),
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20.0),
+                    ),
+                    color: kPrimaryColor,
                   ),
-                  color: kPrimaryColor,
-                ),
-                child: Center(
-                  child: Text(
-                    index.toString(),
-                    style: const TextStyle(color: Colors.white),
+                  child: const Center(
+                    child: Text(
+                      "1",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
         ),

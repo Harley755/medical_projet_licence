@@ -1,15 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/fonts.dart';
-import 'package:medical_projet/screens/dashboard/administrator/pages/chat/components/details_conversation.dart';
-import 'package:medical_projet/screens/dashboard/administrator/pages/chat/components/recent_contact.dart';
-import 'package:medical_projet/screens/dashboard/administrator/pages/chat/components/search_chat.dart';
 import 'package:medical_projet/screens/dashboard/administrator/pages/search/components/admin_list_result.dart';
 import 'package:medical_projet/screens/dashboard/administrator/pages/search/components/admin_users_list.dart';
-import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/details/detail_page.dart';
-import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/professional_list_result.dart';
-import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/professional_search.dart';
-import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/professional_users_list.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/constants.dart';
 

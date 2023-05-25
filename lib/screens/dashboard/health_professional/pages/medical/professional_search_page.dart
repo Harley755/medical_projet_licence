@@ -19,7 +19,7 @@ class _ProfessionalSearchState extends State<ProfessionalSearchPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Utilisateurs",
+          "Patients",
           style: TextStyle(color: kSecondaryColor),
         ),
         centerTitle: true,
