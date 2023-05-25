@@ -47,25 +47,34 @@ class UserAuthMethods {
     }
   }
 
+  // Future<dynamic> getInfo({required String bloodTypeId}) async {
+  //   if (bloodTypeId.isNotEmpty) {
+  //     DocumentSnapshot bloodTypeSnapshot =
+  //         await _firestore.collection('blood_type').doc(bloodTypeId).get();
+
+  //     if (bloodTypeSnapshot.exists) {
+  //       dynamic attributeValue = bloodTypeSnapshot.get('libelle');
+
+  //       if (attributeValue != null) {
+  //         return attributeValue;
+  //       } else {
+  //         throw Exception("Attribute not found in blood type document");
+  //       }
+  //     } else {
+  //       throw Exception("Blood type document not found");
+  //     }
+  //   } else {
+  //     throw Exception("Empty bloodTypeId");
+  //   }
+  // }
+
   Future<dynamic> getInfo({required String bloodTypeId}) async {
-    if (bloodTypeId.isNotEmpty) {
-      DocumentSnapshot bloodTypeSnapshot =
-          await _firestore.collection('blood_type').doc(bloodTypeId).get();
+    DocumentSnapshot bloodTypeSnapshot =
+        await _firestore.collection('blood_type').doc(bloodTypeId).get();
 
-      if (bloodTypeSnapshot.exists) {
-        dynamic attributeValue = bloodTypeSnapshot.get('libelle');
+    dynamic attributeValue = bloodTypeSnapshot.get('libelle');
 
-        if (attributeValue != null) {
-          return attributeValue;
-        } else {
-          throw Exception("Attribute not found in blood type document");
-        }
-      } else {
-        throw Exception("Blood type document not found");
-      }
-    } else {
-      throw Exception("Empty bloodTypeId");
-    }
+    return attributeValue;
   }
 
   Future<model.Professional> getProfessionalIdentityDetails(

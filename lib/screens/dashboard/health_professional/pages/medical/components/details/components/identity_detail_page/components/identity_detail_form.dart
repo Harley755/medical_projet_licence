@@ -2,12 +2,15 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/models/user_model.dart' as model;
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:medical_projet/utils/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class IdentityDetailFormReadOnly extends StatefulWidget {
   final String userId;
@@ -28,7 +31,7 @@ class _IdentityDetailFormReadOnlyState
   String _prenom = "";
   String? _sexe = "";
   String? _groupeSanguinId = "";
-  String _groupeSanguin = "";
+  String? _groupeSanguin = "";
   String? _poids = "";
   String? _age = "";
   String? _nomContactUrgence = "";
@@ -47,6 +50,7 @@ class _IdentityDetailFormReadOnlyState
           log(_user!.age.toString());
           log(_user!.sexe.toString());
           log(_user!.groupeSanguinId.toString());
+          log(_user!.age.toString());
           _nom = _user!.nom;
           _prenom = _user!.prenom;
           _sexe = _user!.sexe;
@@ -65,10 +69,12 @@ class _IdentityDetailFormReadOnlyState
   }
 
   getBloodType({required id}) async {
-    id = await UserAuthMethods().getInfo(bloodTypeId: id);
-    setState(() {
-      _groupeSanguin = id;
-    });
+    if (id != "") {
+      id = await UserAuthMethods().getInfo(bloodTypeId: id);
+      setState(() {
+        _groupeSanguin = id;
+      });
+    }
   }
 
 // FOR MEDICAL'S USER
@@ -87,6 +93,22 @@ class _IdentityDetailFormReadOnlyState
   //     print('Aucun contact sélectionné.');
   //   }
   // }
+  // FOR MEDICAL'S USER
+  // PERMET D'APPELER LE CONTACT CHOISIS, SI PAS DE CONTACT CA N'APPELLE PAS
+  void _callSelectedContact() async {
+    // Vérifier si la permission d'accéder aux contacts a été accordée
+    print(_telephoneContactUrgence);
+    if (_telephoneContactUrgence != "") {
+      final Uri url = Uri.parse('tel:$_telephoneContactUrgence');
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url);
+      } else {
+        print('Impossible de lancer l\'appel $url');
+      }
+    } else {
+      print('Aucun contact sélectionné.');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,8 +150,16 @@ class _IdentityDetailFormReadOnlyState
             fontWeight: FontWeight.w600,
             color: Colors.black,
           ),
-          SizedBox(height: SizeConfig.screenHeight * 0.03),
-
+          SizedBox(height: getProportionateScreenHeight(10)),
+          // FOR MEDICAL'S USERS
+          IconButton(
+            icon: SvgPicture.asset(
+              "assets/icons/Call.svg",
+              color: kPrimaryColor,
+            ),
+            onPressed: () => _callSelectedContact(),
+          ),
+          SizedBox(height: getProportionateScreenHeight(10)),
           buildEmergenceNameField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildEmergenceContactField(),
@@ -144,7 +174,7 @@ class _IdentityDetailFormReadOnlyState
   TextFormField buildGroupeSanguinFormField() {
     return TextFormField(
       readOnly: true,
-      controller: TextEditingController()..text = _groupeSanguin,
+      controller: TextEditingController()..text = _groupeSanguin!,
       keyboardType: TextInputType.text,
       onChanged: (value) {},
       decoration: const InputDecoration(
@@ -212,7 +242,7 @@ class _IdentityDetailFormReadOnlyState
   TextFormField buildAgeFormField() {
     return TextFormField(
       readOnly: true,
-      controller: TextEditingController()..text = "$_age ans",
+      controller: TextEditingController()..text = "$_age",
       keyboardType: TextInputType.number,
       onChanged: (value) {},
       decoration: const InputDecoration(
