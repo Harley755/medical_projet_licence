@@ -18,7 +18,7 @@ class _ProfessionalHomePageState extends State<ProfessionalHomePage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: const Text(
-            "Professional Get Page",
+            "Le saviez-vous ?",
             style: TextStyle(color: Colors.black),
           ),
           centerTitle: true,
