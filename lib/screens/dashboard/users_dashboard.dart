@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/models/user_model.dart' as model;
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
+import 'package:medical_projet/screens/auth/finger_print/finger_print.dart';
 import 'package:medical_projet/screens/dashboard/administrator/components/admin_navigation_bar.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/components/professional_navigation_bar.dart';
 import 'package:medical_projet/screens/dashboard/user/components/user_navigation_bar.dart';
@@ -10,18 +11,19 @@ import 'package:medical_projet/utils/constants.dart';
 
 class UsersDashboardScreen extends StatefulWidget {
   static String routeName = "/users_dashboard";
-  const UsersDashboardScreen({super.key});
+
+  const UsersDashboardScreen({Key? key}) : super(key: key);
 
   @override
   State<UsersDashboardScreen> createState() => _UsersDashboardScreenState();
 }
 
 class _UsersDashboardScreenState extends State<UsersDashboardScreen> {
+  bool isAuthorized = false;
   User? currentUser = FirebaseAuth.instance.currentUser;
   late Future<model.User> _userRoleFuture;
   model.User? _user;
   String _role = "";
-  // String _codeSecret = "";
 
   @override
   void initState() {
@@ -33,11 +35,15 @@ class _UsersDashboardScreenState extends State<UsersDashboardScreen> {
     super.initState();
   }
 
+  void handleAuthorizationComplete(bool authorized) {
+    setState(() {
+      isAuthorized = authorized;
+    });
+  }
+
   Widget getNavigationBar() {
     if (_role == 'user') {
       return const UserNavigationBar();
-    } else if (_role == 'professional') {
-      return const ProfessionalNavigationBar();
     } else if (_role == 'professional') {
       return const ProfessionalNavigationBar();
     } else if (_role == 'admin') {
@@ -49,6 +55,7 @@ class _UsersDashboardScreenState extends State<UsersDashboardScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+
     return FutureBuilder<model.User>(
       future: _userRoleFuture,
       builder: (context, snapshot) {

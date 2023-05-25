@@ -29,6 +29,8 @@
         android:name="com.example.medical_projet.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
+    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
     <!-- Ajoutez ces lignes pour la réception des notifications Firebase Messaging -->
     <!-- <service
         android:name=".NotificationServices"
@@ -39,8 +41,6 @@
         </intent-filter>
     </service> -->
 
-
-    
    <application
         android:label="medical_projet"
         android:name="${applicationName}"

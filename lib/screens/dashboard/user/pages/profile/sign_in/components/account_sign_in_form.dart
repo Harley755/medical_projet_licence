@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
+import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/components/form_error.dart';
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/utils/constants.dart';
@@ -37,6 +38,8 @@ class _AccountSignInFormState extends State<AccountSignInForm> {
   }
 
   bool _isLoading = false;
+  String error = "";
+  String response = "";
   void userSignIn() async {
     setState(() {
       _isLoading = true;
@@ -47,7 +50,8 @@ class _AccountSignInFormState extends State<AccountSignInForm> {
     );
     if (response != 'success') {
       // ignore: use_build_context_synchronously
-      showSnackBar(response, context);
+      getError(response: response);
+      // showSnackBar(response, context);
     } else {
       // ignore: use_build_context_synchronously
       Navigator.pushAndRemoveUntil(
@@ -61,6 +65,16 @@ class _AccountSignInFormState extends State<AccountSignInForm> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  getError({required String response}) {
+    setState(() {
+      error = response.toString();
+    });
+    // Future.delayed(const Duration(seconds: 20));
+    // setState(() {
+    //   error = "";
+    // });
   }
 
   String? email;
@@ -112,7 +126,17 @@ class _AccountSignInFormState extends State<AccountSignInForm> {
                 }
               },
             ),
-          )
+          ),
+          SizedBox(height: getProportionateScreenHeight(36)),
+          error == ""
+              ? const Text("")
+              : Center(
+                  child: RobotoFont(
+                    title: error,
+                    size: getProportionateScreenWidth(15.0),
+                    color: Colors.red,
+                  ),
+                ),
         ],
       ),
     );
