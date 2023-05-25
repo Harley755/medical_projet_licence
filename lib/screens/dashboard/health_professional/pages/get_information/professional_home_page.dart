@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:medical_projet/utils/constants.dart';
+
 import 'package:medical_projet/screens/dashboard/health_professional/pages/get_information/components/professional_get_way.dart';
 
-class ProfessionalGetPage extends StatefulWidget {
-  const ProfessionalGetPage({super.key});
+class ProfessionalHomePage extends StatefulWidget {
+  const ProfessionalHomePage({super.key});
 
   @override
-  State<ProfessionalGetPage> createState() => _ProfessionalGetPageState();
+  State<ProfessionalHomePage> createState() => _ProfessionalHomePageState();
 }
 
-class _ProfessionalGetPageState extends State<ProfessionalGetPage> {
+class _ProfessionalHomePageState extends State<ProfessionalHomePage> {
   int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
