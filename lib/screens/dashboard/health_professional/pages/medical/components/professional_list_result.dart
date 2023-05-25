@@ -50,25 +50,37 @@ class _ProfessionalListResultState extends State<ProfessionalListResult> {
             child: ListView.builder(
               itemCount: (snapshot.data! as dynamic).docs.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  contentPadding: const EdgeInsets.all(0.0),
-                  leading: CircleAvatar(
-                    radius: 26.0,
-                    backgroundImage: NetworkImage(
-                      (snapshot.data! as dynamic).docs[index]['photoUrl'] == ""
-                          ? "https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg"
-                          : (snapshot.data! as dynamic).docs[index]['photoUrl'],
+                return InkWell(
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => DetailPage(
+                        userId: (snapshot.data! as dynamic).docs[index]
+                            ['userId'],
+                      ),
                     ),
                   ),
-                  title: RobotoFont(
-                    title:
-                        "${(snapshot.data! as dynamic).docs[index]['prenom']} ${(snapshot.data! as dynamic).docs[index]['nom']}",
-                    size: getProportionateScreenWidth(17.0),
-                    fontWeight: FontWeight.w500,
-                  ),
-                  subtitle: RobotoFont(
-                    title: (snapshot.data! as dynamic).docs[index]['email'],
-                    size: getProportionateScreenWidth(13.0),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(0.0),
+                    leading: CircleAvatar(
+                      radius: 26.0,
+                      backgroundImage: NetworkImage(
+                        (snapshot.data! as dynamic).docs[index]['photoUrl'] ==
+                                ""
+                            ? "https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg"
+                            : (snapshot.data! as dynamic).docs[index]
+                                ['photoUrl'],
+                      ),
+                    ),
+                    title: RobotoFont(
+                      title:
+                          "${(snapshot.data! as dynamic).docs[index]['prenom']} ${(snapshot.data! as dynamic).docs[index]['nom']}",
+                      size: getProportionateScreenWidth(17.0),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    subtitle: RobotoFont(
+                      title: (snapshot.data! as dynamic).docs[index]['email'],
+                      size: getProportionateScreenWidth(13.0),
+                    ),
                   ),
                 );
               },
