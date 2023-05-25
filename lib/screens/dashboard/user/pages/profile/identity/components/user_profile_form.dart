@@ -26,6 +26,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   String _prenom = "";
   String? _sexe = "";
   String? _groupeSanguinId = "";
+  String _groupeSanguin = "";
   String? _poids = "";
   String? _age = "";
   String? _nomContactUrgence = "";
@@ -42,12 +43,16 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
         setState(() {
           _user = user;
           log(_user!.age.toString());
+          log(_user!.sexe.toString());
+          log(_user!.groupeSanguinId.toString());
           _nom = _user!.nom;
           _prenom = _user!.prenom;
           _sexe = _user!.sexe;
           _poids = _user!.poids;
           _age = _user!.age;
           _groupeSanguinId = _user!.groupeSanguinId;
+
+          getBloodType(id: _user!.groupeSanguinId);
           _nomContactUrgence = _user!.nomContactUrgence;
           _telephoneContactUrgence = _user!.telephoneContactUrgence;
           _relation = _user!.relation;
@@ -55,6 +60,13 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       });
     }
     super.initState();
+  }
+
+  getBloodType({required id}) async {
+    id = await UserAuthMethods().getInfo(bloodTypeId: id);
+    setState(() {
+      _groupeSanguin = id;
+    });
   }
 
 // FOR MEDICAL'S USER
@@ -76,16 +88,6 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> genderItems = [
-      'Masculin',
-      'Féminin',
-    ];
-
-    final List<String> bloodItems = [
-      '0+',
-      'A-',
-    ];
-
     String? selectedValue;
     return Form(
       child: Column(
@@ -106,13 +108,13 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
           // SizedBox(height: getProportionateScreenHeight(30)),
           // buildEmailFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildSexeFormField(genderItems, _sexe),
+          buildSexeFormField(_sexe),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPoidsFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildAgeFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildGroupeSanguinFormField(bloodItems, selectedValue),
+          buildGroupeSanguinFormField(),
 
           SizedBox(height: SizeConfig.screenHeight * 0.03),
 
@@ -137,113 +139,19 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
     );
   }
 
-  DropdownButtonFormField2<String> buildGroupeSanguinFormField(
-      List<String> bloodItems, String? selectedValue) {
-    return DropdownButtonFormField2(
-      decoration: InputDecoration(
-        //Add isDense true and zero Padding.
-        //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
-        isDense: true,
-        contentPadding: EdgeInsets.zero,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        //Add more decoration as you want here
-        //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
-      ),
-      isExpanded: true,
-      hint: const Text(
-        'Selectioner votre groupe sanguin',
-        style: TextStyle(fontSize: 14),
-      ),
-      items: bloodItems
-          .map((item) => DropdownMenuItem<String>(
-                value: item,
-                child: Text(
-                  item,
-                  style: const TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-              ))
-          .toList(),
-      onChanged: (value) {
-        if (value == null) {}
-      },
-      onSaved: (value) {
-        selectedValue = value.toString();
-      },
-      buttonStyleData: const ButtonStyleData(
-        height: 60,
-        padding: EdgeInsets.only(left: 20, right: 10),
-      ),
-      iconStyleData: const IconStyleData(
-        icon: Icon(
-          Icons.arrow_drop_down,
-          color: Colors.black45,
-        ),
-        iconSize: 30,
-      ),
-      dropdownStyleData: DropdownStyleData(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-        ),
-      ),
-    );
-  }
-
-  DropdownButtonFormField2<String> buildSexeFormField(
-      List<String> genderItems, String? selectedValue) {
-    return DropdownButtonFormField2(
-      decoration: InputDecoration(
-        //Add isDense true and zero Padding.
-        //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
-        isDense: true,
-        contentPadding: EdgeInsets.zero,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        //Add more decoration as you want here
-        //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
-      ),
-      isExpanded: true,
-      // value: selectedValue,
-      hint: const Text(
-        'Selectioner votre sexe',
-        style: TextStyle(fontSize: 14),
-      ),
-      items: genderItems
-          .map((item) => DropdownMenuItem<String>(
-                value: item,
-                child: Text(
-                  item,
-                  style: const TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-              ))
-          .toList(),
-      onChanged: (value) {
-        if (value == null) {}
-      },
-      onSaved: (value) {
-        selectedValue = value.toString();
-      },
-      buttonStyleData: const ButtonStyleData(
-        height: 60,
-        padding: EdgeInsets.only(left: 20, right: 10),
-      ),
-      iconStyleData: const IconStyleData(
-        icon: Icon(
-          Icons.arrow_drop_down,
-          color: Colors.black45,
-        ),
-        iconSize: 30,
-      ),
-      dropdownStyleData: DropdownStyleData(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-        ),
+  TextFormField buildGroupeSanguinFormField() {
+    return TextFormField(
+      readOnly: true,
+      controller: TextEditingController()..text = _groupeSanguin,
+      keyboardType: TextInputType.text,
+      onChanged: (value) {},
+      decoration: const InputDecoration(
+        labelText: "Groupe Sanguin",
+        hintText: "Champs non rempli",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/User.svg"),
       ),
     );
   }
@@ -256,7 +164,24 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Nom",
-        hintText: "Entrer votre nom",
+        hintText: "Champs non rempli",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/User.svg"),
+      ),
+    );
+  }
+
+  TextFormField buildSexeFormField(String? sexe) {
+    return TextFormField(
+      readOnly: true,
+      controller: TextEditingController()..text = sexe!,
+      keyboardType: TextInputType.text,
+      onChanged: (value) {},
+      decoration: const InputDecoration(
+        labelText: "Sexe",
+        hintText: "Champs non rempli",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -273,7 +198,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Poids",
-        hintText: "Entrer votre poids",
+        hintText: "Champs non rempli",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -290,7 +215,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Age",
-        hintText: "Entrer votre age",
+        hintText: "Champs non rempli",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -306,7 +231,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Nom",
-        hintText: "Entrer le nom",
+        hintText: "Champs non rempli",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -323,7 +248,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Contact",
-        hintText: "Entrer le contact",
+        hintText: "Champs non rempli",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -340,7 +265,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Relation",
-        hintText: "Entrer le type de relation",
+        hintText: "Champs non rempli",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -357,7 +282,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Prénoms",
-        hintText: "Entrer vos prénoms",
+        hintText: "Champs non rempli",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -377,7 +302,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   //     },
   //     decoration: const InputDecoration(
   //       labelText: "Email",
-  //       hintText: "Entrer votre adresse email",
+  //       hintText: "Champs non rempliemail",
   //       // If  you are using latest version of flutter then lable text and hint text shown like this
   //       // if you r using flutter less then 1.20.* then maybe this is not working properly
   //       floatingLabelBehavior: FloatingLabelBehavior.always,
