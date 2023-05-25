@@ -1,12 +1,11 @@
-import 'package:contacts_service/contacts_service.dart';
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/fonts.dart';
-import 'package:medical_projet/components/form_error.dart';
 import 'package:medical_projet/models/user_model.dart' as model;
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
-import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
@@ -42,7 +41,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       _userDetailsFuture.then((user) {
         setState(() {
           _user = user;
-          print(_user!.age);
+          log(_user!.age.toString());
           _nom = _user!.nom;
           _prenom = _user!.prenom;
           _sexe = _user!.sexe;
