@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
+import 'package:medical_projet/models/notification_model.dart' as model;
 import 'package:medical_projet/services/notification/utils/constants.dart';
 
 class NotificationServices {
@@ -126,5 +127,23 @@ class NotificationServices {
       body: dataNotifications,
     );
     return true;
+  }
+
+  Future<void> saveNotificationToFirestore({
+    required String notificationId,
+    required String title,
+    required String body,
+  }) async {
+    model.ReceiveNotification receiveNotification = model.ReceiveNotification(
+      notificationId: notificationId,
+      title: title,
+      body: body,
+      timeStamp: Timestamp.now(),
+    );
+
+    await FirebaseFirestore.instance
+        .collection('notifications')
+        .doc(notificationId)
+        .set(receiveNotification.toJson());
   }
 }

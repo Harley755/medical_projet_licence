@@ -503,6 +503,13 @@ class UserAuthMethods {
         );
         log("TOKEN ENVOYEE");
 
+        NotificationServices().saveNotificationToFirestore(
+          notificationId: credential.user!.uid,
+          body: '$prenom $nom vous a envoyé une demande de création de compte',
+          title: 'Demande de creation de compte',
+        );
+        log("NOTIFICATION PUSH TO FIREBASE");
+
         response = "success";
       }
     } on FirebaseAuthException catch (e) {
