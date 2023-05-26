@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/models/user_model.dart' as model;
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
+import 'package:medical_projet/screens/dashboard/administrator/pages/state/components/body.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/dashboard/administrator/pages/profile/components/admin_profile_pic.dart';
 import 'package:medical_projet/screens/dashboard/administrator/pages/profile/components/body.dart';
@@ -66,6 +67,7 @@ class _AdminStatePageState extends State<AdminStatePage> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -136,6 +138,7 @@ class _AdminStatePageState extends State<AdminStatePage> {
             ],
           ),
         ),
+        body: const AdminBodyState(),
       ),
     );
   }

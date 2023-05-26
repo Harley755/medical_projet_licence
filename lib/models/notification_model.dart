@@ -4,12 +4,14 @@ class ReceiveNotification {
   final String notificationId;
   final String title;
   final String body;
+  final bool isRead;
   final Timestamp timeStamp;
 
   const ReceiveNotification({
     required this.notificationId,
     required this.title,
     required this.body,
+    required this.isRead,
     required this.timeStamp,
   });
 
@@ -17,6 +19,7 @@ class ReceiveNotification {
         'notificationId': notificationId,
         'title': title,
         'body': body,
+        'isRead': false,
         'timeStamp': timeStamp,
       };
 
@@ -27,6 +30,7 @@ class ReceiveNotification {
       notificationId: snapshot['notificationId'],
       title: snapshot['title'],
       body: snapshot['body'],
+      isRead: snapshot['isRead'],
       timeStamp: snapshot['timeStamp'],
     );
   }

@@ -138,6 +138,7 @@ class NotificationServices {
       notificationId: notificationId,
       title: title,
       body: body,
+      isRead: false,
       timeStamp: Timestamp.now(),
     );
 
@@ -145,5 +146,14 @@ class NotificationServices {
         .collection('notifications')
         .doc(notificationId)
         .set(receiveNotification.toJson());
+  }
+
+  Future<void> updateNotificationToFirestore({
+    required String notificationId,
+  }) async {
+    await FirebaseFirestore.instance
+        .collection('notifications')
+        .doc(notificationId)
+        .update({'isRead': true});
   }
 }
