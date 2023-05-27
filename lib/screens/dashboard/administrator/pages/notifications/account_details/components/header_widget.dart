@@ -8,11 +8,12 @@ class HeaderWidget extends StatefulWidget {
   final bool showIcon;
   final IconData icon;
 
-  const HeaderWidget(
-      {required this.height,
-      required this.showIcon,
-      required this.icon,
-      super.key});
+  const HeaderWidget({
+    required this.height,
+    required this.showIcon,
+    required this.icon,
+    super.key,
+  });
 
   @override
   State<HeaderWidget> createState() => _HeaderWidgetState();

@@ -41,7 +41,9 @@ class BodyAdminNotificationPage extends StatelessWidget {
             return InkWell(
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const AccountDetails(),
+                  builder: (context) => AccountDetails(
+                    userId: notification['notificationId'],
+                  ),
                 ),
               ),
               child: Padding(

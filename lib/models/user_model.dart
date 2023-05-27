@@ -8,6 +8,7 @@ class User {
   final String? poids;
   final String? sexe;
   final String? age;
+  final String? dateNaissance;
   final String? photoUrl;
   final String? telephone;
   final String? groupeSanguinId;
@@ -24,6 +25,7 @@ class User {
     required this.poids,
     required this.sexe,
     required this.age,
+    required this.dateNaissance,
     required this.photoUrl,
     required this.telephone,
     required this.groupeSanguinId,
@@ -41,6 +43,7 @@ class User {
         'poids': poids,
         'sexe': sexe,
         'age': age,
+        'dateNaissance': dateNaissance,
         'photoUrl': photoUrl,
         'telephone': telephone,
         'groupeSanguinId': groupeSanguinId,
@@ -60,6 +63,7 @@ class User {
       poids: snapshot['poids'],
       sexe: snapshot['sexe'],
       age: snapshot['age'],
+      dateNaissance: snapshot['dateNaissance'],
       email: snapshot['email'],
       photoUrl: snapshot['photoUrl'],
       telephone: snapshot['telephone'],

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/components/body.dart';
 import 'package:medical_projet/size_config.dart';
 
@@ -10,8 +9,8 @@ class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
-      body: SafeArea(child: const BodyInfoSignUp()),
+    return const Scaffold(
+      body: SafeArea(child: BodyInfoSignUp()),
     );
     // return DefaultTabController(
     //   length: 1,

@@ -109,4 +109,28 @@ class AdminCloudMethods {
     }
     return response;
   }
+
+  Future<String> updateStatut({
+    required String nom,
+    required String prenom,
+    required String email,
+  }) async {
+    String response = "Une erreur s'est produite";
+
+    try {
+      // VERIFICATION DES CHAMPS
+      if (nom.isNotEmpty || prenom.isNotEmpty || email.isNotEmpty) {
+        // ON AJOUTE LE COMPTE A FIREBASE
+        await _firestore.collection('comptes').doc(email).update({
+          'nom': nom,
+          'prenom': prenom,
+          'updatedAt': DateTime.now(),
+        });
+        response = "success";
+      }
+    } catch (e) {
+      response = e.toString();
+    }
+    return response;
+  }
 }

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Statut {
   final String statutId;
-  final bool estAccepte;
+  final String etatStatut;
   final String motif;
   final DateTime createdAt;
   final String userId;
@@ -10,7 +10,7 @@ class Statut {
 
   const Statut({
     required this.statutId,
-    required this.estAccepte,
+    required this.etatStatut,
     required this.motif,
     required this.createdAt,
     required this.userId,
@@ -19,7 +19,7 @@ class Statut {
 
   Map<String, dynamic> toJson() => {
         'statutId': statutId,
-        'estAccepte': estAccepte,
+        'etatStatut': etatStatut,
         'motif': motif,
         'createdAt': createdAt,
         'userId': userId,
@@ -31,7 +31,7 @@ class Statut {
 
     return Statut(
       statutId: snapshot['statutId'],
-      estAccepte: snapshot['estAccepte'],
+      etatStatut: snapshot['etatStatut'],
       motif: snapshot['motif'],
       createdAt: snapshot['createdAt'],
       userId: snapshot['userId'],

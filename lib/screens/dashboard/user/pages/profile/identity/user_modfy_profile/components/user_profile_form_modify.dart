@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,6 +18,7 @@ import 'package:medical_projet/size_config.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:medical_projet/utils/functions.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 
 class UserProfileFormModify extends StatefulWidget {
   const UserProfileFormModify({super.key});
@@ -34,6 +37,7 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
   String sexeValue = "";
   late final TextEditingController _poidsController;
   String bloodTypeValue = "";
+  String dateNaissanceValue = "";
   late final TextEditingController _ageController;
   late final TextEditingController _emergenceNameController;
   late final TextEditingController _emergenceContactController;
@@ -191,6 +195,7 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
       sexe: sexeValue,
       poids: _poidsController.text,
       age: _ageController.text,
+      dateNaissance: dateNaissanceValue,
       groupeSanguinId: bloodTypeValue,
       nomContactUrgence: _emergenceNameController.text,
       telephoneContactUrgence: _emergenceContactController.text,
@@ -249,14 +254,16 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
           SizedBox(height: getProportionateScreenHeight(30)),
           buildAgeFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
+          buildDatePicker(),
+          SizedBox(height: getProportionateScreenHeight(30)),
 
           FutureBuilder<List<Map<String, dynamic>>>(
             future: _bloodTypeListFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
-                    child:
-                        CircularProgressIndicator()); // Afficher une indication de chargement si la liste est en cours de récupération
+                  child: CircularProgressIndicator(color: kPrimaryColor),
+                ); // Afficher une indication de chargement si la liste est en cours de récupération
               } else if (snapshot.hasError) {
                 return Text('Une erreur est survenue : ${snapshot.error}');
               } else if (!snapshot.hasData) {
@@ -324,9 +331,47 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
                     }
                   },
                 )
-              : const Center(child: CircularProgressIndicator()),
+              : const Center(
+                  child: CircularProgressIndicator(
+                    color: kPrimaryColor,
+                  ),
+                ),
         ],
       ),
+    );
+  }
+
+  DateTimePicker buildDatePicker() {
+    return DateTimePicker(
+      type: DateTimePickerType.date,
+      dateMask: 'd MMM, yyyy',
+      // initialValue: DateTime.now().toString(),
+      firstDate: DateTime(1933),
+      lastDate: DateTime(2100),
+      dateHintText: 'Date',
+      dateLabelText: 'Date de naissance',
+      onChanged: (val) {
+        if (val.isNotEmpty) {
+          removeError(error: kPoidsNullError);
+        }
+      },
+      validator: (val) {
+        if (val == null) {
+          addError(error: kBirthDayNullError);
+          return "";
+        }
+        DateTime selectedDate = DateTime.parse(val);
+        String formattedDate =
+            '${selectedDate.day.toString().padLeft(2, '0')}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.year.toString()}';
+        log(formattedDate);
+        dateNaissanceValue = formattedDate;
+        setState(() {
+          dateNaissanceValue = formattedDate;
+          log(dateNaissanceValue);
+        });
+        return null;
+      },
+      onSaved: (val) => log(val!),
     );
   }
 

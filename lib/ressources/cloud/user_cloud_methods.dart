@@ -40,6 +40,7 @@ class UserCloudMethods {
     required sexe,
     required poids,
     required age,
+    required dateNaissance,
     required groupeSanguinId,
     required nomContactUrgence,
     required telephoneContactUrgence,
@@ -56,6 +57,7 @@ class UserCloudMethods {
           sexe.isNotEmpty ||
           poids.isNotEmpty ||
           age.isNotEmpty ||
+          dateNaissance.isNotEmpty ||
           groupeSanguinId.isNotEmpty ||
           nomContactUrgence.isNotEmpty ||
           telephoneContactUrgence.isNotEmpty ||
@@ -67,6 +69,7 @@ class UserCloudMethods {
           'sexe': sexe,
           'poids': poids,
           'age': age,
+          'dateNaissance': dateNaissance,
           'groupeSanguinId': groupeSanguinId,
           'nomContactUrgence': nomContactUrgence,
           'telephoneContactUrgence': telephoneContactUrgence,

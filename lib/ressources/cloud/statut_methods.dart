@@ -34,7 +34,7 @@ class StatutMethods {
         model.Statut statut = model.Statut(
           statutId: statutId,
           compteId: compteId,
-          estAccepte: false,
+          etatStatut: 'attente',
           motif: motif,
           userId: userId,
           createdAt: DateTime.now(),

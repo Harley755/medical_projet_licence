@@ -67,6 +67,7 @@ const String kEmergenceNameNullError = "Veuillez entrer le nom";
 const String kEmergenceContactNullError = "Veuillez entrer le contact";
 const String kEmergenceRelationshipNullError =
     "Veuillez entrer le type de relation";
+const String kBirthDayNullError = "Veuillez entrer le contact";
 
 // USER MEDICAL FIELD ERROR
 // ANTECEDENTS MEDICAUX

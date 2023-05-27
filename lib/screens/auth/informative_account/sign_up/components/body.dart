@@ -25,6 +25,7 @@ class BodyInfoSignUp extends StatelessWidget {
             children: [
               SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
               Text("Créer un compte", style: headingStyle),
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
               const Text(
                 "Veuillez remplir tous les champs",
                 textAlign: TextAlign.center,

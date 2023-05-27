@@ -137,6 +137,7 @@ class UserAuthMethods {
           poids: '',
           sexe: '',
           age: '',
+          dateNaissance: '',
           photoUrl: '',
           telephone: '',
           groupeSanguinId: '',
@@ -201,7 +202,7 @@ class UserAuthMethods {
     return response;
   }
 
-  // INSCRIPTION COMPTE INFORMATIF
+  // INSCRIPTION COMPTE INFORMATIF POUR ENFANT
   Future<String> signUpUserAssociatedAccount({
     required nom,
     required prenom,
@@ -242,6 +243,7 @@ class UserAuthMethods {
           poids: '',
           sexe: '',
           age: '',
+          dateNaissance: '',
           photoUrl: '',
           telephone: '',
           groupeSanguinId: '',

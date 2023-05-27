@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/custom_suffix_icon.dart';
@@ -29,6 +30,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   String _groupeSanguin = "";
   String? _poids = "";
   String? _age = "";
+  String? _dateNaissance = "";
   String? _nomContactUrgence = "";
   String? _telephoneContactUrgence = "";
   String? _relation = "";
@@ -45,11 +47,13 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
           log(_user!.age.toString());
           log(_user!.sexe.toString());
           log(_user!.groupeSanguinId.toString());
+          log(_user!.dateNaissance.toString());
           _nom = _user!.nom;
           _prenom = _user!.prenom;
           _sexe = _user!.sexe;
           _poids = _user!.poids;
           _age = _user!.age;
+          _dateNaissance = _user!.dateNaissance;
           _groupeSanguinId = _user!.groupeSanguinId;
 
           getBloodType(id: _user!.groupeSanguinId);
@@ -114,6 +118,8 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
           SizedBox(height: getProportionateScreenHeight(30)),
           buildAgeFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
+          buildDatePicker(),
+          SizedBox(height: getProportionateScreenHeight(30)),
           buildGroupeSanguinFormField(),
 
           SizedBox(height: SizeConfig.screenHeight * 0.03),
@@ -135,6 +141,23 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
           buildEmergenceRelationshipField(),
           SizedBox(height: getProportionateScreenHeight(30)),
         ],
+      ),
+    );
+  }
+
+  TextFormField buildDatePicker() {
+    return TextFormField(
+      readOnly: true,
+      controller: TextEditingController()..text = _dateNaissance!,
+      keyboardType: TextInputType.text,
+      onChanged: (value) {},
+      decoration: const InputDecoration(
+        labelText: "Date de Naissance",
+        hintText: "Champs non renseigné",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSuffixIcon(svgIcon: "assets/icons/User.svg"),
       ),
     );
   }
