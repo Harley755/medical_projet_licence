@@ -7,12 +7,20 @@ import 'package:medical_projet/size_config.dart';
 class DefaultButton extends StatelessWidget {
   final String text;
   final Function()? press;
-  const DefaultButton({super.key, required this.text, this.press});
+  final Color? color;
+  final double? width;
+  const DefaultButton({
+    super.key,
+    required this.text,
+    this.press,
+    this.color,
+    this.width,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity,
+      width: width ?? double.infinity,
       height: getProportionateScreenHeight(56),
       child: TextButton(
         onPressed: press,
@@ -21,7 +29,7 @@ class DefaultButton extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
           ),
           foregroundColor: Colors.white,
-          backgroundColor: kPrimaryColor,
+          backgroundColor: color ?? kPrimaryColor,
         ),
         child: Text(
           text,
