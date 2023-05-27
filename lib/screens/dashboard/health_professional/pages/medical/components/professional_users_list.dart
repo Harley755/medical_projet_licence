@@ -53,11 +53,13 @@ class _ProfessionalUserListState extends State<ProfessionalUserList> {
                   ),
                   title: RobotoFont(
                     title: '${user['prenom']} ${user['nom']}',
+                    color: kUserResColor,
                     size: getProportionateScreenWidth(17.0),
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w700,
                   ),
                   subtitle: RobotoFont(
                     title: user['email'],
+                    color: kSecondaryColor,
                     size: getProportionateScreenWidth(13.0),
                   ),
                 );

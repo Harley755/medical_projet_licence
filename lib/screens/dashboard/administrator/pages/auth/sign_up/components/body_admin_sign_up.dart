@@ -3,6 +3,7 @@ import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/screens/dashboard/administrator/pages/auth/sign_up/components/admin_sign_up_form.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_in/sign_in_screen.dart';
 import 'package:medical_projet/size_config.dart';
+import 'package:medical_projet/utils/constants.dart';
 
 class BodyAdminSignUp extends StatelessWidget {
   const BodyAdminSignUp({super.key});
@@ -19,9 +20,14 @@ class BodyAdminSignUp extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: SizeConfig.screenHeight * 0.04), // 5%
+              Text("Créer un compte Admin", style: headingStyle),
+              const Text(
+                "Veuillez remplir tous les champs",
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: SizeConfig.screenHeight * 0.05),
               const AdminSignUpForm(),
-              SizedBox(height: SizeConfig.screenHeight * 0.04),
+              SizedBox(height: SizeConfig.screenHeight * 0.03),
               // TRANSITIONING TO SIGNING UP
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

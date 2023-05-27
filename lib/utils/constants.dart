@@ -8,6 +8,7 @@ const kPrimaryLightColor = Color(0xFFFFECDF);
 final selectTabBg = Colors.amber[600]!.withOpacity(.2);
 
 const kSecondaryColor = Color(0xFF979797);
+const kUserResColor = Color.fromARGB(255, 77, 77, 77);
 const kTextColor = Color(0xFF757575);
 
 final headingStyle = TextStyle(
@@ -93,7 +94,6 @@ const String kPhoneNumberNullError =
     "Veuillez entrer votre numéro de téléphone";
 
 const String kSpecialityNullError = "Veuillez entrer votre specialité";
-
 
 // ADMIN
 const String kSecretCodeNullError = "Veuillez entrer votre code secret";

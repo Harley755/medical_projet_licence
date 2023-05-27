@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
+import 'package:medical_projet/screens/auth/auth_screen.dart';
+import 'package:medical_projet/screens/dashboard/administrator/pages/auth/sign_up/admin_sign_up.dart';
 import 'package:medical_projet/screens/dashboard/administrator/pages/profile/components/admin_profile_menu.dart';
 import 'package:medical_projet/screens/dashboard/administrator/pages/profile/components/admin_sub_profile_menu.dart';
 
@@ -46,11 +48,6 @@ class _DrawerBodyState extends State<DrawerBody> {
                       press: () => {},
                     ),
                     AdminSubProfileMenu(
-                      text: "Ajouter des empreintes",
-                      icon: "assets/icons/Lock.svg",
-                      press: () => {},
-                    ),
-                    AdminSubProfileMenu(
                       text: "Changer de mot de passe",
                       icon: "assets/icons/Lock.svg",
                       press: () => {},
@@ -65,6 +62,14 @@ class _DrawerBodyState extends State<DrawerBody> {
                 )
               : Container(),
 
+          AdminProfileMenu(
+            text: "Ajouter un admin",
+            icon: "assets/icons/User Icon.svg",
+            press: () => Navigator.pushNamed(
+              context,
+              AdminSignUpScreen.routeName,
+            ),
+          ),
           // TOOGLE DARK/WHITE MODE AND CHANGE LANGUAGE
           AdminProfileMenu(
             text: "Parametre",
@@ -76,7 +81,17 @@ class _DrawerBodyState extends State<DrawerBody> {
           AdminProfileMenu(
             text: "Déconnexion",
             icon: "assets/icons/Log out.svg",
-            press: () => UserAuthMethods().logOut(),
+            press: () async {
+              await UserAuthMethods().logOut();
+              // ignore: use_build_context_synchronously
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AuthScreen(),
+                ),
+                (Route<dynamic> route) => false,
+              );
+            },
           ),
         ],
       ),

@@ -73,11 +73,6 @@ class _ProfessionalBodyState extends State<ProfessionalBody> {
                       press: () => {},
                     ),
                     ProfessionalSubProfileMenu(
-                      text: "Ajouter des empreintes",
-                      icon: "assets/icons/Lock.svg",
-                      press: () => {},
-                    ),
-                    ProfessionalSubProfileMenu(
                       text: "Changer de mot de passe",
                       icon: "assets/icons/Lock.svg",
                       press: () => Navigator.pushNamed(
@@ -103,11 +98,11 @@ class _ProfessionalBodyState extends State<ProfessionalBody> {
           ),
 
           /// WRITE TO CENTER FOR FEEDBACK
-          ProfessionalProfileMenu(
-            text: "Demande d'aide",
-            icon: "assets/icons/Question mark.svg",
-            press: () {},
-          ),
+          // ProfessionalProfileMenu(
+          //   text: "Demande d'aide",
+          //   icon: "assets/icons/Question mark.svg",
+          //   press: () {},
+          // ),
 
           // LOG OUT
           ProfessionalProfileMenu(
