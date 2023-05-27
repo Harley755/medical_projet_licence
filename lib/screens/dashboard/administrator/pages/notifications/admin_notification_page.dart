@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medical_projet/screens/dashboard/administrator/pages/notifications/components/body.dart';
 import 'package:medical_projet/size_config.dart';
-import 'package:medical_projet/utils/constants.dart';
 
 class AdminNotificationPage extends StatelessWidget {
   const AdminNotificationPage({super.key});

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medical_projet/components/fonts.dart';
+import 'package:medical_projet/screens/dashboard/administrator/pages/notifications/account_details/account_details.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/constants.dart';
 
@@ -38,7 +39,11 @@ class BodyAdminNotificationPage extends StatelessWidget {
                 notifications[index].data() as Map<String, dynamic>;
 
             return InkWell(
-              onTap: () {},
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const AccountDetails(),
+                ),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListTile(
