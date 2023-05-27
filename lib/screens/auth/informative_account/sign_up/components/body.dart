@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/fonts.dart';
-import 'package:medical_projet/screens/auth/medical_account/sign_in/sign_in_screen.dart';
-import 'package:medical_projet/utils/constants.dart';
+
 import 'package:medical_projet/screens/auth/informative_account/sign_in/sign_in_screen.dart';
-import 'package:medical_projet/screens/auth/informative_account/sign_up/sign_up_screen.dart';
+
 import 'package:medical_projet/size_config.dart';
+import 'package:medical_projet/utils/constants.dart';
 
 import 'sign_up_form.dart';
 
@@ -23,7 +23,13 @@ class BodyInfoSignUp extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: SizeConfig.screenHeight * 0.04), // 5%
+              SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
+              Text("Créer un compte", style: headingStyle),
+              const Text(
+                "Veuillez remplir tous les champs",
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: SizeConfig.screenHeight * 0.05),
               const SignUpForm(),
               SizedBox(height: SizeConfig.screenHeight * 0.04),
               // TRANSITIONING TO SIGNING UP
@@ -68,6 +74,7 @@ class BodyInfoSignUp extends StatelessWidget {
               //   ],
               // ),
               SizedBox(height: SizeConfig.screenHeight * 0.048),
+              // const Spacer(),
               RobotoFont(
                 title:
                     'En continuant, vous confirmez que vous acceptez\nnos Termes and Conditions',

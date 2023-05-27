@@ -69,12 +69,16 @@ class UserAuthMethods {
   // }
 
   Future<dynamic> getInfo({required String bloodTypeId}) async {
-    DocumentSnapshot bloodTypeSnapshot =
-        await _firestore.collection('blood_type').doc(bloodTypeId).get();
+    if (bloodTypeId != "") {
+      DocumentSnapshot bloodTypeSnapshot =
+          await _firestore.collection('blood_type').doc(bloodTypeId).get();
 
-    dynamic attributeValue = bloodTypeSnapshot.get('libelle');
+      dynamic attributeValue = bloodTypeSnapshot.get('libelle');
 
-    return attributeValue;
+      return attributeValue;
+    } else {
+      return "";
+    }
   }
 
   Future<model.Professional> getProfessionalIdentityDetails(

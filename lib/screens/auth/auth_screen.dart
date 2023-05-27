@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/components/body.dart';
-import 'package:medical_projet/screens/auth/medical_account/sign_up/components/body.dart';
 import 'package:medical_projet/size_config.dart';
 
 class AuthScreen extends StatelessWidget {
@@ -13,15 +11,7 @@ class AuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      appBar: AppBar(
-        title: PoppinsFont(
-          title: "Créer un compte",
-          size: getProportionateScreenWidth(30.0),
-          fontWeight: FontWeight.w600,
-        ),
-        centerTitle: true,
-      ),
-      body: const BodyInfoSignUp(),
+      body: SafeArea(child: const BodyInfoSignUp()),
     );
     // return DefaultTabController(
     //   length: 1,

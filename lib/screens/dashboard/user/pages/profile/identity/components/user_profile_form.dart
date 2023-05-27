@@ -147,7 +147,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Groupe Sanguin",
-        hintText: "Champs non rempli",
+        hintText: "Champs non renseigné",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -164,7 +164,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Nom",
-        hintText: "Champs non rempli",
+        hintText: "Champs non renseigné",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -181,7 +181,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Sexe",
-        hintText: "Champs non rempli",
+        hintText: "Champs non renseigné",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -198,7 +198,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Poids",
-        hintText: "Champs non rempli",
+        hintText: "Champs non renseigné",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -210,12 +210,12 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
   TextFormField buildAgeFormField() {
     return TextFormField(
       readOnly: true,
-      controller: TextEditingController()..text = "$_age ans",
+      controller: TextEditingController()..text = "$_age",
       keyboardType: TextInputType.number,
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Age",
-        hintText: "Champs non rempli",
+        hintText: "Champs non renseigné",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -231,7 +231,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Nom",
-        hintText: "Champs non rempli",
+        hintText: "Champs non renseigné",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -248,7 +248,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Contact",
-        hintText: "Champs non rempli",
+        hintText: "Champs non renseigné",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -265,7 +265,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Relation",
-        hintText: "Champs non rempli",
+        hintText: "Champs non renseigné",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -282,7 +282,7 @@ class _UserProfileFormReadOnlyState extends State<UserProfileFormReadOnly> {
       onChanged: (value) {},
       decoration: const InputDecoration(
         labelText: "Prénoms",
-        hintText: "Champs non rempli",
+        hintText: "Champs non renseigné",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
