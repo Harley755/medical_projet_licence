@@ -77,7 +77,9 @@ class _UserChangeEmailFormState extends State<UserChangeEmailForm> {
                       _formKey.currentState!.save();
                       // if all are valid then go to success screen
                       Navigator.pushNamed(
-                          context, UsersDashboardScreen.routeName);
+                        context,
+                        UsersDashboardScreen.routeName,
+                      );
                     }
                   },
                 ),
