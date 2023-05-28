@@ -29,6 +29,7 @@ class _AccountDetailsState extends State<AccountDetails> {
   String _prenom = "";
   String _email = "";
   String _specialite = "";
+  String _photoUrl = "";
   String _photoCarteMedicale = "";
   String _photoPieceIdentite = "";
 
@@ -46,6 +47,7 @@ class _AccountDetailsState extends State<AccountDetails> {
           _prenom = _professional!.prenom;
           _specialite = _professional!.specialite;
           _email = _professional!.email;
+          _photoUrl = _professional!.photoUrl;
           // _telephone = _professional!.specialite;
           _photoCarteMedicale = _professional!.photoCarteMedicale;
           _photoPieceIdentite = _professional!.photoPieceIdentite;
@@ -105,10 +107,13 @@ class _AccountDetailsState extends State<AccountDetails> {
                                       offset: Offset(5, 5),
                                     ),
                                   ],
-                                ),
-                                child: Icon(
-                                  Icons.person,
-                                  color: Colors.grey.shade300,
+                                  image: DecorationImage(
+                                    image: NetworkImage(
+                                      _photoUrl == ""
+                                          ? "https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg"
+                                          : _photoUrl,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],

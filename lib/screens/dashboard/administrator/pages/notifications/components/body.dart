@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/screens/dashboard/administrator/pages/notifications/account_details/account_details.dart';
+import 'package:medical_projet/services/notification/notification_service.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/constants.dart';
 
@@ -38,40 +39,83 @@ class BodyAdminNotificationPage extends StatelessWidget {
             final notification =
                 notifications[index].data() as Map<String, dynamic>;
 
-            return InkWell(
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => AccountDetails(
-                    userId: notification['notificationId'],
-                  ),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  leading: Container(
-                    padding: const EdgeInsets.all(15.0),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: kPrimaryColor,
-                    ),
-                    child: SvgPicture.asset("assets/icons/User.svg"),
-                  ),
-                  title: RobotoFont(
-                    title: notification['title'],
-                    size: getProportionateScreenWidth(18),
-                  ),
-                  subtitle: Column(
-                    children: [
-                      SizedBox(
-                        height: getProportionateScreenHeight(5.0),
+            return notification['isRead']
+                ? InkWell(
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => AccountDetails(
+                          userId: notification['notificationId'],
+                        ),
                       ),
-                      Text(notification['body']),
-                    ],
-                  ),
-                ),
-              ),
-            );
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        leading: Container(
+                          padding: const EdgeInsets.all(14.0),
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: kPrimaryColor,
+                          ),
+                          child: SvgPicture.asset("assets/icons/User.svg"),
+                        ),
+                        title: RobotoFont(
+                          title: notification['title'],
+                          size: getProportionateScreenWidth(18),
+                        ),
+                        subtitle: Column(
+                          children: [
+                            SizedBox(
+                              height: getProportionateScreenHeight(5.0),
+                            ),
+                            Text(notification['body']),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                : InkWell(
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) {
+                        NotificationServices().updateNotificationToFirestore(
+                          notificationId: notification['notificationId'],
+                        );
+                        return AccountDetails(
+                          userId: notification['notificationId'],
+                        );
+                      }),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        leading: Container(
+                          padding: const EdgeInsets.all(14.0),
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: kPrimaryColor,
+                          ),
+                          child: SvgPicture.asset("assets/icons/User.svg"),
+                        ),
+                        title: RobotoFont(
+                          title: notification['title'],
+                          size: getProportionateScreenWidth(18),
+                          fontWeight: FontWeight.w700,
+                        ),
+                        subtitle: Column(
+                          children: [
+                            SizedBox(
+                              height: getProportionateScreenHeight(5.0),
+                            ),
+                            Text(
+                              notification['body'],
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w700),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
           },
         );
       },
