@@ -3,6 +3,7 @@ import 'package:medical_projet/components/custom_suffix_icon.dart';
 import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/components/form_error.dart';
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
+import 'package:medical_projet/screens/auth/informative_account/sign_up/user_send_verification_email.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_in/sign_in_screen.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
@@ -49,11 +50,19 @@ class _SignInFormState extends State<SignInForm> {
       // ignore: use_build_context_synchronously
       showSnackBar(response, context);
     } else {
+      // Navigator.pushAndRemoveUntil(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => const UsersDashboardScreen(),
+      //   ),
+      //   (Route<dynamic> route) => false,
+      // );
+
       // ignore: use_build_context_synchronously
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => const UsersDashboardScreen(),
+          builder: (context) => const UserSendEmailVerification(),
         ),
         (Route<dynamic> route) => false,
       );
