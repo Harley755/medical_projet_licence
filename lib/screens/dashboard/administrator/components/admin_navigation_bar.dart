@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -19,12 +21,13 @@ class AdminNavigationBar extends StatefulWidget {
 
 class _AdminNavigationBarState extends State<AdminNavigationBar> {
   User? user = FirebaseAuth.instance.currentUser;
+  StreamSubscription<QuerySnapshot>? _notificationSubscription;
   String token = "";
 
   int _selectedIndex = 0;
-  int badge = 2;
+  // int badge = 2;
   int badgeNotifs = 2;
-  int badgeMessenger = 2;
+  // int badgeMessenger = 2;
   final padding = const EdgeInsets.symmetric(
     horizontal: 18,
     vertical: 12,
@@ -39,6 +42,18 @@ class _AdminNavigationBarState extends State<AdminNavigationBar> {
     initializeAndSaveToken();
     log("TOKEN MIS A JOUR AU NIVEAU DE DASHBOARD ADMIN");
     pageController = PageController();
+
+    _notificationSubscription = FirebaseFirestore.instance
+        .collection('notifications')
+        .where('isRead', isEqualTo: false)
+        .snapshots()
+        .listen((snapshot) {
+      int count = snapshot.docs.length;
+      setState(() {
+        badgeNotifs = count;
+      });
+    });
+
     super.initState();
   }
 
@@ -129,7 +144,7 @@ class _AdminNavigationBarState extends State<AdminNavigationBar> {
                   iconSize: 24,
                   padding: padding,
                   icon: LineIcons.bell,
-                  leading: _selectedIndex == 3 || badgeNotifs == 0
+                  leading: _selectedIndex == 2 || badgeNotifs == 0
                       ? null
                       : badges.Badge(
                           position:

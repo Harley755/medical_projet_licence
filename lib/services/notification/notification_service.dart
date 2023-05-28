@@ -205,4 +205,16 @@ class NotificationServices {
         .doc(notificationId)
         .update({'isRead': true});
   }
+
+  Future<int> countUnreadNotifications() async {
+    CollectionReference notificationCollection =
+        FirebaseFirestore.instance.collection('notifications');
+
+    QuerySnapshot snapshot =
+        await notificationCollection.where('isRead', isEqualTo: false).get();
+
+    int count = snapshot.docs.length;
+
+    return count;
+  }
 }

@@ -81,6 +81,23 @@ class UserAuthMethods {
     }
   }
 
+  // Future<dynamic> getInfo({
+  //   required String collection,
+  //   required String doc,
+  //   required String attribut,
+  // }) async {
+  //   if (doc != "") {
+  //     DocumentSnapshot bloodTypeSnapshot =
+  //         await _firestore.collection(collection).doc(doc).get();
+
+  //     dynamic attributeValue = bloodTypeSnapshot.get(attribut);
+
+  //     return attributeValue;
+  //   } else {
+  //     return "";
+  //   }
+  // }
+
   Future<model.Professional> getProfessionalIdentityDetails(
       {required String userId}) async {
     if (userId != "") {

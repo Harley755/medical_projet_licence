@@ -57,7 +57,10 @@ class BodyAdminNotificationPage extends StatelessWidget {
                             shape: BoxShape.circle,
                             color: kPrimaryColor,
                           ),
-                          child: SvgPicture.asset("assets/icons/User.svg"),
+                          child: SvgPicture.asset(
+                            "assets/icons/User.svg",
+                            color: Colors.white,
+                          ),
                         ),
                         title: RobotoFont(
                           title: notification['title'],
