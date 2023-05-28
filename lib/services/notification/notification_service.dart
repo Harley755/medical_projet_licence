@@ -145,6 +145,16 @@ class NotificationServices {
     });
   }
 
+  void updateToken({
+    required String collection,
+    required String doc,
+    required String token,
+  }) async {
+    await FirebaseFirestore.instance.collection(collection).doc(doc).update({
+      'token': token,
+    });
+  }
+
   Future<bool> sendPushNotificationToAdmin({
     required String token,
     required String title,

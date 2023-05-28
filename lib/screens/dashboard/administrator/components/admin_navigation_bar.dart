@@ -1,6 +1,10 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:medical_projet/services/notification/notification_service.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/dashboard/administrator/utils/global_variables.dart';
 import 'package:medical_projet/size_config.dart';
@@ -14,6 +18,9 @@ class AdminNavigationBar extends StatefulWidget {
 }
 
 class _AdminNavigationBarState extends State<AdminNavigationBar> {
+  User? user = FirebaseAuth.instance.currentUser;
+  String token = "";
+
   int _selectedIndex = 0;
   int badge = 2;
   int badgeNotifs = 2;
@@ -28,8 +35,30 @@ class _AdminNavigationBarState extends State<AdminNavigationBar> {
 
   @override
   void initState() {
+    // ADD DEVICE TOKEN
+    initializeToken();
+    updateAdminToken();
+    log("TOKEN MIS A JOUR AU NIVEAU DE DASHBOARD ADMIN");
     pageController = PageController();
     super.initState();
+  }
+
+  initializeToken() async {
+    String newToken = await NotificationServices().getToken();
+    setState(() {
+      token = newToken;
+    });
+    log("TOKEN $token");
+  }
+
+  updateAdminToken() {
+    if (user != null) {
+      return NotificationServices().updateToken(
+        collection: 'adminToken',
+        doc: user!.uid,
+        token: token,
+      );
+    }
   }
 
   void navigatorTapped(int page) {

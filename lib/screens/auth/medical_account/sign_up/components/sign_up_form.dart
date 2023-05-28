@@ -172,6 +172,8 @@ class _SignUpFormState extends State<SignUpForm> {
             "${_firstNameController.text} ${_lastNameController.text} demande a créé un compte",
       );
 
+      log("NOTIFICATION ENVOYE SUR LE DEVICE");
+
       // ignore: use_build_context_synchronously
       // Navigator.pushAndRemoveUntil(
       //   context,

@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:medical_projet/services/notification/notification_service.dart';
 import 'package:medical_projet/utils/constants.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/utils/global_variables.dart';
 import 'package:medical_projet/size_config.dart';
@@ -16,6 +19,9 @@ class ProfessionalNavigationBar extends StatefulWidget {
 }
 
 class _ProfessionalNavigationBarState extends State<ProfessionalNavigationBar> {
+  User? user = FirebaseAuth.instance.currentUser;
+  String token = "";
+
   int _selectedIndex = 0;
   int badge = 0;
   final padding = const EdgeInsets.symmetric(horizontal: 18, vertical: 12);
@@ -44,7 +50,28 @@ class _ProfessionalNavigationBarState extends State<ProfessionalNavigationBar> {
     }).catchError((error) {
       print(error);
     });
+    initializeToken();
+    updateAdminToken();
+    log("TOKEN MIS A JOUR AU NIVEAU DE DASHBOARD PRO");
     super.initState();
+  }
+
+  initializeToken() async {
+    String newToken = await NotificationServices().getToken();
+    setState(() {
+      token = newToken;
+    });
+    log("TOKEN $token");
+  }
+
+  updateAdminToken() {
+    if (user != null) {
+      return NotificationServices().updateToken(
+        collection: 'professionalToken',
+        doc: user!.uid,
+        token: token,
+      );
+    }
   }
 
   void navigatorTapped(int page) {

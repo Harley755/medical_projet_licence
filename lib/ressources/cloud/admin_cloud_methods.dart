@@ -80,13 +80,13 @@ class AdminCloudMethods {
           );
           log("Compte Ajouté");
 
-          // ADD DEVICE TOKEN
-          NotificationServices().saveTokenAndId(
-            collection: 'adminToken',
-            doc: credential.user!.uid,
-            token: token,
-            userId: credential.user!.uid,
-          );
+          // // ADD DEVICE TOKEN
+          // NotificationServices().saveTokenAndId(
+          //   collection: 'adminToken',
+          //   doc: credential.user!.uid,
+          //   token: token,
+          //   userId: credential.user!.uid,
+          // );
           log("TOKEN ENVOYEE");
 
           response = "success";
