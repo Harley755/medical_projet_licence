@@ -50,18 +50,24 @@ class _ProfessionalNavigationBarState extends State<ProfessionalNavigationBar> {
     }).catchError((error) {
       print(error);
     });
-    initializeToken();
-    updateAdminToken();
+    initializeAndSaveToken();
     log("TOKEN MIS A JOUR AU NIVEAU DE DASHBOARD PRO");
     super.initState();
   }
 
-  initializeToken() async {
+  initializeAndSaveToken() async {
     String newToken = await NotificationServices().getToken();
     setState(() {
       token = newToken;
     });
-    log("TOKEN $token");
+
+    log("TOKEN tok : $token");
+    NotificationServices().updateToken(
+      collection: 'professionalToken',
+      doc: user!.uid,
+      token: token,
+    );
+    log("TOKEN tok pro à mettre à jour: $token");
   }
 
   updateAdminToken() {

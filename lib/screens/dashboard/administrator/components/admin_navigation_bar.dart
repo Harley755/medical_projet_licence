@@ -36,29 +36,25 @@ class _AdminNavigationBarState extends State<AdminNavigationBar> {
   @override
   void initState() {
     // ADD DEVICE TOKEN
-    initializeToken();
-    updateAdminToken();
+    initializeAndSaveToken();
     log("TOKEN MIS A JOUR AU NIVEAU DE DASHBOARD ADMIN");
     pageController = PageController();
     super.initState();
   }
 
-  initializeToken() async {
+  initializeAndSaveToken() async {
     String newToken = await NotificationServices().getToken();
     setState(() {
       token = newToken;
     });
-    log("TOKEN $token");
-  }
 
-  updateAdminToken() {
-    if (user != null) {
-      return NotificationServices().updateToken(
-        collection: 'adminToken',
-        doc: user!.uid,
-        token: token,
-      );
-    }
+    log("TOKEN tok : $token");
+    NotificationServices().updateToken(
+      collection: 'adminToken',
+      doc: user!.uid,
+      token: token,
+    );
+    log("TOKEN tok à mettre à jour: $token");
   }
 
   void navigatorTapped(int page) {
@@ -153,6 +149,7 @@ class _AdminNavigationBarState extends State<AdminNavigationBar> {
                                 : Colors.black,
                           ),
                         ),
+                  text: "Notifications",
                 ),
               ],
               selectedIndex: _selectedIndex,
