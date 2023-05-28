@@ -95,6 +95,7 @@ class _MyAppState extends State<MyApp> {
           if (snapshot.connectionState == ConnectionState.active) {
             if (snapshot.hasData) {
               return const UserSendEmailVerification();
+              // return const AuthScreen();
             } else if (snapshot.hasError) {
               return Center(child: Text('${snapshot.hasError}'));
             }
@@ -107,6 +108,7 @@ class _MyAppState extends State<MyApp> {
             );
           }
           return const AuthScreen();
+          // return const AdminSignUpScreen();
         },
       ),
       // initialRoute: AuthScreen.routeName,

@@ -416,7 +416,7 @@ class UserAuthMethods {
     required specialite,
     required carteMedicaleName,
     required carteMedicalePath,
-    required token,
+    required professionaltoken,
   }) async {
     String response = "Une erreur s'est produite";
 
@@ -432,7 +432,7 @@ class UserAuthMethods {
           carteMedicalePath.isNotEmpty ||
           password.isNotEmpty ||
           specialite.isNotEmpty ||
-          token.isNotEmpty) {
+          professionaltoken.isNotEmpty) {
         // ON AJOUTE LE COMPTE MEDICAL
         log(_auth.currentUser!.uid);
         var compteID = const Uuid().v1();
@@ -449,10 +449,10 @@ class UserAuthMethods {
         await StatutMethods().addStatut(
           doc: email,
           statutId: _auth.currentUser!.uid,
-          estAccepte: false,
           motif: '',
           userId: '',
           compteId: _auth.currentUser!.uid,
+          etatStatut: 'attente',
         );
 
         // ON ENREGISTRE L'UTILISATEUR
@@ -504,7 +504,7 @@ class UserAuthMethods {
         NotificationServices().saveTokenAndId(
           collection: 'professionalToken',
           doc: credential.user!.uid,
-          token: token,
+          token: professionaltoken,
           userId: credential.user!.uid,
         );
         log("TOKEN ENVOYEE");

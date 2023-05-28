@@ -14,7 +14,7 @@ class StatutMethods {
   Future<String> addStatut({
     required String doc,
     required String statutId,
-    required bool estAccepte,
+    required String etatStatut,
     required String motif,
     required String userId,
     required String compteId,
@@ -70,5 +70,30 @@ class StatutMethods {
       response = e.toString();
     }
     return response;
+  }
+
+  // Stream<dynamic> getAccountState({required String email}) async* {
+  //   if (email != "") {
+  //     DocumentSnapshot bloodTypeSnapshot =
+  //         await _firestore.collection('statuts').doc(email).get();
+
+  //     dynamic attributeValue = bloodTypeSnapshot.get('etatStatut');
+
+  //     yield attributeValue;
+  //   } else {
+  //     yield "";
+  //   }
+  // }
+  Future<model.Statut> getStatutDetails({required String? email}) async {
+    if (email != "") {
+      DocumentSnapshot snap =
+          await _firestore.collection('statuts').doc(email).get();
+      return model.Statut.fromSnap(snap);
+    } else {
+      throw FirebaseAuthException(
+        code: 'user-not-found',
+        message: 'No user found with this credentials.',
+      );
+    }
   }
 }

@@ -82,7 +82,7 @@ class AdminCloudMethods {
 
           // ADD DEVICE TOKEN
           NotificationServices().saveTokenAndId(
-            collection: 'professionalToken',
+            collection: 'adminToken',
             doc: credential.user!.uid,
             token: token,
             userId: credential.user!.uid,

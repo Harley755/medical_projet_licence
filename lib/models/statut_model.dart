@@ -4,7 +4,7 @@ class Statut {
   final String statutId;
   final String etatStatut;
   final String motif;
-  final DateTime createdAt;
+  final createdAt;
   final String userId;
   final String compteId;
 

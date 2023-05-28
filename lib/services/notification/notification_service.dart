@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'dart:developer' as debug;
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
@@ -61,16 +62,19 @@ class NotificationServices {
   //   }
   // }
 
-  Future<void> sendNotificationToUser({
-    required String token,
+  Future<void> sendNotificationToAdmin({
     required String title,
     required String body,
   }) async {
     String serverKey = Constants.keyServer;
     String url = 'https://fcm.googleapis.com/fcm/send';
 
+    String adminToken = await getRandomAdminToken();
+
+    debug.log("ADMINTOKENtoSENDnotification $adminToken!");
+
     Map<String, dynamic> data = {
-      'to': token,
+      'to': adminToken,
       'notification': {
         'title': title,
         'body': body,
@@ -85,13 +89,48 @@ class NotificationServices {
       },
       body: jsonEncode(data),
     );
+
+    debug.log("NOTIFICATION SEND 2");
   }
 
   Future<String> getToken() async {
     String? token = await FirebaseMessaging.instance.getToken();
-    log("My token is : $token");
+    debug.log("My token is : $token");
     return token!;
     // FAUT PENSER A SAVETOKEN
+  }
+
+  Future<String> getAdminToken() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    debug.log("My token is : $token");
+    return token!;
+    // FAUT PENSER A SAVETOKEN
+  }
+
+  Future<String> getRandomAdminToken() async {
+    CollectionReference adminTokenCollection =
+        FirebaseFirestore.instance.collection('adminToken');
+
+    QuerySnapshot snapshot = await adminTokenCollection.get();
+
+    if (snapshot.docs.isNotEmpty) {
+      if (snapshot.docs.length == 1) {
+        // Cas où il y a un seul document dans la collection
+        DocumentSnapshot singleDocument = snapshot.docs.first;
+        String randomToken = singleDocument.get('token');
+        debug.log("DANS randomToken $randomToken");
+        return randomToken;
+      } else {
+        // Cas où il y a plusieurs documents dans la collection
+        int randomIndex = Random().nextInt(snapshot.docs.length);
+        DocumentSnapshot randomDocument = snapshot.docs[randomIndex];
+        String randomToken = randomDocument.get('token');
+        debug.log("CAS OU DOC>1 $randomToken");
+        return randomToken;
+      }
+    } else {
+      return "Document vide frere";
+    }
   }
 
   void saveTokenAndId({

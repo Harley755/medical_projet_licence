@@ -1,16 +1,22 @@
 import 'dart:async';
+import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/components/fonts.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
+import 'package:medical_projet/models/user_model.dart' as model;
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/user_otp_verification/user_otp.dart';
+import 'package:medical_projet/screens/auth/medical_account/sign_up/components/waiting/professional_waiting.dart';
 import 'package:medical_projet/screens/dashboard/users_dashboard.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/constants.dart';
 
 class UserSendEmailVerification extends StatefulWidget {
-  const UserSendEmailVerification({Key? key}) : super(key: key);
+  const UserSendEmailVerification({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<UserSendEmailVerification> createState() =>
@@ -22,6 +28,11 @@ class _UserSendEmailVerificationState extends State<UserSendEmailVerification> {
   bool canResendEmail = false;
   User? user = FirebaseAuth.instance.currentUser;
   Timer? timer;
+
+  late Future<model.User> _userDetailsFuture;
+  model.User? _user;
+  String _role = "";
+  String _email = "";
 
   @override
   void initState() {
@@ -36,6 +47,19 @@ class _UserSendEmailVerificationState extends State<UserSendEmailVerification> {
           (_) => checkEmailVerified(),
         );
       }
+
+      _userDetailsFuture = UserAuthMethods().getUserIdentityDetails(
+        userId: user!.uid,
+      );
+      _userDetailsFuture.then((userC) {
+        setState(() {
+          _user = userC;
+          log(_user!.age.toString());
+          log(_user!.role.toString());
+          _role = _user!.role;
+          _email = _user!.email;
+        });
+      });
     }
   }
 
@@ -63,55 +87,74 @@ class _UserSendEmailVerificationState extends State<UserSendEmailVerification> {
     if (isEmailVerified) timer!.cancel();
   }
 
+  getWidget() {
+    if (isEmailVerified) {
+      log("$isEmailVerified");
+      log('hahha sous true: $_role');
+      if (_role == 'user' || _role == 'admin') {
+        log('hahha: $_role');
+        return const UsersDashboardScreen();
+      } else if (_role == 'professional') {
+        log('hahha prooo: true');
+        return ProfessionalWaiting(email: _email);
+      }
+    } else {
+      log('hahha prooo last: true');
+      return buildEmailVerificationPage();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      body: isEmailVerified
-          ? const UsersDashboardScreen()
-          : SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: getProportionateScreenWidth(30),
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(height: SizeConfig.screenHeight * .2),
-                    RobotoFont(
-                      title:
-                          "Nous vous avons envoyé un mail de vérification. Veuillez donc vérifier votre compte mail.",
-                      size: getProportionateScreenWidth(16),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: SizeConfig.screenHeight * .025),
-                    RobotoFont(
-                      title:
-                          "Si vous n'avez pas encore reçu un mail de vérification, veuillez cliquer sur le bouton ci-dessous",
-                      size: getProportionateScreenWidth(16),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: SizeConfig.screenHeight * .1),
-                    DefaultButton(
-                      text: "Renvoyer l'email de vérification",
-                      press: canResendEmail
-                          ? () => UserAuthMethods().sendEmailVerification()
-                          : () {},
-                    ),
-                    SizedBox(
-                      height: getProportionateScreenHeight(17.0),
-                    ),
-                    TextButton(
-                      onPressed: () => UserAuthMethods().logOut(),
-                      child: RobotoFont(
-                        title: "Retour",
-                        color: kPrimaryColor,
-                        size: getProportionateScreenWidth(16),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+      body: getWidget(),
+    );
+  }
+
+  SingleChildScrollView buildEmailVerificationPage() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: getProportionateScreenWidth(30),
+        ),
+        child: Column(
+          children: [
+            SizedBox(height: SizeConfig.screenHeight * .2),
+            RobotoFont(
+              title:
+                  "Nous vous avons envoyé un mail de vérification. Veuillez donc vérifier votre compte mail.",
+              size: getProportionateScreenWidth(16),
+              textAlign: TextAlign.center,
             ),
+            SizedBox(height: SizeConfig.screenHeight * .025),
+            RobotoFont(
+              title:
+                  "Si vous n'avez pas encore reçu un mail de vérification, veuillez cliquer sur le bouton ci-dessous",
+              size: getProportionateScreenWidth(16),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: SizeConfig.screenHeight * .1),
+            DefaultButton(
+              text: "Renvoyer l'email de vérification",
+              press: canResendEmail
+                  ? () => UserAuthMethods().sendEmailVerification()
+                  : () {},
+            ),
+            SizedBox(
+              height: getProportionateScreenHeight(17.0),
+            ),
+            TextButton(
+              onPressed: () => UserAuthMethods().logOut(),
+              child: RobotoFont(
+                title: "Retour",
+                color: kPrimaryColor,
+                size: getProportionateScreenWidth(16),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

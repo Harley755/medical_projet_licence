@@ -11,6 +11,7 @@ import 'package:medical_projet/main.dart';
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/screens/auth/informative_account/sign_up/user_send_verification_email.dart';
 import 'package:medical_projet/screens/auth/medical_account/sign_up/components/fileInput/file_input_controller.dart';
+import 'package:medical_projet/screens/auth/medical_account/sign_up/components/waiting/professional_waiting.dart';
 import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/details/detail_page.dart';
 import 'package:medical_projet/services/notification/notification_service.dart';
 import 'package:medical_projet/utils/constants.dart';
@@ -44,6 +45,8 @@ class _SignUpFormState extends State<SignUpForm> {
   bool _isLoading = false;
 
   String token = "";
+
+  // String adminRandomToken = "";
 
   @override
   void didChangeDependencies() {
@@ -95,8 +98,18 @@ class _SignUpFormState extends State<SignUpForm> {
       navigateToSenderProfileScreen(senderId);
     });
 
+    // getRandomTok();
+    // log("ADMINRANDOM TOKEN HAAAAA : $adminRandomToken");
+
     super.initState();
   }
+
+  // getRandomTok() async {
+  //   String adminToken = await NotificationServices().getRandomAdminToken();
+  //   setState(() {
+  //     adminRandomToken = adminToken;
+  //   });
+  // }
 
   // Méthode pour afficher une notification locale
   void showLocalNotification({
@@ -133,7 +146,7 @@ class _SignUpFormState extends State<SignUpForm> {
       _isLoading = true;
     });
     String response = await UserAuthMethods().signUpProfessional(
-      token: token,
+      professionaltoken: token,
       nom: _lastNameController.text.trim(),
       prenom: _firstNameController.text.trim(),
       email: _emailController.text.trim(),
@@ -152,19 +165,30 @@ class _SignUpFormState extends State<SignUpForm> {
       showSnackBar("Compte Médical créé !", context);
 
       // UserAuthMethods().logOut();
+
+      NotificationServices().sendNotificationToAdmin(
+        title: "Demande de création de compte",
+        body:
+            "${_firstNameController.text} ${_lastNameController.text} demande a créé un compte",
+      );
+
       // ignore: use_build_context_synchronously
       // Navigator.pushAndRemoveUntil(
       //   context,
       //   MaterialPageRoute(
-      //     builder: (context) => const UserSendEmailVerification(),
+      //     builder: (context) => ProfessionalWaiting(
+      //       email: _emailController.text.trim(),
+      //     ),
       //   ),
       //   (Route<dynamic> route) => false,
       // );
-      NotificationServices().sendNotificationToUser(
-        token: token,
-        title: "Demande de création de compte",
-        body:
-            "${_firstNameController.text} ${_lastNameController.text} demande a créé un compte",
+      // ignore: use_build_context_synchronously
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const UserSendEmailVerification(),
+        ),
+        (Route<dynamic> route) => false,
       );
     }
     setState(() {
