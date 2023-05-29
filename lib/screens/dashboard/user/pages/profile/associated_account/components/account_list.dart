@@ -3,8 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/fonts.dart';
 import 'package:medical_projet/ressources/cloud/compte_methods.dart';
-import 'package:medical_projet/screens/auth/informative_account/sign_in/sign_in_screen.dart';
-import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/details/detail_page.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/sign_in/account_sign_in_screen.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/constants.dart';
@@ -110,7 +108,7 @@ class _AccountListState extends State<AccountList> {
                             ),
                             title: RobotoFont(
                               title:
-                                  '${accountData['prenom']} ${accountData['nom']}',
+                                  "${accountData['prenom'].isNotEmpty ? accountData['prenom'][0] + (accountData['prenom'].length >= 2 ? ' ${accountData['prenom'][1]}' : '') : ''} ${accountData['nom']}",
                               size: getProportionateScreenWidth(17.0),
                               fontWeight: FontWeight.w500,
                             ),

@@ -12,13 +12,13 @@ class CompteMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<String> addCompte({
-    required String compteId,
-    required String nom,
-    required String prenom,
-    required String email,
-    required String compteType,
-    required String photoUrl,
-    required String userId,
+    required compteId,
+    required nom,
+    required prenom,
+    required email,
+    required compteType,
+    required photoUrl,
+    required userId,
   }) async {
     String response = "Une erreur s'est produite";
 
@@ -34,6 +34,7 @@ class CompteMethods {
         // ON ENREGISTRE L'UTILISATEUR
         // convertit la chaîne en une liste de bytes
         var compteID = const Uuid().v1();
+
         model.Compte compte = model.Compte(
           compteId: compteID,
           nom: nom,
@@ -57,7 +58,7 @@ class CompteMethods {
 
   Future<String> updateCompte({
     required String nom,
-    required String prenom,
+    required prenom,
     required String email,
   }) async {
     String response = "Une erreur s'est produite";
@@ -65,6 +66,8 @@ class CompteMethods {
     try {
       // VERIFICATION DES CHAMPS
       if (nom.isNotEmpty || prenom.isNotEmpty || email.isNotEmpty) {
+        // String prenomInput = prenom;
+        // List<String> prenomList = prenomInput.split(' ');
         // ON AJOUTE LE COMPTE A FIREBASE
         await _firestore.collection('comptes').doc(email).update({
           'nom': nom,

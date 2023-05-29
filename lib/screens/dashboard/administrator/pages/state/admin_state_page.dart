@@ -25,26 +25,14 @@ class _AdminStatePageState extends State<AdminStatePage> {
   model.User? _user;
 
   String _nom = "";
-  String _prenom = "";
+  List<String> _prenom = [];
   String _email = "";
+  String _photoUrl = "";
 
   @override
   void initState() {
     _profileImageUrl =
         "https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg";
-    // Chargement de l'image de profil à partir de Firebase Storage si elle existe.
-
-    final user = FirebaseAuth.instance.currentUser;
-    final fileName = user!.uid;
-    final storageRef =
-        FirebaseStorage.instance.ref().child('avatars/$fileName');
-    storageRef.getDownloadURL().then((url) {
-      setState(() {
-        _profileImageUrl = url;
-      });
-    }).catchError((error) {
-      print(error);
-    });
 
     // GET NAME AND EMAIL
     if (currentUser != null) {
@@ -58,6 +46,7 @@ class _AdminStatePageState extends State<AdminStatePage> {
           _nom = _user!.nom;
           _prenom = _user!.prenom;
           _email = _user!.email;
+          _photoUrl = _user!.photoUrl!;
         });
       });
     }
@@ -79,33 +68,14 @@ class _AdminStatePageState extends State<AdminStatePage> {
           leading: Builder(
             builder: (context) {
               return IconButton(
-                icon: StreamBuilder<String>(
-                    stream: Stream.value(_profileImageUrl),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(
-                            color: kPrimaryColor,
-                          ),
-                        );
-                      }
-                      if (snapshot.hasError) {
-                        print(snapshot.hasError);
-                      }
-                      if (snapshot.hasData) {
-                        return CircleAvatar(
-                          radius: 15.0,
-                          backgroundImage: NetworkImage(snapshot.data!),
-                        );
-                      } else {
-                        return const CircleAvatar(
-                          radius: 15.0,
-                          backgroundImage: NetworkImage(
-                            "https://64.media.tumblr.com/eb8013a5fded5dcb55eee5ba2e48c86c/012efcaf904bfd8e-89/s640x960/cbb4836ddab081451c45286f7f9ab278f99f59f7.pnj",
-                          ),
-                        );
-                      }
-                    }),
+                icon: CircleAvatar(
+                  radius: 15.0,
+                  backgroundImage: NetworkImage(
+                    _photoUrl != ""
+                        ? _photoUrl
+                        : "https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg",
+                  ),
+                ),
                 onPressed: () {
                   Scaffold.of(context).openDrawer();
                 },
@@ -119,7 +89,8 @@ class _AdminStatePageState extends State<AdminStatePage> {
               UserAccountsDrawerHeader(
                 currentAccountPicture: const AdminProfilePic(),
                 accountName: RobotoFont(
-                  title: '$_prenom $_nom',
+                  title:
+                      '${_prenom.isNotEmpty ? _prenom[0] + (_prenom.length >= 2 ? " ${_prenom[1]}" : "") : ""} $_nom',
                   size: getProportionateScreenWidth(16),
                   fontWeight: FontWeight.w600,
                   color: Colors.white,

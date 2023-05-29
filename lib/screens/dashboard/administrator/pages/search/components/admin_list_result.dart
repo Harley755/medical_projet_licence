@@ -25,8 +25,7 @@ class _AdminListResultState extends State<AdminListResult> {
       future: FirebaseFirestore.instance
           .collection('users')
           .where('nom', isEqualTo: widget.searchNomController.text)
-          .where('prenom',
-              isGreaterThanOrEqualTo: widget.searchPrenomController.text)
+          .where('prenom', arrayContains: widget.searchPrenomController.text)
           .orderBy('prenom') // Tri par ordre alphabétique du prénom
           .get(),
       builder: (context, snapshot) {

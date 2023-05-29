@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Professional {
   final String userId;
   final String nom;
-  final String prenom;
+  final List<String> prenom;
   final String email;
   final String specialite;
   final String photoUrl;
@@ -44,7 +44,7 @@ class Professional {
     return Professional(
       userId: snapshot['userId'],
       nom: snapshot['nom'],
-      prenom: snapshot['prenom'],
+      prenom: List<String>.from(snapshot['prenom'] ?? []),
       email: snapshot['email'],
       specialite: snapshot['specialite'],
       telephone: snapshot['telephone'],

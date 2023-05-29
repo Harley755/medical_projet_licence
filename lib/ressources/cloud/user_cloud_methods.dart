@@ -63,9 +63,11 @@ class UserCloudMethods {
           telephoneContactUrgence.isNotEmpty ||
           relation.isNotEmpty) {
         // ON UPDATE INFOS IDENTITE
+        String prenomInput = prenom;
+        List<String> prenomList = prenomInput.split(' ');
         await _firestore.collection('users').doc(currentUser!.uid).update({
           'nom': nom,
-          'prenom': prenom,
+          'prenom': prenomList,
           'sexe': sexe,
           'poids': poids,
           'age': age,
@@ -78,7 +80,7 @@ class UserCloudMethods {
         // UPDATE LE COMPTE
         await CompteMethods().updateCompte(
           nom: nom,
-          prenom: prenom,
+          prenom: prenomList,
           email: email,
         );
         response = "success";
@@ -122,13 +124,23 @@ class UserCloudMethods {
           pieceName: carteMedicaleName,
           piecePath: carteMedicalePath,
         );
+
+        String prenomInput = prenom;
+        List<String> prenomList = prenomInput.split(' ');
         await _firestore.collection('users').doc(currentUser.uid).update({
           'nom': nom,
-          'prenom': prenom,
+          'prenom': prenomList,
           'pieceIdentitePath': pieceI,
           'carteMedicalePath': carteM,
           'specialite': specialite,
         });
+
+        // UPDATE LE COMPTE
+        // await CompteMethods().updateCompte(
+        //   nom: nom,
+        //   prenom: prenomList,
+        //   email: email,
+        // );
 
         response = "success";
       }

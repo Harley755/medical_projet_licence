@@ -26,7 +26,7 @@ class _AccountDetailsState extends State<AccountDetails> {
   model.Professional? _professional;
 
   String _nom = "";
-  String _prenom = "";
+  List<String> _prenom = [];
   String _email = "";
   String _specialite = "";
   String _photoUrl = "";

@@ -52,7 +52,8 @@ class _ProfessionalUserListState extends State<ProfessionalUserList> {
                         : user['photoUrl']),
                   ),
                   title: RobotoFont(
-                    title: '${user['prenom']} ${user['nom']}',
+                    title:
+                        "${user['prenom'].isNotEmpty ? user['prenom'][0] + (user['prenom'].length >= 2 ? ' ${user['prenom'][1]}' : '') : ''} ${user['nom']}",
                     color: kUserResColor,
                     size: getProportionateScreenWidth(17.0),
                     fontWeight: FontWeight.w700,

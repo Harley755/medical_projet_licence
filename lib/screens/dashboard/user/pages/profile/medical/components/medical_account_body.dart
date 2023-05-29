@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:medical_projet/screens/dashboard/user/pages/profile/associated_account/components/account_list.dart';
 import 'package:medical_projet/screens/dashboard/user/pages/profile/medical/components/account_medical_list.dart';
 import 'package:medical_projet/size_config.dart';
 

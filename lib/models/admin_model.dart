@@ -3,8 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Admin {
   final String userId;
   final String nom;
-  final String prenom;
+  final List<String> prenom;
   final String email;
+  final String photoUrl;
   final String telephone;
   final String secretCode;
   final String role;
@@ -14,6 +15,7 @@ class Admin {
     required this.nom,
     required this.prenom,
     required this.email,
+    required this.photoUrl,
     required this.telephone,
     required this.secretCode,
     required this.role,
@@ -24,6 +26,7 @@ class Admin {
         'nom': nom,
         'prenom': prenom,
         'email': email,
+        'photoUrl': photoUrl,
         'telephone': telephone,
         'secretCode': secretCode,
         'role': role,
@@ -35,8 +38,9 @@ class Admin {
     return Admin(
       userId: snapshot['userId'],
       nom: snapshot['nom'],
-      prenom: snapshot['prenom'],
+      prenom: List<String>.from(snapshot['prenom'] ?? []),
       email: snapshot['email'],
+      photoUrl: snapshot['photoUrl'],
       telephone: snapshot['telephone'],
       secretCode: snapshot['secretCode'],
       role: snapshot['role'],

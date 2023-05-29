@@ -28,7 +28,7 @@ class _ProfessionalProfileFormReadOnlyState
   model.Professional? _professional;
 
   String _nom = "";
-  String _prenom = "";
+  List<String> _prenom = [];
   String _specialite = "";
   String? _photoCarteMedicale = "";
   String? _photoPieceIdentite = "";
@@ -113,9 +113,10 @@ class _ProfessionalProfileFormReadOnlyState
   }
 
   TextFormField buildFirstNameFormField() {
+    String prenomText = _prenom.join(' ');
     return TextFormField(
       readOnly: true,
-      controller: TextEditingController()..text = _prenom,
+      controller: TextEditingController()..text = prenomText,
       keyboardType: TextInputType.text,
       decoration: const InputDecoration(
         labelText: "Prénoms",

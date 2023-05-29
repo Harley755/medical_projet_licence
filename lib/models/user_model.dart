@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class User {
   final String userId;
   final String nom;
-  final String prenom;
+  final List<String> prenom;
   final String email;
   final String? poids;
   final String? sexe;
@@ -59,7 +59,7 @@ class User {
     return User(
       userId: snapshot['userId'],
       nom: snapshot['nom'],
-      prenom: snapshot['prenom'],
+      prenom: List<String>.from(snapshot['prenom'] ?? []),
       poids: snapshot['poids'],
       sexe: snapshot['sexe'],
       age: snapshot['age'],

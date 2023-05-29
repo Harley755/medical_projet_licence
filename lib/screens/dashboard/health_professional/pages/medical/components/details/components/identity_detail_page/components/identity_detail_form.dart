@@ -28,7 +28,7 @@ class _IdentityDetailFormReadOnlyState
   model.User? _user;
 
   String _nom = "";
-  String _prenom = "";
+  List<String> _prenom = [];
   String? _sexe = "";
   String? _groupeSanguinId = "";
   String? _groupeSanguin = "";
@@ -307,9 +307,10 @@ class _IdentityDetailFormReadOnlyState
   }
 
   TextFormField buildFirstNameFormField() {
+    String prenomText = _prenom.join(' ');
     return TextFormField(
       readOnly: true,
-      controller: TextEditingController()..text = _prenom,
+      controller: TextEditingController()..text = prenomText,
       keyboardType: TextInputType.text,
       onChanged: (value) {},
       decoration: const InputDecoration(

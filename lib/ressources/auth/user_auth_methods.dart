@@ -146,10 +146,12 @@ class UserAuthMethods {
           email: email,
           password: password,
         );
+        String prenomInput = prenom;
+        List<String> prenomList = prenomInput.split(' ');
         model.User user = model.User(
           userId: credential.user!.uid,
           nom: nom,
-          prenom: prenom,
+          prenom: prenomList,
           email: email,
           poids: '',
           sexe: '',
@@ -174,13 +176,13 @@ class UserAuthMethods {
         await CompteMethods().addCompte(
           compteId: const Uuid().v1(),
           nom: nom,
-          prenom: prenom,
+          prenom: prenomList,
           email: email,
           compteType: 'informatif',
           photoUrl: '',
           userId: credential.user!.uid,
         );
-        log("Compte Ajouté");
+        log("CREATE USER INFO COMPTE AJOUTE");
 
         // CREER SA TABLE ANTECEDENT
         await _firestore
@@ -235,12 +237,14 @@ class UserAuthMethods {
           email.isNotEmpty ||
           password.isNotEmpty) {
         // AJOUTE LE COMPTE
+        String prenomInput = prenom;
+        List<String> prenomList = prenomInput.split(' ');
         log(_auth.currentUser!.uid);
         var compteID = const Uuid().v1();
         await CompteMethods().addCompte(
           compteId: compteID,
           nom: nom,
-          prenom: prenom,
+          prenom: prenomList,
           email: email,
           compteType: 'informatif',
           userId: _auth.currentUser!.uid,
@@ -255,7 +259,7 @@ class UserAuthMethods {
         model.User user = model.User(
           userId: credential.user!.uid,
           nom: nom,
-          prenom: prenom,
+          prenom: prenomList,
           email: email,
           poids: '',
           sexe: '',
@@ -451,12 +455,14 @@ class UserAuthMethods {
           specialite.isNotEmpty ||
           professionaltoken.isNotEmpty) {
         // ON AJOUTE LE COMPTE MEDICAL
+        String prenomInput = prenom;
+        List<String> prenomList = prenomInput.split(' ');
         log(_auth.currentUser!.uid);
         var compteID = const Uuid().v1();
         await CompteMethods().addCompte(
           compteId: compteID,
           nom: nom,
-          prenom: prenom,
+          prenom: prenomList,
           email: email,
           compteType: 'Medical',
           userId: _auth.currentUser!.uid,
@@ -501,7 +507,7 @@ class UserAuthMethods {
         model.Professional user = model.Professional(
           userId: credential.user!.uid,
           nom: nom,
-          prenom: prenom,
+          prenom: prenomList,
           email: email,
           specialite: specialite,
           photoUrl: '',

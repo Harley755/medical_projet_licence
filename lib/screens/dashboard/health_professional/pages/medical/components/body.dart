@@ -15,11 +15,14 @@ class BodyProfessionalSearch extends StatefulWidget {
 class _BodyProfessionalSearchState extends State<BodyProfessionalSearch> {
   final TextEditingController searchNomController = TextEditingController();
   final TextEditingController searchPrenomController = TextEditingController();
+  final TextEditingController searchDateNaissanceController =
+      TextEditingController();
 
   @override
   void dispose() {
     searchNomController.dispose();
     searchPrenomController.dispose();
+    searchDateNaissanceController.dispose();
     super.dispose();
   }
 
@@ -104,6 +107,40 @@ class _BodyProfessionalSearchState extends State<BodyProfessionalSearch> {
                 },
               ),
             ),
+
+            SizedBox(height: getProportionateScreenHeight(20.0)),
+            Container(
+              width: SizeConfig.screenWidth,
+              decoration: BoxDecoration(
+                color: kSecondaryColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: TextField(
+                controller: searchDateNaissanceController,
+                decoration: InputDecoration(
+                  prefixIconColor: kPrimaryColor,
+                  focusColor: kPrimaryColor,
+                  contentPadding: EdgeInsets.symmetric(
+                    // horizontal: getProportionateScreenWidth(20),
+                    vertical: getProportionateScreenWidth(16),
+                  ),
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  hintText: "JJ-MM-AAAA ex: 05-10-1996",
+                  prefixIcon: const Icon(Icons.search),
+                ),
+                onChanged: (String _) {
+                  setState(() {
+                    if (_ == "") {
+                      _isShowUsers = false;
+                    } else {
+                      _isShowUsers = true;
+                    }
+                  });
+                },
+              ),
+            ),
             SizedBox(height: getProportionateScreenHeight(15.0)),
             RobotoFont(
               title: "Liste",
@@ -117,6 +154,8 @@ class _BodyProfessionalSearchState extends State<BodyProfessionalSearch> {
                 : ProfessionalListResult(
                     searchNomController: searchNomController,
                     searchPrenomController: searchPrenomController,
+                    searchDateNaissanceController:
+                        searchDateNaissanceController,
                   )
           ],
         ),

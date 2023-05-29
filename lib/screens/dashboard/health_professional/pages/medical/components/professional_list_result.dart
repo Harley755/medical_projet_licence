@@ -8,10 +8,12 @@ import 'package:medical_projet/utils/constants.dart';
 class ProfessionalListResult extends StatefulWidget {
   final TextEditingController searchNomController;
   final TextEditingController searchPrenomController;
+  final TextEditingController searchDateNaissanceController;
   const ProfessionalListResult({
     super.key,
     required this.searchNomController,
     required this.searchPrenomController,
+    required this.searchDateNaissanceController,
   });
 
   @override
@@ -26,8 +28,8 @@ class _ProfessionalListResultState extends State<ProfessionalListResult> {
           .collection('users')
           .where('role', isEqualTo: 'user')
           .where('nom', isEqualTo: widget.searchNomController.text)
-          .where('prenom',
-              isGreaterThanOrEqualTo: widget.searchPrenomController.text)
+          .where('prenom', arrayContains: widget.searchPrenomController.text)
+          .where('dateNaissance', isEqualTo: widget.searchNomController.text)
           .orderBy('prenom') // Tri par ordre alphabétique du prénom
           .get(),
       builder: (context, snapshot) {
@@ -73,7 +75,7 @@ class _ProfessionalListResultState extends State<ProfessionalListResult> {
                     ),
                     title: RobotoFont(
                       title:
-                          "${(snapshot.data! as dynamic).docs[index]['prenom']} ${(snapshot.data! as dynamic).docs[index]['nom']}",
+                          "${(snapshot.data! as dynamic).docs[index]['prenom'].isNotEmpty ? (snapshot.data! as dynamic).docs[index]['prenom'][0] + ((snapshot.data! as dynamic).docs[index]['prenom'].length >= 2 ? ' ${(snapshot.data! as dynamic).docs[index]['prenom'][1]}' : '') : ''} ${(snapshot.data! as dynamic).docs[index]['nom']}",
                       size: getProportionateScreenWidth(17.0),
                       fontWeight: FontWeight.w500,
                     ),

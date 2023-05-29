@@ -52,11 +52,14 @@ class AdminCloudMethods {
             email: email,
             password: password,
           );
+          String prenomInput = prenom;
+          List<String> prenomList = prenomInput.split(' ');
           model.Admin user = model.Admin(
             userId: credential.user!.uid,
             nom: nom,
-            prenom: prenom,
+            prenom: prenomList,
             email: email,
+            photoUrl: '',
             secretCode: hashSecretCode,
             telephone: '',
             role: 'admin',
@@ -72,7 +75,7 @@ class AdminCloudMethods {
           await CompteMethods().addCompte(
             compteId: const Uuid().v1(),
             nom: nom,
-            prenom: prenom,
+            prenom: prenomList,
             email: email,
             compteType: 'admin',
             photoUrl: '',
@@ -80,13 +83,13 @@ class AdminCloudMethods {
           );
           log("Compte Ajouté");
 
-          // // ADD DEVICE TOKEN
-          // NotificationServices().saveTokenAndId(
-          //   collection: 'adminToken',
-          //   doc: credential.user!.uid,
-          //   token: token,
-          //   userId: credential.user!.uid,
-          // );
+          // ADD DEVICE TOKEN
+          NotificationServices().saveTokenAndId(
+            collection: 'adminToken',
+            doc: credential.user!.uid,
+            token: token,
+            userId: credential.user!.uid,
+          );
           log("TOKEN ENVOYEE");
 
           response = "success";
@@ -121,9 +124,11 @@ class AdminCloudMethods {
       // VERIFICATION DES CHAMPS
       if (nom.isNotEmpty || prenom.isNotEmpty || email.isNotEmpty) {
         // ON AJOUTE LE COMPTE A FIREBASE
+        String prenomInput = prenom;
+        List<String> prenomList = prenomInput.split(' ');
         await _firestore.collection('comptes').doc(email).update({
           'nom': nom,
-          'prenom': prenom,
+          'prenom': prenomList,
           'updatedAt': DateTime.now(),
         });
         response = "success";

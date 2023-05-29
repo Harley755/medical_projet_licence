@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_projet/components/fonts.dart';
-import 'package:medical_projet/screens/dashboard/health_professional/pages/medical/components/details/detail_page.dart';
 import 'package:medical_projet/size_config.dart';
 import 'package:medical_projet/utils/constants.dart';
 
@@ -50,7 +49,8 @@ class _AdminUserListState extends State<AdminUserList> {
                         : user['photoUrl']),
                   ),
                   title: RobotoFont(
-                    title: '${user['prenom']} ${user['nom']}',
+                    title:
+                        "${user['prenom'].isNotEmpty ? user['prenom'][0] + (user['prenom'].length >= 2 ? ' ${user['prenom'][1]}' : '') : ''} ${user['nom']}",
                     size: getProportionateScreenWidth(17.0),
                     fontWeight: FontWeight.w500,
                   ),
