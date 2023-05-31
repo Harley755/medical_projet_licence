@@ -90,31 +90,51 @@ class BodyAdminNotificationPage extends StatelessWidget {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        leading: Container(
-                          padding: const EdgeInsets.all(14.0),
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: kPrimaryColor,
+                      child: Container(
+                        // foregroundDecoration: BoxDecoration(
+                        //   color: selectTabBg,
+                        // ),
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
+                            bottomRight: Radius.circular(20.0),
                           ),
-                          child: SvgPicture.asset("assets/icons/User.svg"),
+                          color: selectTabBg,
                         ),
-                        title: RobotoFont(
-                          title: notification['title'],
-                          size: getProportionateScreenWidth(18),
-                          fontWeight: FontWeight.w700,
-                        ),
-                        subtitle: Column(
-                          children: [
-                            SizedBox(
-                              height: getProportionateScreenHeight(5.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ListTile(
+                            leading: Container(
+                              padding: const EdgeInsets.all(14.0),
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: kPrimaryColor,
+                              ),
+                              child: SvgPicture.asset(
+                                "assets/icons/User.svg",
+                                color: Colors.white,
+                              ),
                             ),
-                            Text(
-                              notification['body'],
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.w700),
+                            title: RobotoFont(
+                              title: notification['title'],
+                              size: getProportionateScreenWidth(18),
+                              fontWeight: FontWeight.w700,
                             ),
-                          ],
+                            subtitle: Column(
+                              children: [
+                                SizedBox(
+                                  height: getProportionateScreenHeight(5.0),
+                                ),
+                                Text(
+                                  notification['body'],
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),

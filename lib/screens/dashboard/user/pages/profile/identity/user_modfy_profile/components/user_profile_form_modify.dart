@@ -166,8 +166,7 @@ class _UserProfileFormModifyState extends State<UserProfileFormModify> {
         });
       } on FormOperationException catch (e) {
         if (e.errorCode == FormOperationErrorCode.FORM_OPERATION_CANCELED) {
-          // L'utilisateur a annulé l'opération de sélection de contact.
-          // Renvoyer l'utilisateur à la page précédente de l'application.
+          // ignore: use_build_context_synchronously
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(

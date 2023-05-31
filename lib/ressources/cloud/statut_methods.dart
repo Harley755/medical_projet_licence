@@ -72,6 +72,29 @@ class StatutMethods {
     return response;
   }
 
+  Future<String> updateEtatAndStatut({
+    required String docEmail,
+    required String etatStatut,
+    required String motif,
+  }) async {
+    String response = "Une erreur s'est produite";
+
+    try {
+      // VERIFICATION DES CHAMPS
+      if (etatStatut.isNotEmpty || motif.isNotEmpty) {
+        // ON AJOUTE LE COMPTE A FIREBASE
+        await _firestore.collection('statuts').doc(docEmail).update({
+          'etatStatut': etatStatut,
+          'motif': motif,
+        });
+        response = "success";
+      }
+    } catch (e) {
+      response = e.toString();
+    }
+    return response;
+  }
+
   // Stream<dynamic> getAccountState({required String email}) async* {
   //   if (email != "") {
   //     DocumentSnapshot bloodTypeSnapshot =

@@ -112,6 +112,19 @@ class UserAuthMethods {
     }
   }
 
+  Future<model.Admin> getAdminIdentityDetails({required String userId}) async {
+    if (userId != "") {
+      DocumentSnapshot snap =
+          await _firestore.collection('users').doc(userId).get();
+      return model.Admin.fromSnap(snap);
+    } else {
+      throw FirebaseAuthException(
+        code: 'user-not-found',
+        message: 'No user found with this credentials.',
+      );
+    }
+  }
+
   Future<model.Antecedent> getUserMedicalDetails(
       {required String userId}) async {
     if (userId != "") {
@@ -207,7 +220,7 @@ class UserAuthMethods {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
-        response = "L'e-mail est mal valide.";
+        response = "L'e-mail n'est pas valide.";
       } else if (e.code == 'email-already-in-use') {
         response = "Votre adresse email a déja été utilisé.";
       } else if (e.code == 'operation-not-allowed') {
@@ -221,7 +234,7 @@ class UserAuthMethods {
     return response;
   }
 
-  // INSCRIPTION COMPTE INFORMATIF POUR ENFANT
+  // INSCRIPTION COMPTE INFORMATIF POUR ENFANT9
   Future<String> signUpUserAssociatedAccount({
     required nom,
     required prenom,

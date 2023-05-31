@@ -2,11 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:medical_projet/components/default_button.dart';
 import 'package:medical_projet/size_config.dart';
 
-class BottomNavigationBarWidget extends StatelessWidget {
+class BottomNavigationBarWidget extends StatefulWidget {
+  final Function() onPressAccept;
+  final Function() onPressRefuse;
   const BottomNavigationBarWidget({
     super.key,
+    required this.onPressAccept,
+    required this.onPressRefuse,
   });
 
+  @override
+  State<BottomNavigationBarWidget> createState() =>
+      _BottomNavigationBarWidgetState();
+}
+
+class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
+  @override
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -30,7 +41,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
             Expanded(
               child: DefaultButton(
                 text: "Accepter",
-                press: () {},
+                press: widget.onPressAccept,
               ),
             ),
             Expanded(
@@ -38,7 +49,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
                 text: "Refuser",
                 color: Colors.red,
                 width: SizeConfig.screenWidth * .49,
-                press: () {},
+                press: widget.onPressRefuse,
               ),
             ),
           ],

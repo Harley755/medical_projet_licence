@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:medical_projet/dotenv.dart';
 import 'package:medical_projet/ressources/auth/user_auth_methods.dart';
 import 'package:medical_projet/routes.dart';
 import 'package:medical_projet/screens/auth/auth_screen.dart';
@@ -47,6 +48,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await loadEnv();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -108,8 +111,8 @@ class _MyAppState extends State<MyApp> {
               ),
             );
           }
-          // return const AuthScreen();
-          return const AdminSignUpScreen();
+          return const AuthScreen();
+          // return const AdminSignUpScreen();
         },
       ),
       // initialRoute: AuthScreen.routeName,

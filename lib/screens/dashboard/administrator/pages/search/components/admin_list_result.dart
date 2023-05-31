@@ -59,8 +59,7 @@ class _AdminListResultState extends State<AdminListResult> {
                     ),
                   ),
                   title: RobotoFont(
-                    title:
-                        "${(snapshot.data! as dynamic).docs[index]['prenom']} ${(snapshot.data! as dynamic).docs[index]['nom']}",
+                    title: (snapshot.data! as dynamic).docs[index]['prenom'][0],
                     size: getProportionateScreenWidth(17.0),
                     fontWeight: FontWeight.w500,
                   ),

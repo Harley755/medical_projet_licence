@@ -29,8 +29,10 @@ class _ProfessionalListResultState extends State<ProfessionalListResult> {
           .where('role', isEqualTo: 'user')
           .where('nom', isEqualTo: widget.searchNomController.text)
           .where('prenom', arrayContains: widget.searchPrenomController.text)
-          .where('dateNaissance', isEqualTo: widget.searchNomController.text)
-          .orderBy('prenom') // Tri par ordre alphabétique du prénom
+          .where(
+            'dateNaissance',
+            isEqualTo: widget.searchDateNaissanceController.text,
+          )
           .get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
